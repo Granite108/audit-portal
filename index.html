@@ -5,32 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE METATRONIC LATTICE</title>
     <style>
-        /* THE BONE-GRID */
-        :root { --gold: #FFD700; --obsidian: #050505; }
-        body {
-            margin: 0; background: var(--obsidian); color: white;
-            display: grid;
-            grid-template-columns: repeat(13, 1fr); /* 13 Columns */
-            grid-template-rows: repeat(55, minmax(20px, auto)); /* 55 Rows */
-            font-family: 'Courier New', monospace;
-        }
-        /* THE RIEMANN SPINE */
-        .spine {
-            grid-column: 7; grid-row: 1 / 56;
-            border-left: 1px solid var(--gold);
-            box-shadow: 0 0 15px var(--gold);
-            z-index: 10;
-        }
-        /* THE INPUT CENTER */
-        .portal {
-            grid-column: 4 / 11; grid-row: 25 / 35;
-            text-align: center; border: 1px solid #333;
-            padding: 40px; background: rgba(255,215,0,0.05);
-        }
-        input { 
-            background: transparent; border: 1px solid var(--gold); 
-            color: var(--gold); padding: 10px; width: 80%;
-        }
+       :root { --gold: #FFD700; --obsidian: #050505; --grit: rgba(255, 215, 0, 0.1); }
+body {
+    margin: 0; background: var(--obsidian); color: white;
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(55, minmax(20px, auto));
+    font-family: 'Courier New', monospace;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-blend-mode: overlay; /* This creates the stone texture */
+}
+.spine {
+    grid-column: 7; grid-row: 1 / 56;
+    border-left: 1px solid var(--gold);
+    box-shadow: 0 0 25px var(--gold), inset 0 0 10px black;
+    z-index: 10;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+}
+.portal {
+    grid-column: 3 / 12; grid-row: 15 / 45;
+    text-align: center; 
+    border: 2px solid var(--gold);
+    padding: 40px; 
+    background: rgba(0,0,0,0.9);
+    box-shadow: 20px 20px 0px var(--grit); /* The Megalithic Shadow */
+    z-index: 20;
+}
+input { 
+    background: var(--obsidian); border: 1px solid var(--gold); 
+    color: var(--gold); padding: 15px; width: 90%; font-size: 1.1rem;
+    text-transform: uppercase; letter-spacing: 2px;
+}
+button {
+    background: var(--gold); color: black; border: none; 
+    padding: 20px 40px; font-weight: bold; cursor: pointer; 
+    margin-top: 30px; letter-spacing: 3px;
+    transition: 0.3s;
+}
+button:hover { background: white; box-shadow: 0 0 30px var(--gold); }
+
     </style>
 </head>
 <body>
