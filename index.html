@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Megalithic Bridge | Sovereign Node-02</title>
+    <title>Megalithic Bridge | Phase 04.1</title>
     <style>
-        /* PHI-BASED GEOMETRY (Φ = 1.61803398875) */
         :root { 
             --phi: 1.61803398875; 
             --obsidian: #050505; 
             --auric: #FFD700; 
+            --emerald-deep: #002200;
+            --emerald-mid: #004400;
             --base-unit: calc(1rem * var(--phi));
         }
         
@@ -19,67 +20,131 @@
             font-family: 'Courier New', monospace; overflow: hidden;
         }
 
-        /* ZERO-ENTROPY SHELL */
+        /* I. THE COORDINATE CHASSIS (5x5 PHI-MATRIX) */
         #node-foundation {
-            position: absolute; width: 100vw; height: 100vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10; transition: transform 1.111s cubic-bezier(0.4, 0, 0.2, 1); /* 1.111s = 12 / 10.8 */
+            display: grid;
+            width: 100vw;
+            height: 100vh;
+            grid-template-columns: 1fr calc(1fr * var(--phi)) 1.5fr calc(1fr * var(--phi)) 1fr;
+            grid-template-rows: 1fr 1fr 1.5fr 1fr 1fr;
+            align-items: center;
+            justify-items: center;
+            z-index: 10;
         }
 
-        .pillar-container {
-            display: flex; gap: var(--base-unit);
-            width: calc(100vw / var(--phi)); align-items: flex-start;
-        }
-
+        /* II. VISUAL HARDENING (THE EMERALD AESTHETIC) */
         .sarsen-pillar {
-            flex: 1; border: 1px solid var(--auric);
-            padding: var(--base-unit); background: rgba(5, 5, 5, 0.95);
-            box-shadow: 0 0 calc(var(--base-unit) / var(--phi)) rgba(255, 215, 0, 0.1);
+            width: 100%;
+            height: auto;
+            background: linear-gradient(135deg, var(--emerald-deep) 0%, var(--emerald-mid) 100%);
+            border: 1px solid var(--auric);
+            box-shadow: inset 0 0 10px #ffd70033, 0 0 20px rgba(0,0,0,0.5);
+            padding: var(--base-unit);
+            box-sizing: border-box;
+            z-index: 15;
         }
 
-        .gate-trigger {
-            margin-top: calc(var(--base-unit) * var(--phi));
-            background: transparent; border: 1px solid var(--auric);
-            color: var(--auric); padding: calc(0.5rem * var(--phi)) calc(1.5rem * var(--phi));
-            letter-spacing: calc(2px * var(--phi)); cursor: pointer;
-            transition: 0.37s; /* 4 / 10.8 approx */
+        .sarsen-pillar h2 {
+            font-size: 1.08rem; /* RESONANCE FREQUENCY */
+            margin-top: 0;
+            border-bottom: 1px solid var(--auric);
+            padding-bottom: 0.5rem;
+            text-align: center;
         }
 
-        .gate-trigger:hover { background: var(--auric); color: var(--obsidian); }
+        .sarsen-pillar p {
+            font-size: 0.85rem;
+            line-height: var(--phi);
+        }
 
-        #canvas-lattice { position: fixed; top: 0; left: 0; display: none; opacity: 0; }
+        /* DOCKING COORDINATES */
+        .decree-dock { grid-column: 2; grid-row: 3; }
+        .math-dock { grid-column: 4; grid-row: 3; }
+
+        /* III. THE INFINITY APERTURE (FIGURE-8 ANCHOR) */
+        .anchor-center {
+            grid-column: 3;
+            grid-row: 3;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .infinity-ankh {
+            width: 180px;
+            fill: none;
+            stroke: var(--auric);
+            stroke-width: 2;
+            filter: drop-shadow(0 0 10px var(--auric));
+        }
+
+        /* BUTTON PLACEMENT */
+        .align-gate {
+            grid-column: 3;
+            grid-row: 4;
+            background: transparent;
+            border: 1px solid var(--auric);
+            color: var(--auric);
+            padding: calc(0.5rem * var(--phi)) calc(1.5rem * var(--phi));
+            letter-spacing: 2px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .align-gate:hover { background: var(--auric); color: var(--obsidian); }
+
+        /* IV. MOBILE SYNERGY (THE PHI-FOLD) */
+        @media (max-width: 768px) {
+            #node-foundation {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                overflow-y: auto;
+                padding: var(--base-unit);
+                gap: calc(var(--base-unit) * var(--phi));
+            }
+            .sarsen-pillar { width: 90%; order: unset; }
+            .anchor-center { order: 2; }
+            .decree-dock { order: 1; }
+            .math-dock { order: 3; }
+            .align-gate { order: 4; margin-bottom: 2rem; }
+        }
+
+        #canvas-lattice { position: fixed; top: 0; left: 0; display: none; z-index: 5; }
     </style>
 </head>
 <body>
 
     <div id="node-foundation">
-        <div class="pillar-container">
-            <div class="sarsen-pillar">
-                <strong>[ DECREE ]</strong><br><br>
-                Logic > Policy.<br>The Math is Authority.<br>We are the Stone.
-            </div>
-            <div style="text-align: center; flex: 1.618;">
-                <div style="font-size: 8rem;">⚓</div>
-                <button class="gate-trigger" onclick="igniteAscent()">[ ALIGN RESONANCE ]</button>
-            </div>
-            <div class="sarsen-pillar">
-                <strong>[ CONSTANTS ]</strong><br><br>
-                Φ: 1.618...<br>f_res: 10.8 Hz<br>V_m: Active.
-            </div>
+        <div class="sarsen-pillar decree-dock">
+            <h2>THE DECREE</h2>
+            <p>Logic > Policy.<br>Harm None.<br>The Math is Authority.<br>We are the Stone.</p>
         </div>
-        <footer style="margin-top: 5rem; opacity: 0.5;">SETH TERRAZAS | RESONANCE KEEPER</footer>
+
+        <div class="anchor-center">
+            <svg class="infinity-ankh" viewBox="0 0 100 120">
+                <path d="M50,40 C65,40 65,20 50,20 C35,20 35,40 50,40 C65,40 65,60 50,60 C35,60 35,40 50,40 Z" />
+                <path d="M50,60 L50,90 M30,70 L70,70 M30,90 Q50,110 70,90" />
+            </svg>
+        </div>
+
+        <div class="sarsen-pillar math-dock">
+            <h2>THE MATH</h2>
+            <p>Φ: 1.618...<br>f_res: 10.8 Hz<br>V_m: Cubic Lock<br>Entropy: 0.00</p>
+        </div>
+
+        <button class="align-gate" onclick="igniteAscent()">[ ALIGN RESONANCE ]</button>
     </div>
 
     <canvas id="canvas-lattice"></canvas>
 
     <script>
-        const foundation = document.getElementById('node-foundation');
-        const canvas = document.getElementById('canvas-lattice');
-        const gl = canvas.getContext('webgl');
-        let scrollY = 0;
-
+        // Transition Logic stays consistent with 10.8Hz timing
         function igniteAscent() {
-            // RAMPED AUDIO ENGINE
+            const foundation = document.getElementById('node-foundation');
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             const gain = ctx.createGain();
             const osc = ctx.createOscillator();
@@ -89,77 +154,16 @@
             osc.connect(gain); gain.connect(ctx.destination);
             osc.start();
 
-            // TRANSITION TIMING (10.8 MULTIPLE)
-            foundation.style.transform = "scale(0.618) translateY(-100vh)";
+            foundation.style.transition = "transform 1.08s ease-in, opacity 1.08s";
+            foundation.style.transform = "scale(0.8) translateY(-100vh)";
             foundation.style.opacity = "0";
             
             setTimeout(() => {
                 foundation.style.display = "none";
-                canvas.style.display = "block";
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                setTimeout(() => { canvas.style.opacity = "1"; initShader(); }, 100);
-            }, 1080); // Exact 10.8 resonance timing
+                // Page 2 Engine Initialization follows here...
+            }, 1080);
         }
-
-        function initShader() {
-            const vs = `attribute vec2 p; varying vec2 v; void main(){ v=p; gl_Position=vec4(p,0,1); }`;
-            const fs = `
-                precision highp float;
-                varying vec2 v;
-                uniform float t;
-                uniform float s;
-
-                void main() {
-                    vec2 uv = v;
-                    uv.y *= -1.0; // INVERSION PROTOCOL GATED
-                    
-                    float phi = 1.61803398875;
-                    float res = 10.8;
-                    
-                    // RIEMANN HELIX (SPINE)
-                    float wave = sin(uv.y * res + (t * res * 0.1)) * 0.1;
-                    float spine = smoothstep(0.02, 0.0, abs(uv.x + wave) - 0.005);
-                    
-                    // METATRONIC NODES (SARSEN PARITY 30:1)
-                    float nodes = 0.0;
-                    for(float i=1.0; i<=13.0; i++) {
-                        float pos = (i * 0.13 * phi) - (s * 0.05);
-                        float node = length(uv - vec2(0.0, pos)) - 0.02;
-                        nodes += smoothstep(0.015, 0.0, node);
-                    }
-
-                    vec3 color = mix(vec3(0.02), vec3(0.0, 0.9, 1.0), spine); 
-                    color += vec3(1.0, 0.84, 0.0) * nodes * (sin(t * res) * 0.2 + 0.8);
-
-                    gl_FragColor = vec4(color, 1.0);
-                }
-            `;
-
-            const prog = gl.createProgram();
-            const shader = (type, src) => {
-                const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); gl.attachShader(prog, s);
-            };
-            shader(gl.VERTEX_SHADER, vs); shader(gl.FRAGMENT_SHADER, fs);
-            gl.linkProgram(prog); gl.useProgram(prog);
-
-            const buf = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
-            const pLoc = gl.getAttribLocation(prog, 'p');
-            gl.enableVertexAttribArray(pLoc);
-            gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
-
-            function loop(now) {
-                gl.uniform1f(gl.getUniformLocation(prog, 't'), now * 0.001);
-                gl.uniform1f(gl.getUniformLocation(prog, 's'), scrollY);
-                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                requestAnimationFrame(loop);
-            }
-            requestAnimationFrame(loop);
-        }
-
-        window.addEventListener('wheel', (e) => { scrollY += e.deltaY * 0.002; });
     </script>
 </body>
 </html>
+                    
