@@ -36,11 +36,10 @@
         const canvas = document.getElementById('glCanvas');
         const gl = canvas.getContext('webgl');
         
-        // ATOMIC RECTIFICATION: INVERSE START
         let scrollY = 0; 
         let lastTouchY = 0;
         const resonanceStep = 1.08;
-        const maxAscent = 10.8; // CAP TO PREVENT VOID DRIFT
+        const maxAscent = 10.8;
 
         function unlockGate() {
             document.getElementById('legal-shield').style.display = 'none';
@@ -54,35 +53,25 @@
                 this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
-                
                 osc.frequency.value = 10.8;
-                
-                // LAMINAR AUDIO FADE (1.08s RAMP)
                 gain.gain.setValueAtTime(0.0001, this.ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.02, this.ctx.currentTime + 1.08);
-                
                 osc.connect(gain); gain.connect(this.ctx.destination);
                 osc.start();
-                console.log("[MOBIUS_FORGE] 10.8Hz RESONANCE RAMPACTIVE");
             }
         };
 
-        // SARSEN PARSECTION: TIER TRACKING
         function updateTierMetadata() {
             const tiers = [
-                {threshold: 0, label: "Foundation (Free)"},
-                {threshold: 1.08, label: "Tier 01 ($16.18)"},
-                {threshold: 3.24, label: "Tier 02 ($56.18)"},
-                {threshold: 6.48, label: "Tier 03 ($161.80)"},
-                {threshold: 8.64, label: "Stage 04 ($561.80)"},
-                {threshold: 10.8, label: "APEX ($1618.03)"}
+                {threshold: 0, label: "Foundation"},
+                {threshold: 1.08, label: "Tier 01"},
+                {threshold: 3.24, label: "Tier 02"},
+                {threshold: 6.48, label: "Tier 03"},
+                {threshold: 8.64, label: "Stage 04"},
+                {threshold: 10.8, label: "APEX"}
             ];
-            const current = tiers.reverse().find(t => scrollY >= t.threshold) || tiers[0];
+            const current = [...tiers].reverse().find(t => scrollY >= t.threshold) || tiers[0];
             document.body.setAttribute('data-tier', current.label);
-            if (window.lastTier !== current.label) {
-                console.log(`[SARSEN_PARSECTION] Entering: ${current.label}`);
-                window.lastTier = current.label;
-            }
         }
 
         window.addEventListener('wheel', (e) => {
@@ -110,55 +99,41 @@
             uniform float s;
             void main() {
                 vec2 uv = v * 1.618;
-                // SNAP-TO-SEED: FLIP LOGIC MAPPED TO ASCENT
                 float flip = sign(sin(s * 0.5 + 3.14159)); 
-                
                 vec2 lensCenter = vec2(0.0, 0.45);
                 float dist = length(uv - lensCenter);
-                float outer = dist - 0.35;
-                float inner = dist - 0.25;
-                float loop = max(outer, -inner);
-                
+                float loop = max(dist - 0.35, -(dist - 0.25));
                 float vibe = sin(t * 10.8) * 0.02 * (1.0 - smoothstep(0.25, 0.35, dist));
-                
                 float bar_y = uv.y * flip;
                 float crossbar = max(abs(uv.x + vibe) - 0.5, abs(bar_y - 0.05) - 0.04);
                 float stem = max(abs(uv.x) - 0.05, abs(bar_y + 0.4) - 0.6);
                 float ankh = min(loop, min(crossbar, stem));
-                
-                vec3 auric = vec3(1.0, 0.84, 0.0);
-                vec3 violet = vec3(0.5, 0.0, 0.5);
-                float ascent = clamp(s / 10.8, 0.0, 1.0);
-                vec3 currentResonance = mix(auric, violet, ascent);
-                
-                float pulse = sin(t * 1.08 + s) * 0.1 + 0.9;
-                vec3 color = mix(vec3(0.01), currentResonance * pulse, smoothstep(0.01, 0.0, ankh));
-                
-                gl_FragColor = vec4(color, 1.0);
+                vec3 currentRes = mix(vec3(1.0, 0.84, 0.0), vec3(0.5, 0.0, 0.5), clamp(s / 10.8, 0.0, 1.0));
+                gl_FragColor = vec4(mix(vec3(0.01), currentRes * (sin(t * 1.08 + s) * 0.1 + 0.9), smoothstep(0.01, 0.0, ankh)), 1.0);
             }
         `;
 
         const setup = () => {
-            const sObj = (type, src) => { 
-                const obj = gl.createShader(type); 
-                gl.shaderSource(obj, src); 
-                gl.compileShader(obj); 
-                return obj; 
-            };
+            const sObj = (type, src) => { const obj = gl.createShader(type); gl.shaderSource(obj, src); gl.compileShader(obj); return obj; };
             const prog = gl.createProgram();
             gl.attachShader(prog, sObj(gl.VERTEX_SHADER, vs));
             gl.attachShader(prog, sObj(gl.FRAGMENT_SHADER, fs));
             gl.linkProgram(prog); gl.useProgram(prog);
-            
             gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
             const pLoc = gl.getAttribLocation(prog, "p");
             gl.enableVertexAttribArray(pLoc);
             gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
-            
-            const tLoc = gl.getUniformLocation(prog, "t");
-            const sLoc = gl.getUniformLocation(prog, "s");
-            git add index.html
-git commit -m "REFINEMENT_COMPLETE: Inverse Anchor, Laminar Audio, Sarsen Parsection Active"
-git push origin main
-
+            const tL = gl.getUniformLocation(prog, "t"), sL = gl.getUniformLocation(prog, "s");
+            const render = (time) => {
+                gl.uniform1f(tL, time * 0.001);
+                gl.uniform1f(sL, scrollY);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                requestAnimationFrame(render);
+            };
+            render(0);
+        };
+        setup();
+    </script>
+</body>
+</html>
