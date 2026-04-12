@@ -42,3 +42,90 @@
 </body>
 </html>
 
+<script>
+    const canvas = document.getElementById('glCanvas');
+    const gl = canvas.getContext('webgl');
+    const PHI = 1.61803398875;
+    let scrollY = 0;
+
+    // 10.8Hz BINAURAL RESONANCE
+    const Resonance = {
+        ctx: null,
+        init() {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.frequency.setValueAtTime(10.8, this.ctx.currentTime);
+            gain.gain.setValueAtTime(0.05, this.ctx.currentTime); // Subtle floor
+            osc.connect(gain); gain.connect(this.ctx.destination);
+            osc.start();
+        }
+    };
+
+    // SCROLL INTERACTION
+    window.addEventListener('wheel', (e) => { scrollY += e.deltaY * 0.001; scrollY = Math.max(0, scrollY); });
+    window.addEventListener('touchstart', (e) => { 
+        this.touchY = e.touches[0].clientY;
+        if (!Resonance.ctx) Resonance.init(); // Activate Audio on first touch
+    });
+    window.addEventListener('touchmove', (e) => { 
+        let delta = (this.touchY - e.touches[0].clientY) * 0.005;
+        scrollY = Math.max(0, scrollY + delta);
+        this.touchY = e.touches[0].clientY;
+    });
+
+    // WEBGL ANKH SHADER (SDF)
+    const vs = `attribute vec2 p; varying vec2 v; void main(){ v=p; gl_Position=vec4(p,0,1); }`;
+    const fs = `
+        precision highp float;
+        varying vec2 v;
+        uniform float u_time;
+        uniform float u_scroll;
+        void main() {
+            vec2 uv = v * 1.5;
+            float phi = 1.61803398875;
+            
+            // ANKH GEOMETRY (ATOMIC SDF)
+            float circle = length(uv - vec2(0.0, 0.4)) - 0.3;
+            float bar_h = max(abs(uv.x) - 0.4, abs(uv.y - 0.0) - 0.05);
+            float bar_v = max(abs(uv.x) - 0.06, abs(uv.y + 0.3) - 0.6);
+            float ankh = min(circle, min(bar_h, bar_v));
+            
+            // AURIC SHADER LOGIC
+            vec3 auric = vec3(1.0, 0.84, 0.0);
+            vec3 cobalt = vec3(0.0, 0.13, 0.4);
+            vec3 finalColor = mix(vec3(0.02), auric, smoothstep(0.01, 0.0, ankh));
+            
+            // PULSE RESONANCE
+            float pulse = sin(u_time * 1.08) * 0.1;
+            gl_FragColor = vec4(finalColor + pulse * auric, 1.0);
+        }
+    `;
+
+    // COMPILE & RENDER LATTICE
+    function createShader(gl, type, source) {
+        const s = gl.createShader(type); gl.shaderSource(s, source); gl.compileShader(s); return s;
+    }
+    const program = gl.createProgram();
+    gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vs));
+    gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(program); gl.useProgram(program);
+
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+    const pLoc = gl.getAttribLocation(program, "p");
+    gl.enableVertexAttribArray(pLoc);
+    gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
+
+    const tLoc = gl.getUniformLocation(program, "u_time");
+    const sLoc = gl.getUniformLocation(program, "u_scroll");
+
+    function render(time) {
+        gl.uniform1f(tLoc, time * 0.001);
+        gl.uniform1f(sLoc, scrollY);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(render);
+    }
+    render(0);
+</script>
