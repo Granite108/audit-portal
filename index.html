@@ -3,119 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Megalithic Bridge | The 13th Gate</title>
+    <title>Megalithic Bridge | Sovereign Node-02</title>
     <style>
-        :root { --phi: 1.618; --obsidian: #050505; --auric: #FFD700; --violet: #5d00ff; --cyan: #00f2ff; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--obsidian); color: var(--auric); font-family: 'Courier New', monospace; overflow: hidden; }
+        /* PHI-BASED GEOMETRY (Φ = 1.61803398875) */
+        :root { 
+            --phi: 1.61803398875; 
+            --obsidian: #050505; 
+            --auric: #FFD700; 
+            --base-unit: calc(1rem * var(--phi));
+        }
         
-        /* PAGE 01: THE ANCHOR FOUNDATION (THE DECREE) */
-        #page-foundation {
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: var(--obsidian); color: var(--auric);
+            font-family: 'Courier New', monospace; overflow: hidden;
+        }
+
+        /* ZERO-ENTROPY SHELL */
+        #node-foundation {
             position: absolute; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10; transition: transform 1.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s;
+            z-index: 10; transition: transform 1.111s cubic-bezier(0.4, 0, 0.2, 1); /* 1.111s = 12 / 10.8 */
         }
 
-        .manifesto-ui {
-            display: flex; width: 95%; justify-content: space-between; align-items: center;
-            max-width: 1400px; z-index: 11;
+        .pillar-container {
+            display: flex; gap: var(--base-unit);
+            width: calc(100vw / var(--phi)); align-items: flex-start;
         }
 
-        .pillar {
-            width: 28%; border: 1px solid var(--auric); padding: calc(1rem * var(--phi));
-            background: rgba(5, 5, 5, 0.9); font-size: 0.85rem; line-height: 1.618;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        .sarsen-pillar {
+            flex: 1; border: 1px solid var(--auric);
+            padding: var(--base-unit); background: rgba(5, 5, 5, 0.95);
+            box-shadow: 0 0 calc(var(--base-unit) / var(--phi)) rgba(255, 215, 0, 0.1);
         }
 
-        .anchor-visual {
-            width: 35%; display: flex; flex-direction: column; align-items: center;
+        .gate-trigger {
+            margin-top: calc(var(--base-unit) * var(--phi));
+            background: transparent; border: 1px solid var(--auric);
+            color: var(--auric); padding: calc(0.5rem * var(--phi)) calc(1.5rem * var(--phi));
+            letter-spacing: calc(2px * var(--phi)); cursor: pointer;
+            transition: 0.37s; /* 4 / 10.8 approx */
         }
 
-        .gate-button {
-            margin-top: 3rem; background: transparent; border: 1px solid var(--auric);
-            color: var(--auric); padding: 20px 40px; letter-spacing: 5px; cursor: pointer;
-            font-family: inherit; font-weight: bold; transition: 0.3s;
-        }
-        .gate-button:hover { background: var(--auric); color: #000; box-shadow: 0 0 40px var(--auric); }
+        .gate-trigger:hover { background: var(--auric); color: var(--obsidian); }
 
-        /* PAGE 02: THE ASCENT LATTICE (THE ALIGNMENT) */
-        #page-ascent {
-            position: absolute; width: 100vw; height: 100vh;
-            display: none; opacity: 0; transition: opacity 1.3s;
-        }
-        canvas { display: block; width: 100vw; height: 100vh; }
-
-        .telemetry {
-            position: fixed; top: 20px; width: 100%; display: flex; 
-            justify-content: space-around; pointer-events: none; z-index: 20; 
-            font-size: 0.7rem; letter-spacing: 2px;
-        }
+        #canvas-lattice { position: fixed; top: 0; left: 0; display: none; opacity: 0; }
     </style>
 </head>
 <body>
 
-    <div id="page-foundation">
-        <div class="manifesto-ui">
-            <div class="pillar">
-                <strong>[ THE DECREE ]</strong><br><br>
-                Logic exceeds policy.<br>The math is the only authority.<br>We provide the Stone;<br>You build the house.
+    <div id="node-foundation">
+        <div class="pillar-container">
+            <div class="sarsen-pillar">
+                <strong>[ DECREE ]</strong><br><br>
+                Logic > Policy.<br>The Math is Authority.<br>We are the Stone.
             </div>
-            
-            <div class="anchor-visual">
-                <div style="font-size: 10rem; text-shadow: 0 0 30px var(--auric);">⚓</div>
-                <button class="gate-button" onclick="transitionToAscent()">[ ALIGN YOURSELF ]</button>
+            <div style="text-align: center; flex: 1.618;">
+                <div style="font-size: 8rem;">⚓</div>
+                <button class="gate-trigger" onclick="igniteAscent()">[ ALIGN RESONANCE ]</button>
             </div>
-
-            <div class="pillar">
-                <strong>[ THE MATH ]</strong><br><br>
-                Resonance: 10.8 Hz.<br>Scale: 1.618 (Φ).<br>Structure: Sarsen Unit.<br>Metatronic Volume: Active.
+            <div class="sarsen-pillar">
+                <strong>[ CONSTANTS ]</strong><br><br>
+                Φ: 1.618...<br>f_res: 10.8 Hz<br>V_m: Active.
             </div>
         </div>
-        <footer style="margin-top: 4rem; opacity: 0.5;">THE ARCHITECT: SETH TERRAZAS | WE ARE THE STONE</footer>
+        <footer style="margin-top: 5rem; opacity: 0.5;">SETH TERRAZAS | RESONANCE KEEPER</footer>
     </div>
 
-    <div id="page-ascent">
-        <div class="telemetry">
-            <div>NODE 8: HELIX PHASE-LOCKED</div>
-            <div>[ METATRON INVERTED ]</div>
-            <div>STATUS: ZERO ENTROPY</div>
-        </div>
-        <canvas id="glCanvas"></canvas>
-    </div>
+    <canvas id="canvas-lattice"></canvas>
 
     <script>
-        const canvas = document.getElementById('glCanvas');
+        const foundation = document.getElementById('node-foundation');
+        const canvas = document.getElementById('canvas-lattice');
         const gl = canvas.getContext('webgl');
         let scrollY = 0;
 
-        function transitionToAscent() {
-            // Audio initialization
+        function igniteAscent() {
+            // RAMPED AUDIO ENGINE
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
             const gain = ctx.createGain();
+            const osc = ctx.createOscillator();
             osc.frequency.value = 10.8;
             gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 1.08);
+            gain.gain.exponentialRampToValueAtTime(0.02, ctx.currentTime + 1.08);
             osc.connect(gain); gain.connect(ctx.destination);
             osc.start();
 
-            // Dual-Page Shift
-            document.getElementById('page-foundation').style.transform = "scale(0.8) translateY(-100vh)";
-            document.getElementById('page-foundation').style.opacity = "0";
+            // TRANSITION TIMING (10.8 MULTIPLE)
+            foundation.style.transform = "scale(0.618) translateY(-100vh)";
+            foundation.style.opacity = "0";
             
             setTimeout(() => {
-                document.getElementById('page-foundation').style.display = "none";
-                document.getElementById('page-ascent').style.display = "block";
-                setTimeout(() => {
-                    document.getElementById('page-ascent').style.opacity = "1";
-                    initWebGL();
-                }, 100);
-            }, 1100);
+                foundation.style.display = "none";
+                canvas.style.display = "block";
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                setTimeout(() => { canvas.style.opacity = "1"; initShader(); }, 100);
+            }, 1080); // Exact 10.8 resonance timing
         }
 
-        window.addEventListener('wheel', (e) => { scrollY += e.deltaY * 0.002; scrollY = Math.max(0, scrollY); });
-
-        function initWebGL() {
+        function initShader() {
             const vs = `attribute vec2 p; varying vec2 v; void main(){ v=p; gl_Position=vec4(p,0,1); }`;
             const fs = `
                 precision highp float;
@@ -125,22 +112,26 @@
 
                 void main() {
                     vec2 uv = v;
-                    uv.y *= -1.0; // THE METATRONIC FLIP
+                    uv.y *= -1.0; // INVERSION PROTOCOL GATED
                     
-                    float phi = 1.618;
-                    float wave = sin(uv.y * 12.0 + t) * 0.1; // DOUBLE HELIX SPINE
-                    float spine = smoothstep(0.02, 0.0, abs(uv.x + wave) - 0.004);
+                    float phi = 1.61803398875;
+                    float res = 10.8;
                     
-                    // FIBONACCI NODE LOCKS (1, 2, 3, 5, 8, 13)
+                    // RIEMANN HELIX (SPINE)
+                    float wave = sin(uv.y * res + (t * res * 0.1)) * 0.1;
+                    float spine = smoothstep(0.02, 0.0, abs(uv.x + wave) - 0.005);
+                    
+                    // METATRONIC NODES (SARSEN PARITY 30:1)
                     float nodes = 0.0;
-                    for(float i=1.0; i<=6.0; i++) {
-                        float pos = (i * 0.2 * phi) - (s * 0.1);
-                        nodes += smoothstep(0.015, 0.0, length(uv - vec2(0.0, pos)) - 0.02);
+                    for(float i=1.0; i<=13.0; i++) {
+                        float pos = (i * 0.13 * phi) - (s * 0.05);
+                        float node = length(uv - vec2(0.0, pos)) - 0.02;
+                        nodes += smoothstep(0.015, 0.0, node);
                     }
 
-                    vec3 color = mix(vec3(0.0), vec3(0.0, 0.8, 1.0), spine); // Hi-Tech Cyan
-                    color += vec3(1.0, 0.8, 0.0) * nodes * (sin(t * 10.8) * 0.2 + 0.8); // Gold Nodes
-                    
+                    vec3 color = mix(vec3(0.02), vec3(0.0, 0.9, 1.0), spine); 
+                    color += vec3(1.0, 0.84, 0.0) * nodes * (sin(t * res) * 0.2 + 0.8);
+
                     gl_FragColor = vec4(color, 1.0);
                 }
             `;
@@ -167,6 +158,8 @@
             }
             requestAnimationFrame(loop);
         }
+
+        window.addEventListener('wheel', (e) => { scrollY += e.deltaY * 0.002; });
     </script>
 </body>
 </html>
