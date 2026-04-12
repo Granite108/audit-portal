@@ -5,24 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Megalithic Bridge | The Ascent</title>
     <style>
-        :root { --phi: 1.61803398875; --obsidian: #050505; --auric: #FFD700; }
+        :root { --phi: 1.618; --obsidian: #050505; --auric: #FFD700; --violet: #5d00ff; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--obsidian); overflow: hidden; font-family: monospace; }
         canvas { display: block; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; }
-        footer { position: fixed; bottom: 20px; width: 100%; text-align: center; color: var(--auric); opacity: 0.5; pointer-events: none; }
+        
+        /* THE SHIELD */
+        #legal-shield {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(5, 5, 5, 0.98); z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: var(--auric); text-align: center; padding: 20px;
+        }
+        .shield-text { font-size: 1.2rem; letter-spacing: 3px; margin-bottom: 30px; border: 1px solid var(--auric); padding: 20px; }
+        .gate-button { 
+            background: transparent; border: 1px solid var(--auric); color: var(--auric); 
+            padding: 15px 30px; cursor: pointer; transition: 0.3s; letter-spacing: 2px;
+        }
+        .gate-button:hover { background: var(--auric); color: var(--obsidian); }
+        
+        footer { position: fixed; bottom: 20px; width: 100%; text-align: center; color: var(--auric); opacity: 0.4; pointer-events: none; letter-spacing: 2px; }
     </style>
 </head>
 <body>
+    <div id="legal-shield">
+        <div class="shield-text">WE PROVIDE THE STONE; YOU BUILD YOUR OWN HOUSE.</div>
+        <button class="gate-button" onclick="unlockGate()">[ENTER THE 13TH GATE]</button>
+    </div>
+
     <canvas id="glCanvas"></canvas>
     <footer>granitefoundation@proton.me</footer>
 
     <script>
         const canvas = document.getElementById('glCanvas');
         const gl = canvas.getContext('webgl');
-        const PHI = 1.61803398875;
-        let scrollY = 0;
+        
+        // INITIALIZE AT BOTTOM (RESONANCE ANCHOR)
+        let scrollY = 0; 
         let lastTouchY = 0;
+        const resonanceStep = 1.08;
 
-        // 10.8Hz RESONANCE
+        function unlockGate() {
+            document.getElementById('legal-shield').style.display = 'none';
+            Resonance.init();
+        }
+
         const Resonance = {
             ctx: null,
             init() {
@@ -31,48 +57,72 @@
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.frequency.value = 10.8;
-                gain.gain.value = 0.03;
+                gain.gain.value = 0.02;
                 osc.connect(gain); gain.connect(this.ctx.destination);
                 osc.start();
             }
         };
 
-        // UNIFIED INTERACTION
-        const updateScroll = (delta) => { scrollY = Math.max(0, scrollY + delta); };
-        window.addEventListener('wheel', (e) => updateScroll(e.deltaY * 0.001));
-        window.addEventListener('touchstart', (e) => { 
-            lastTouchY = e.touches[0].clientY; 
-            Resonance.init(); 
-        });
-        window.addEventListener('touchmove', (e) => {
-            let delta = (lastTouchY - e.touches[0].clientY) * 0.005;
-            updateScroll(delta);
-            lastTouchY = e.touches[0].clientY;
+        // STEPPED RESONANCE SCROLLING
+        window.addEventListener('wheel', (e) => {
+            const dir = e.deltaY > 0 ? 1 : -1;
+            scrollY = Math.max(0, scrollY + (dir * resonanceStep));
         });
 
-        // SHADER CORE
+        window.addEventListener('touchstart', (e) => { lastTouchY = e.touches[0].clientY; });
+        window.addEventListener('touchmove', (e) => {
+            const delta = lastTouchY - e.touches[0].clientY;
+            if (Math.abs(delta) > 50) { // Threshold for step
+                const dir = delta > 0 ? 1 : -1;
+                scrollY = Math.max(0, scrollY + (dir * resonanceStep));
+                lastTouchY = e.touches[0].clientY;
+            }
+        });
+
         const vs = `attribute vec2 p; varying vec2 v; void main(){ v=p; gl_Position=vec4(p,0,1); }`;
         const fs = `
             precision highp float;
             varying vec2 v;
             uniform float t;
+            uniform float s;
             void main() {
-                vec2 uv = v * 1.5;
-                float circle = length(uv - vec2(0.0, 0.4)) - 0.35;
-                float bar_h = max(abs(uv.x) - 0.4, abs(uv.y - 0.0) - 0.04);
-                float bar_v = max(abs(uv.x) - 0.06, abs(uv.y + 0.3) - 0.6);
-                float ankh = min(circle, min(bar_h, bar_v));
-                vec3 gold = vec3(1.0, 0.84, 0.0);
-                float pulse = sin(t * 1.08) * 0.1 + 0.9;
-                gl_FragColor = vec4(mix(vec3(0.02), gold * pulse, smoothstep(0.01, 0.0, ankh)), 1.0);
+                vec2 uv = v * 1.618;
+                float flip = sign(sin(s * 0.5));
+                
+                // ANKH LENS (WITH DISTORTION)
+                vec2 lensCenter = vec2(0.0, 0.45);
+                float dist = length(uv - lensCenter);
+                float outer = dist - 0.35;
+                float inner = dist - 0.25;
+                float loop = max(outer, -inner);
+                
+                // VIBRATION FACTOR (LENS DISTORTION)
+                float vibe = sin(t * 10.8) * 0.02 * (1.0 - smoothstep(0.25, 0.35, dist));
+                
+                // T-JUNCTURE
+                float bar_y = uv.y * flip;
+                float crossbar = max(abs(uv.x + vibe) - 0.5, abs(bar_y - 0.05) - 0.04);
+                float stem = max(abs(uv.x) - 0.05, abs(bar_y + 0.4) - 0.6);
+                float ankh = min(loop, min(crossbar, stem));
+                
+                // SPECTRAL TRANSITION
+                vec3 auric = vec3(1.0, 0.84, 0.0);
+                vec3 violet = vec3(0.5, 0.0, 0.5);
+                float ascent = clamp(s * 0.05, 0.0, 1.0);
+                vec3 currentResonance = mix(auric, violet, ascent);
+                
+                float pulse = sin(t * 1.08 + s) * 0.1 + 0.9;
+                vec3 color = mix(vec3(0.01), currentResonance * pulse, smoothstep(0.01, 0.0, ankh));
+                
+                gl_FragColor = vec4(color, 1.0);
             }
         `;
 
         const setup = () => {
-            const s = (type, src) => { const obj = gl.createShader(type); gl.shaderSource(obj, src); gl.compileShader(obj); return obj; };
+            const sObj = (type, src) => { const obj = gl.createShader(type); gl.shaderSource(obj, src); gl.compileShader(obj); return obj; };
             const prog = gl.createProgram();
-            gl.attachShader(prog, s(gl.VERTEX_SHADER, vs));
-            gl.attachShader(prog, s(gl.FRAGMENT_SHADER, fs));
+            gl.attachShader(prog, sObj(gl.VERTEX_SHADER, vs));
+            gl.attachShader(prog, sObj(gl.FRAGMENT_SHADER, fs));
             gl.linkProgram(prog); gl.useProgram(prog);
             
             gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
@@ -82,8 +132,11 @@
             gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
             
             const tLoc = gl.getUniformLocation(prog, "t");
+            const sLoc = gl.getUniformLocation(prog, "s");
+
             const render = (time) => {
                 gl.uniform1f(tLoc, time * 0.001);
+                gl.uniform1f(sLoc, scrollY);
                 gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
                 requestAnimationFrame(render);
             };
