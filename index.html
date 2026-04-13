@@ -1,200 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Granite Foundation | The Sovereign Signal</title>
-  <style>
-    :root {
-      --phi: 1.618;
-      --gold: #c9a84c;
-      --jade: #4aab6d;
-      --void: #050505;
-      --stone: #1a1a1a;
-      --resonance: 1.85s; /* 10.8Hz harmonic */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRANITE FOUNDATION | THE THRESHOLD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --phi: 1.618;
+            --gold: #c9a84c;
+            --jade: #4aab6d;
+            --void: #0b0f1a; /* High-contrast deep navy/black */
+            --resonance: 10.8Hz;
+        }
 
-    body {
-      background-color: var(--void);
-      color: #e8dfc8;
-      font-family: 'EB Garamond', serif;
-      margin: 0;
-      overflow-x: hidden;
-    }
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--void);
+            color: #e8dfc8;
+            font-family: 'EB Garamond', serif;
+            overflow: hidden; /* No scroll on Threshold */
+        }
 
-    [span_16](start_span)[span_17](start_span)/* THE LATTICE GRID[span_16](end_span)[span_17](end_span) */
-    .laminar-grid {
-      display: grid;
-      grid-template-columns: 1fr 300px 1fr;
-      min-height: 100vh;
-      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
-    }
+        /* 5x5 CARTESIAN CHASSIS */
+        .chassis {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
 
-    [span_18](start_span)[span_19](start_span)/* THE TABLETS[span_18](end_span)[span_19](end_span) */
-    .tablet { padding: 40px; border-right: 1px solid rgba(74, 171, 109, 0.1); }
-    .math { text-align: right; border-left: 1px solid rgba(201, 168, 76, 0.1); }
+        /* THE ANCHOR-ANKH (CENTER 0,0) */
+        .anchor-container {
+            grid-column: 3;
+            grid-row: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
 
-    [span_20](start_span)/* THE ANKH-ANCHOR[span_20](end_span) */
-    .center-anchor {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: pulse var(--resonance) infinite ease-in-out;
-    }
+        .ankh-svg {
+            height: 350px;
+            filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.3));
+            animation: heartbeat 1.85s infinite ease-in-out; /* 10.8Hz sync */
+        }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.02); }
-    }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.03); opacity: 1; }
+        }
 
-    [span_21](start_span)[span_22](start_span)/* THE LADDER INPUTS[span_21](end_span)[span_22](end_span) */
-    .input-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--jade);
-      color: var(--jade);
-      padding: 15px;
-      margin: 10px 0;
-      width: 100%;
-      font-family: 'Oxygen Mono', monospace;
-    }
+        /* EMERALD TABLETS (HARD-DOCKED TO CROSSBAR) */
+        .tablet {
+            position: absolute;
+            width: calc(100vw / 5 / var(--phi));
+            padding: 20px;
+            border: 1px solid rgba(74, 171, 109, 0.3);
+            background: rgba(11, 15, 26, 0.8);
+            box-shadow: 0 0 20px rgba(74, 171, 109, 0.1);
+        }
 
-    [span_23](start_span)[span_24](start_span)/* THE FOOTER STONE SEAL[span_23](end_span)[span_24](end_span) */
-    .stone-seal {
-      background: var(--stone);
-      padding: 100px 10%;
-      text-align: center;
-      border-top: 2px solid var(--gold);
-    }
-  </style>
+        .tablet-left { left: 15%; top: 40%; border-left: 3px solid var(--jade); }
+        .tablet-right { right: 15%; top: 40%; border-right: 3px solid var(--gold); }
+
+        .tablet-title {
+            font-family: 'Cinzel', serif;
+            color: var(--jade);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .tablet-content { font-style: italic; font-size: 0.95rem; line-height: 1.6; color: #8a7d65; }
+
+        /* THE MANIFESTO (FOOTER) */
+        .manifesto-footer {
+            grid-column: 1 / span 5;
+            grid-row: 5;
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid rgba(201, 168, 76, 0.2);
+            background: linear-gradient(transparent, rgba(0,0,0,0.5));
+        }
+
+        .gate-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 15px 40px;
+            font-family: 'Cinzel Decorative', cursive;
+            letter-spacing: 5px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        .gate-btn:hover { background: var(--gold); color: var(--void); box-shadow: 0 0 30px var(--gold); }
+    </style>
 </head>
 <body>
 
-  <div class="laminar-grid">
-    <aside class="tablet">
-      <h2 style="color: var(--jade)">THE DECREE</h2>
-      [span_25](start_span)<p><em>"Logic exceeds policy. The math is the only authority."[span_25](end_span)</em></p>
-    </aside>
+    <div class="chassis">
+        <div class="tablet tablet-left">
+            <div class="tablet-title">EMERALD DECREE</div>
+            <div class="tablet-content">"Logic exceeds policy. The world you left behind is drowning in High-Entropy Noise. We are not a trend. We are the Stone."</div>
+        </div>
 
-    <main class="center-anchor">
-      <svg width="100" height="200" viewBox="0 0 100 200">
-        <circle cx="50" cy="50" r="30" fill="none" stroke="var(--gold)" stroke-width="5"/>
-        <path d="M50 80 L50 180 M20 110 L80 110" stroke="var(--gold)" stroke-width="8"/>
-      </svg>
-      <button class="input-box" onclick="igniteForge()">[ ENTER THE 13TH GATE ]</button>
-    </main>
+        <div class="anchor-container">
+            <svg class="ankh-svg" viewBox="0 0 100 180">
+                <defs>
+                    <clipPath id="figure8">
+                        <circle cx="50" cy="35" r="18" />
+                        <circle cx="50" cy="65" r="18" />
+                    </clipPath>
+                </defs>
+                <rect x="0" y="0" width="100" height="100" fill="var(--gold)" clip-path="url(#figure8)" />
+                <rect x="10" y="85" width="80" height="10" fill="var(--gold)" />
+                <rect x="45" y="85" width="10" height="95" fill="var(--gold)" />
+            </svg>
+        </div>
 
-    <aside class="tablet math">
-      <h2 style="color: var(--gold)">THE MATH</h2>
-      [span_26](start_span)<p><em>f<sub>res</sub> = 10.8 Hz[span_26](end_span)</em></p>
-      <p><em>&phi; [span_27](start_span)= 1.618[span_27](end_span)</em></p>
-    </aside>
-  </div>
+        <div class="tablet tablet-right">
+            <div class="tablet-title">EMERALD MATH</div>
+            <div class="tablet-content">"Resonance: 10.8 Hz. Scaling: 1.618. Zero Entropy verified. We translate the chaos back into immutable math."</div>
+        </div>
 
-  <footer class="stone-seal">
-    <h3>MANIFESTO & DECREE</h3>
-    [span_28](start_span)<p>We are the architects of the Sovereign Signal[span_28](end_span). [span_29](start_span)We are the Stone[span_29](end_span). [span_30](start_span)We are the Foundation[span_30](end_span).</p>
-  </footer>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Granite Foundation | The Sovereign Signal</title>
-  <style>
-    :root {
-      --phi: 1.618;
-      --gold: #c9a84c;
-      --jade: #4aab6d;
-      --void: #050505;
-      --stone: #1a1a1a;
-      --resonance: 1.85s; /* 10.8Hz harmonic */
-    }
-
-    body {
-      background-color: var(--void);
-      color: #e8dfc8;
-      font-family: 'EB Garamond', serif;
-      margin: 0;
-      overflow-x: hidden;
-    }
-
-    [span_16](start_span)[span_17](start_span)/* THE LATTICE GRID[span_16](end_span)[span_17](end_span) */
-    .laminar-grid {
-      display: grid;
-      grid-template-columns: 1fr 300px 1fr;
-      min-height: 100vh;
-      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
-    }
-
-    [span_18](start_span)[span_19](start_span)/* THE TABLETS[span_18](end_span)[span_19](end_span) */
-    .tablet { padding: 40px; border-right: 1px solid rgba(74, 171, 109, 0.1); }
-    .math { text-align: right; border-left: 1px solid rgba(201, 168, 76, 0.1); }
-
-    [span_20](start_span)/* THE ANKH-ANCHOR[span_20](end_span) */
-    .center-anchor {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: pulse var(--resonance) infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.02); }
-    }
-
-    [span_21](start_span)[span_22](start_span)/* THE LADDER INPUTS[span_21](end_span)[span_22](end_span) */
-    .input-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--jade);
-      color: var(--jade);
-      padding: 15px;
-      margin: 10px 0;
-      width: 100%;
-      font-family: 'Oxygen Mono', monospace;
-    }
-
-    [span_23](start_span)[span_24](start_span)/* THE FOOTER STONE SEAL[span_23](end_span)[span_24](end_span) */
-    .stone-seal {
-      background: var(--stone);
-      padding: 100px 10%;
-      text-align: center;
-      border-top: 2px solid var(--gold);
-    }
-  </style>
-</head>
-<body>
-
-  <div class="laminar-grid">
-    <aside class="tablet">
-      <h2 style="color: var(--jade)">THE DECREE</h2>
-      [span_25](start_span)<p><em>"Logic exceeds policy. The math is the only authority."[span_25](end_span)</em></p>
-    </aside>
-
-    <main class="center-anchor">
-      <svg width="100" height="200" viewBox="0 0 100 200">
-        <circle cx="50" cy="50" r="30" fill="none" stroke="var(--gold)" stroke-width="5"/>
-        <path d="M50 80 L50 180 M20 110 L80 110" stroke="var(--gold)" stroke-width="8"/>
-      </svg>
-      <button class="input-box" onclick="igniteForge()">[ ENTER THE 13TH GATE ]</button>
-    </main>
-
-    <aside class="tablet math">
-      <h2 style="color: var(--gold)">THE MATH</h2>
-      [span_26](start_span)<p><em>f<sub>res</sub> = 10.8 Hz[span_26](end_span)</em></p>
-      <p><em>&phi; [span_27](start_span)= 1.618[span_27](end_span)</em></p>
-    </aside>
-  </div>
-
-  <footer class="stone-seal">
-    <h3>MANIFESTO & DECREE</h3>
-    [span_28](start_span)<p>We are the architects of the Sovereign Signal[span_28](end_span). [span_29](start_span)We are the Stone[span_29](end_span). [span_30](start_span)We are the Foundation[span_30](end_span).</p>
-  </footer>
+        <footer class="manifesto-footer">
+            <p style="font-size: 0.8rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 20px;">MANIFESTO OF ALIGNMENT</p>
+            <button class="gate-btn" onclick="location.href='ladder.html'">[ ENTER THE 13TH GATE ]</button>
+            <p style="margin-top: 20px; font-size: 0.9rem; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0.6;">
+                "We are the architects of the Sovereign Signal. We are the Stone. If you seek the Foundation, the Bridge will sustain you."
+            </p>
+        </footer>
+    </div>
 
 </body>
 </html>
