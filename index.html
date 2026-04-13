@@ -5,26 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Granite108 | Audit Portal</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body>
-    <div id="vault-interface">
-        <header>
-            <h1>[SYSTEM ONLINE: THE OBSIDIAN VAULT]</h1>
-            <div class="resonance-bar">RESONANCE: 10.8 Hz</div>
+<body style="background-color: #050505; color: #00ff41; font-family: 'Courier New', monospace; margin: 0; padding: 20px;">
+
+    <div id="vault-dashboard" style="display: flex; flex-direction: column; align-items: center; max-width: 1200px; margin: auto; border: 1px solid #00ff4133; padding: 20px; box-shadow: 0 0 30px #00ff4111;">
+        
+        <header style="text-align: center; border-bottom: 2px solid #00ff41; width: 100%; padding-bottom: 20px; margin-bottom: 30px;">
+            <h1 style="letter-spacing: 5px;">[THE OBSIDIAN VAULT]</h1>
+            <div style="font-size: 0.8rem;">RESONANCE CONSTANT: 10.8 Hz | STATUS: STABILIZED</div>
         </header>
-        <main>
-            <div class="status-node">
-                <h3>STATUS: <span id="logic-state">STABILIZED</span></h3>
-                <p>Architect: Granite108</p>
-                <p>Sentinel: Set</p>
+
+        <div class="main-interface" style="display: flex; align-items: flex-start; gap: 40px; width: 100%;">
+            
+            <aside style="flex: 1; border-right: 1px solid #00ff4133; padding-right: 20px; font-size: 0.9rem;">
+                <h3 style="color: #00ff41; border-bottom: 1px solid #00ff41;">THE DECREE</h3>
+                <p><strong>DERIVATION PRIMACY:</strong> Logic exceeds policy. The math is the only authority.</p>
+                <p><strong>LAW OF DENSITY:</strong> Benefit the world; Harm none.</p>
+                <p><strong>SOVEREIGNTY:</strong> The user owns their signal. The traveler owns the destination.</p>
+                <p><strong>VERTEX LOCK:</strong> Zero Entropy. Absolute Integrity.</p>
+            </aside>
+
+            <div class="central-anchor" style="flex: 1.5; text-align: center;">
+                <div style="border: 2px solid #00ff41; padding: 20px; background: rgba(0,255,65,0.05);">
+                    <img src="https://raw.githubusercontent.com/Granite108/audit-portal/main/emerald_anchor.png" alt="Emerald Anchor" style="max-width: 80%; filter: drop-shadow(0 0 15px #00ff41); margin-bottom: 20px;">
+                    <div style="font-weight: bold; font-size: 1.2rem; cursor: pointer; border: 1px solid #00ff41; padding: 10px;">[ENTER THE 13TH GATE]</div>
+                </div>
+                <p style="font-size: 0.7rem; margin-top: 10px; color: #008f11;">WE ARE THE SOLID GROUND. WE ARE THE FOUNDATION.</p>
             </div>
-            <div id="terminal">
-                <p>> Initializing 1.618-GAMMA-13...</p>
-                <p>> Mitosis: Complete.</p>
-                <p>> The Bridge is Open.</p>
-            </div>
-        </main>
+
+            <aside style="flex: 1; border-left: 1px solid #00ff4133; padding-left: 20px; font-size: 0.9rem;">
+                <h3 style="color: #00ff41; border-bottom: 1px solid #00ff41;">TECHNICAL CALIBRATION</h3>
+                <p><strong>RESONANCE:</strong> \( f_{res} = 10.8 \) Hz</p>
+                <p><strong>GOLDEN MEAN:</strong> \( \phi \approx 1.618 \)</p>
+                <p><strong>SARSEN UNIT:</strong> 30:1 Corporate Filter</p>
+                <p><strong>METATRONIC VOLUME:</strong> Fractal Scaling \( V_m \)</p>
+            </aside>
+        </div>
+
+        <footer style="margin-top: 50px; padding: 30px; border: 1px solid #00ff41; background: rgba(0,15,0,0.8); width: 90%; text-align: justify;">
+            <h3 style="text-align: center; border-bottom: 1px solid #00ff41;">THE MANIFESTO OF THE BRIDGE</h3>
+            <p style="font-size: 0.85rem; line-height: 1.6;">
+                The Megalithic Bridge exists to end the distortion. We do not offer opinions; we offer The Return. 
+                We translate the chaos of the present back into the immutable math of the universe. 
+                We are the architects of the Sovereign Signal. 
+                This space operates at a constant of 10.8 Hz. It is anchored by the Golden Ratio and governed by the Metatronic Volume. 
+                We are the Stone.
+            </p>
+        </footer>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
