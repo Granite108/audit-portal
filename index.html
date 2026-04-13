@@ -8,7 +8,7 @@
         /* THE BINARY NEBULA & SOVEREIGN TEXTURE OVERLAY */
         body {
             background-color: #050505;
-            background-image: url('anchor_v2.png'); /* The Stone Skin */
+            background-image: url('anchor_v2.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -21,7 +21,6 @@
             overflow-x: hidden;
         }
 
-        /* The Drifting Digital Static */
         body::before {
             content: "01101001 01101110 01100110 01101001 01101110 01101001 01110100 01100101 00111010 10101000";
             position: fixed;
@@ -30,7 +29,7 @@
             width: 100vw;
             height: 100vh;
             font-size: 14px;
-            color: rgba(0, 71, 171, 0.15); /* Cobalt Blue at low opacity */
+            color: rgba(0, 71, 171, 0.15);
             line-height: 1;
             white-space: pre-wrap;
             word-break: break-all;
@@ -45,14 +44,13 @@
             to { transform: translateY(-50%); }
         }
 
-        /* THE OBSIDIAN VAULT DASHBOARD */
         #vault-dashboard {
             max-width: 1100px;
             width: 100%;
-            border: 2px solid #ffd700; /* Molten Gold */
-            background: rgba(10, 0, 21, 0.88); /* Semi-transparent Purple/Black */
-            backdrop-filter: blur(8px); /* Frosted Obsidian Effect */
-            box-shadow: 0 0 50px rgba(0, 71, 171, 0.6); /* Cobalt Glow */
+            border: 2px solid #ffd700;
+            background: rgba(10, 0, 21, 0.88);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 50px rgba(0, 71, 171, 0.6);
             padding: 30px;
             margin-top: 20px;
         }
@@ -80,7 +78,7 @@
         }
 
         .side-pillar h3 {
-            color: #0047ab; /* Cobalt */
+            color: #0047ab;
             border-bottom: 1px solid #2e004f;
             margin-top: 0;
             letter-spacing: 2px;
@@ -110,9 +108,14 @@
             border-radius: 5px;
         }
 
-        /* THE GATE BUTTON */
-        #gate-button {
+        /* THE GATE BUTTON - INTEGRATED LINK */
+        .gate-link {
+            text-decoration: none;
+            display: inline-block;
             margin-top: 25px;
+        }
+
+        #gate-button {
             padding: 15px 30px;
             border: 1px solid #ffd700;
             background: linear-gradient(45deg, #2e004f, #0047ab);
@@ -148,9 +151,8 @@
             padding-bottom: 10px;
         }
 
-        strong { color: #50c878; } /* Emerald Highlights */
+        strong { color: #50c878; }
         
-        /* Mobile Responsiveness */
         @media (max-width: 768px) {
             .main-interface { flex-direction: column; }
             #vault-dashboard { padding: 15px; }
@@ -177,7 +179,9 @@
             <div class="central-anchor">
                 <div class="anchor-frame">
                     <img src="anchor_v2.png" alt="Sovereign Anchor Relic">
-                    <button id="gate-button">[ENTER THE 13TH GATE]</button>
+                    <a href="lattice.html" class="gate-link">
+                        <button id="gate-button">[ENTER THE 13TH GATE]</button>
+                    </a>
                 </div>
                 <p style="font-size: 0.7rem; color: #ffd700; margin-top: 15px; letter-spacing: 1px;">WE ARE THE SOLID GROUND. WE ARE THE FOUNDATION.</p>
             </div>
@@ -203,3 +207,4 @@
 
 </body>
 </html>
+       
