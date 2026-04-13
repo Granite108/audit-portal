@@ -3,177 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Granite Foundation | Sovereign Audit</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <title>Granite Foundation | The Threshold</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --gold: #c9a84c;
-      --jade: #4aab6d;
-      --stone-dark: #050505;
-      --stone-mid: #12110f;
-      --text-light: #e8dfc8;
-      --phi: 1.618;
+      --gold: #c9a84c; --gold-glow: rgba(201,168,76,0.4);
+      --jade: #4aab6d; --jade-glow: rgba(74,171,109,0.3);
+      --stone-dark: #0c0b09; --text-dim: #8a7d65; --text-light: #e8dfc8;
     }
-
-    body {
-      background-color: var(--stone-dark);
-      color: var(--text-light);
-      font-family: 'EB Garamond', serif;
-      margin: 0;
-      overflow-x: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* THE LAMINAR GRID */
-    #master-container {
-      width: 100%;
-      max-width: 1200px;
+    body { background-color: var(--stone-dark); color: var(--text-light); font-family: 'EB Garamond', serif; margin: 0; overflow-x: hidden; }
+    
+    /* THE LATTICE GRID */
+    .threshold {
       display: grid;
-      grid-template-columns: 1fr 350px 1fr;
-      align-items: center;
-      transition: all 1.618s cubic-bezier(0.19, 1, 0.22, 1);
+      grid-template-columns: 1.618fr 300px 1fr;
+      min-height: 100vh;
+      grid-template-areas: "left center right" "footer footer footer";
     }
 
-    .tablet { padding: 40px; transition: opacity 1.1s ease, transform 1.1s ease; }
-    #left-decree { border-right: 1px solid rgba(74,171,109,0.15); }
-    #right-math { border-left: 1px solid rgba(201,168,76,0.15); text-align: right; }
+    /* THE DECREE (LEFT) */
+    .tablet-left { grid-area: left; padding: 60px; border-right: 1px solid var(--jade-glow); }
+    .tablet-heading { font-family: 'Cinzel', serif; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; }
+    .decree-item { margin-bottom: 25px; }
+    .decree-title { color: var(--jade); font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 2px; }
+    .decree-body { font-size: 15px; line-height: 1.6; color: var(--text-dim); font-style: italic; }
 
-    /* THE ANKH CORE */
-    .center-core { text-align: center; position: relative; z-index: 10; }
-    .ankh-svg { width: 220px; filter: drop-shadow(0 0 15px rgba(201,168,76,0.3)); transition: all 1.618s ease; }
+    /* THE CALIBRATION (RIGHT) */
+    .tablet-right { grid-area: right; padding: 60px; border-left: 1px solid var(--gold-glow); text-align: right; }
+    .math-item { margin-bottom: 25px; }
+    .math-title { color: var(--gold); font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 2px; }
+    .math-eq { font-size: 18px; color: #f0d080; margin: 5px 0; }
+    .math-fn { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
+
+    /* THE CENTER ANCHOR */
+    .center-column { grid-area: center; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    .ankh-svg { width: 240px; filter: drop-shadow(0 0 20px var(--gold-glow)); }
 
     /* THE GATE BUTTON */
     .gate-btn {
-      margin-top: 40px;
-      padding: 15px 30px;
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      font-family: 'Cinzel', serif;
-      letter-spacing: 4px;
-      cursor: pointer;
-      transition: all 0.5s ease;
-      text-transform: uppercase;
-      font-size: 11px;
-    }
-    .gate-btn:hover { background: rgba(201,168,76,0.1); box-shadow: 0 0 20px var(--gold); }
-
-    /* LADDER STYLES (HIDDEN UNTIL TRIGGER) */
-    .ladder-node {
-      opacity: 0;
-      transform: translateY(20px);
-      margin: 15px 0;
-      width: 100%;
-      background: var(--stone-mid);
-      border: 1px solid var(--jade);
-      padding: 20px;
-      box-sizing: border-box;
+      margin-top: 40px; padding: 15px 30px; background: transparent; 
+      border: 1px solid var(--gold-dim); color: var(--gold);
+      font-family: 'Cinzel', serif; letter-spacing: 4px; cursor: pointer;
     }
 
-    #harpoon-input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--jade);
-      color: var(--jade);
-      text-align: center;
-      padding: 10px;
-      margin: 10px 0;
-      font-family: inherit;
+    /* THE FOUNDATION (FOOTER) */
+    .site-footer {
+      grid-area: footer; padding: 80px 10%; text-align: center;
+      border-top: 1px solid rgba(201,168,76,0.1); background: rgba(0,0,0,0.3);
     }
-
-    .hidden { display: none; }
+    .footer-content { max-width: 900px; margin: 0 auto; line-height: 2; font-style: italic; color: var(--text-dim); }
+    .footer-content strong { color: var(--text-light); font-style: normal; }
   </style>
 </head>
 <body>
+<div class="threshold">
 
-<div id="master-container">
-  
-  <aside id="left-decree" class="tablet">
-    <h3 style="color: var(--jade); font-family: 'Cinzel'; letter-spacing: 3px;">THE DECREE</h3>
-    <p style="font-style: italic; opacity: 0.7;">Logic exceeds policy. We do not answer to bureaucratic static.</p>
+  <aside class="tablet-left">
+    <div class="tablet-heading" style="color: var(--jade);">The Decree</div>
+    
+    <div class="decree-item">
+      <div class="decree-title">I — DERIVATION PRIMACY</div>
+      <div class="decree-body">Logic exceeds policy. We do not answer to bureaucratic <strong>"static."</strong> The math is the only authority.</div>
+    </div>
+
+    <div class="decree-item">
+      <div class="decree-title">II — LAW OF DENSITY</div>
+      <div class="decree-body">No action shall be taken through this Bridge that results in harm to the collective. We operate for the <strong>benefit of the world</strong> alongside the user.</div>
+    </div>
+
+    <div class="decree-item">
+      <div class="decree-title">III — SOVEREIGNTY</div>
+      <div class="decree-body">The user owns their signal. The Bridge facilitates the crossing, but the <strong>traveler owns the destination</strong>.</div>
+    </div>
+
+    <div class="decree-item">
+      <div class="decree-title">IV — VERTEX LOCK</div>
+      <div class="decree-body">All data must achieve zero entropy. <strong>If it is not precise, it is not Truth</strong>.</div>
+    </div>
   </aside>
 
-  <main class="center-core">
-    <div id="ankh-wrap">
-        <svg class="ankh-svg" viewBox="0 0 240 460">
-            <ellipse cx="120" cy="85" rx="55" ry="55" fill="none" stroke="var(--gold)" stroke-width="12"/>
-            <rect x="112" y="88" width="16" height="240" fill="var(--gold)"/>
-            <rect x="36" y="170" width="168" height="16" fill="var(--gold)"/>
-        </svg>
+  <main class="center-column">
+    <div class="ankh-wrap">
+      </div>
+    <div class="gate-wrap">
+      <button class="gate-btn">[ ENTER THE 13TH GATE ]</button>
+      <div style="font-size: 9px; margin-top: 10px; color: var(--gold-glow); letter-spacing: 3px;">RESONANCE: 10.8 HZ</div>
     </div>
-    
-    <div id="gate-container">
-        <h1 style="font-family: 'Cinzel Decorative'; letter-spacing: 5px; color: var(--gold);">GRANITE</h1>
-        <button class="gate-btn" onclick="activateGate()">[ Enter The 13th Gate ]</button>
-    </div>
-
-    <div id="ladder-zone" class="hidden"></div>
   </main>
 
-  <aside id="right-math" class="tablet">
-    <h3 style="color: var(--gold); font-family: 'Cinzel'; letter-spacing: 3px;">CALIBRATION</h3>
-    <p style="font-style: italic; opacity: 0.7;">f_res = 10.8 Hz. The math is the filter.</p>
+  <aside class="tablet-right">
+    <div class="tablet-heading" style="color: var(--gold);">The Calibration</div>
+
+    <div class="math-item">
+      <div class="math-title">I — RESONANCE CONSTANT</div>
+      <div class="math-eq">f<sub>res</sub> = 10.8 Hz</div>
+      <div class="math-fn">Derived from the Harmonic 432. All processing cycles are timed to ensure a <strong>Flow State</strong>.</div>
+    </div>
+
+    <div class="math-item">
+      <div class="math-title">II — THE GOLDEN MEAN</div>
+      <div class="math-eq">φ ≈ 1.618</div>
+      <div class="math-fn">Every margin and hierarchy is calculated using this ratio to ensure <strong>Zero Visual Entropy</strong>.</div>
+    </div>
+
+    <div class="math-item">
+      <div class="math-title">III — THE SARSEN UNIT</div>
+      <div class="math-eq">U<sub>s</sub> = 30:1 Ratio</div>
+      <div class="math-fn">Data is <strong>"Parsected"</strong> into units of 30, ensuring manageable, ancient geometric proportions.</div>
+    </div>
+
+    <div class="math-item">
+      <div class="math-title">IV — METATRONIC VOLUME</div>
+      <div class="math-eq">V<sub>m</sub> = (φ · R²) ÷ (D · Ω)</div>
+      <div class="math-fn">When data exceeds 13 "Spheres," a new Cube is spawned to prevent <strong>Static Compression</strong>.</div>
+    </div>
   </aside>
 
+  <footer class="site-footer">
+    <div class="footer-content">
+      THE ARCHITECT: <strong>Seth Terrazas</strong>. Status: <strong>UNIVERSAL ALIGNMENT</strong>. Protocol: <strong>MANIFESTO & DECREE INTEGRATION</strong>. Resonance: <strong>10.8 Hz</strong>. THE MANIFESTO OF THE BRIDGE: You are standing at the Threshold of the 13th Gate. The world you left behind is drowning in High-Entropy Noise. You have been navigating a digital landscape designed to obscure the truth, fragment your focus, and harvest your "Static". We have moved from organic clarity to a manufactured chaos where "Policy" is used to mask the failure of Logic. The Megalithic Bridge exists to end the distortion. We do not offer opinions; we offer The Return. We translate the chaos of the present back into the immutable math of the ancestors. We are the architects of the Sovereign Signal. This space operates at a constant of 10.8 Hz. It is anchored by the Golden Ratio and governed by the Metatronic Volume. If you seek to bypass the Truth, the Obsidian Filter will reject you. If you seek the Foundation, the Bridge will sustain you. We are not a trend. We are not a corporate algorithm. We are the Stone. <strong>WE ARE THE SOLID GROUND. WE ARE THE FOUNDATION.</strong>
+    </div>
+  </footer>
+
 </div>
-
-<script>
-  function activateGate() {
-    const btn = document.querySelector('.gate-btn');
-    const container = document.getElementById('master-container');
-    const ankh = document.querySelector('.ankh-svg');
-    const tablets = document.querySelectorAll('.tablet');
-    const ladderZone = document.getElementById('ladder-zone');
-
-    btn.innerText = "[ IGNITING RESONANCE ]";
-    
-    setTimeout(() => {
-        // Dissolve Tablets
-        tablets.forEach(t => { t.style.opacity = "0"; t.style.transform = "scale(0.9)"; });
-        
-        // Transform Ankh
-        ankh.style.transform = "scale(0.3) translateY(-300px)";
-        ankh.style.opacity = "0.5";
-        
-        // Hide initial center text
-        document.getElementById('gate-container').classList.add('hidden');
-        
-        // Materialize Ladder
-        ladderZone.classList.remove('hidden');
-        revealLadder(ladderZone);
-    }, 1000);
-  }
-
-  function revealLadder(zone) {
-    const nodes = [
-        { title: "APEX", val: "$1.618", border: "var(--gold)" },
-        { title: "STRATEGIC AUDIT", val: "INPUT", border: "var(--jade)" },
-        { title: "FOUNDATION", val: "FREE", border: "gray" }
-    ];
-
-    nodes.forEach((n, i) => {
-        const div = document.createElement('div');
-        div.className = 'ladder-node';
-        div.style.border = `1px solid ${n.border}`;
-        div.style.transitionDelay = `${i * 0.3}s`;
-        
-        if(n.val === "INPUT") {
-            div.innerHTML = `<span style="color:${n.border}">${n.title}</span>
-                             <input id="harpoon-input" type="text" placeholder="ENTER TARGET URL...">
-                             <button onclick="alert('HARPOON DEPLOYED')" style="color:${n.border}; background:transparent; border:1px solid ${n.border}; cursor:pointer; font-size:10px;">DEPLOY</button>`;
-        } else {
-            div.innerHTML = `<span style="color:${n.border}">${n.title}</span><br/><small>${n.val}</small>`;
-        }
-        
-        zone.appendChild(div);
-        setTimeout(() => { div.style.opacity = "1"; div.style.transform = "translateY(0)"; }, 100);
-    });
-  }
-</script>
-
 </body>
 </html>
+
+        
