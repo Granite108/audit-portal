@@ -35,9 +35,43 @@
     .math-eq { font-size: 18px; color: #f0d080; margin: 5px 0; }
     .math-fn { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
 
-    /* THE CENTER ANCHOR */
-    .center-column { grid-area: center; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-    .ankh-svg { width: 240px; filter: drop-shadow(0 0 20px var(--gold-glow)); }
+    /* THE CENTER  <main class="center-column">
+    <div class="ankh-wrap">
+      <svg viewBox="0 0 240 460" xmlns="http://www.w3.org/2000/svg" width="240">
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f0d080"/>
+            <stop offset="50%" stop-color="#c9a84c"/>
+            <stop offset="100%" stop-color="#9a7030"/>
+          </linearGradient>
+          <filter id="emeraldGlow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+
+        <ellipse cx="120" cy="80" rx="50" ry="65" fill="none" stroke="url(#goldGrad)" stroke-width="12" filter="url(#emeraldGlow)"/>
+        <ellipse cx="120" cy="95" rx="30" ry="40" fill="none" stroke="url(#goldGrad)" stroke-width="8" opacity="0.6"/>
+
+        <rect x="112" y="140" width="16" height="200" fill="url(#goldGrad)" rx="2"/>
+
+        <rect x="40" y="190" width="160" height="16" fill="url(#goldGrad)" rx="3"/>
+        <circle cx="40" cy="198" r="10" fill="url(#goldGrad)"/>
+        <circle cx="200" cy="198" r="10" fill="url(#goldGrad)"/>
+
+        <path d="M112 340 Q60 340 40 370 Q20 400 50 420 Q80 440 110 420 L112 390" fill="none" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round"/>
+        <path d="M128 340 Q180 340 200 370 Q220 400 190 420 Q160 440 130 420 L128 390" fill="none" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round"/>
+        
+        <circle cx="120" cy="440" r="18" fill="none" stroke="url(#goldGrad)" stroke-width="10"/>
+      </svg>
+    </div>
+    
+    <div class="gate-wrap" style="text-align: center;">
+      <button class="gate-btn" onclick="activateGate()">[ ENTER THE 13TH GATE ]</button>
+      <div style="font-size: 9px; margin-top: 15px; color: var(--gold); letter-spacing: 5px; opacity: 0.5;">RESONANCE: 10.8 HZ</div>
+    </div>
+  </main>
+
 
     /* THE GATE BUTTON */
     .gate-btn {
