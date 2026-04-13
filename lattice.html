@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Granite108 | The Lattice</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #dcdcdc;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* THE VESICA PISCES BACKDROP */
+        #lattice-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 40% 50%, rgba(0, 71, 171, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 60% 50%, rgba(147, 0, 255, 0.1) 0%, transparent 40%);
+            opacity: 0.6;
+        }
+
+        /* THE DOUBLE HELIX SCROLL AXIS */
+        #scroll-axis {
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            height: 300%;
+            background: linear-gradient(to bottom, #ffd700, #0047ab, #9300ff);
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .junction-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        /* FENRIR T-JUNCTION: SNAP-LOCK */
+        .junction-card {
+            width: 80%;
+            max-width: 800px;
+            background: rgba(10, 0, 21, 0.9);
+            border: 2px solid #0047ab; /* Cyan Logic */
+            padding: 40px;
+            margin: 100px 0;
+            box-shadow: 0 0 30px rgba(0, 71, 171, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .junction-card h2 {
+            color: #0047ab;
+            border-bottom: 1px solid #ffd700;
+            padding-bottom: 10px;
+            letter-spacing: 5px;
+        }
+
+        .snap-lock-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #0047ab;
+            color: #50c878;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+
+        .audit-btn {
+            background: #0047ab;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .audit-btn:hover {
+            background: #ffd700;
+            color: #000;
+            box-shadow: 0 0 20px #ffd700;
+        }
+
+        /* THE LEFT SCROLL: THE RETURN */
+        #return-scroll {
+            position: fixed;
+            left: 20px;
+            top: 20%;
+            width: 150px;
+            font-size: 0.7rem;
+            color: #50c878;
+            border-left: 1px solid #50c878;
+            padding-left: 10px;
+        }
+
+        /* THE RIGHT SCROLL: THE LOGIC */
+        #logic-scroll {
+            position: fixed;
+            right: 20px;
+            top: 20%;
+            width: 180px;
+            font-size: 0.7rem;
+            color: #ffd700;
+            border-right: 1px solid #ffd700;
+            padding-right: 10px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lattice-canvas"></div>
+    <div id="scroll-axis"></div>
+
+    <div id="return-scroll">
+        [THE RETURN]<br><br>
+        10.8 HZ RESONANCE VERIFIED...<br>
+        PHI ALIGNMENT: 1.618...<br>
+        STATUS: SCANNING...
+    </div>
+
+    <div id="logic-scroll">
+        [THE LOGIC]<br><br>
+        $$V_m = \frac{\phi^n \cdot R^2}{BQ}$$<br>
+        STATUS: RECALIBRATING...
+    </div>
+
+    <div class="junction-container">
+        <div class="junction-card" id="fenrir-junction">
+            <h2>I. THE AUDIT JUNCTION ($16.81)</h2>
+            <p><strong>ENTITY:</strong> FENRIR (The Void Hound)</p>
+            <p><strong>PARAMETER:</strong> STRIP_MEAT_LOGIC v1.0</p>
+            <input type="text" class="snap-lock-input" placeholder="INPUT URL OR REVENUE STREAM FOR SNAP-LOCK...">
+            <button class="audit-btn" onclick="snapLock()">[EXECUTE SNAP-LOCK]</button>
+        </div>
+    </div>
+
+    <script>
+        function snapLock() {
+            alert("FENRIR STATUS: SNAP-LOCK SECURED. METADATA STRIPPED. FRICTION REPORT GENERATING...");
+        }
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
