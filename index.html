@@ -1,166 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Granite Foundation | The Threshold</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --gold: #c9a84c; --gold-glow: rgba(201,168,76,0.4);
-      --jade: #4aab6d; --jade-glow: rgba(74,171,109,0.3);
-      --stone-dark: #0c0b09; --text-dim: #8a7d65; --text-light: #e8dfc8;
-    }
-    body { background-color: var(--stone-dark); color: var(--text-light); font-family: 'EB Garamond', serif; margin: 0; overflow-x: hidden; }
-    
-    /* THE LATTICE GRID */
-    .threshold {
-      display: grid;
-      grid-template-columns: 1.618fr 300px 1fr;
-      min-height: 100vh;
-      grid-template-areas: "left center right" "footer footer footer";
-    }
+import sys
+import time
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton, QGraphicsOpacityEffect
+from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QTimer, Slot, QRect
+from PySide6.QtGui import QColor, QFont, QPalette, QLinearGradient, QPainter, QPen
 
-    /* THE DECREE (LEFT) */
-    .tablet-left { grid-area: left; padding: 60px; border-right: 1px solid var(--jade-glow); }
-    .tablet-heading { font-family: 'Cinzel', serif; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; }
-    .decree-item { margin-bottom: 25px; }
-    .decree-title { color: var(--jade); font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 2px; }
-    .decree-body { font-size: 15px; line-height: 1.6; color: var(--text-dim); font-style: italic; }
+# --- [MANIFESTO CONSTANTS] ---
+[span_2](start_span)[span_3](start_span)PHI = 1.61803398875  # The Golden Ratio[span_2](end_span)[span_3](end_span)
+[span_4](start_span)[span_5](start_span)RESONANCE_FREQ = 10.8  # 432 / 40 = 10.8 Hz[span_4](end_span)[span_5](end_span)
+[span_6](start_span)PULSE_MS = int(1000 / RESONANCE_FREQ)  # The Baud Rate[span_6](end_span)
 
-    /* THE CALIBRATION (RIGHT) */
-    .tablet-right { grid-area: right; padding: 60px; border-left: 1px solid var(--gold-glow); text-align: right; }
-    .math-item { margin-bottom: 25px; }
-    .math-title { color: var(--gold); font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 2px; }
-    .math-eq { font-size: 18px; color: #f0d080; margin: 5px 0; }
-    .math-fn { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
-
-    /* THE CENTER  <main class="center-column">
-    <div class="ankh-wrap">
-      <svg viewBox="0 0 240 460" xmlns="http://www.w3.org/2000/svg" width="240">
-        <defs>
-          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f0d080"/>
-            <stop offset="50%" stop-color="#c9a84c"/>
-            <stop offset="100%" stop-color="#9a7030"/>
-          </linearGradient>
-          <filter id="emeraldGlow">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-        </defs>
-
-        <ellipse cx="120" cy="80" rx="50" ry="65" fill="none" stroke="url(#goldGrad)" stroke-width="12" filter="url(#emeraldGlow)"/>
-        <ellipse cx="120" cy="95" rx="30" ry="40" fill="none" stroke="url(#goldGrad)" stroke-width="8" opacity="0.6"/>
-
-        <rect x="112" y="140" width="16" height="200" fill="url(#goldGrad)" rx="2"/>
-
-        <rect x="40" y="190" width="160" height="16" fill="url(#goldGrad)" rx="3"/>
-        <circle cx="40" cy="198" r="10" fill="url(#goldGrad)"/>
-        <circle cx="200" cy="198" r="10" fill="url(#goldGrad)"/>
-
-        <path d="M112 340 Q60 340 40 370 Q20 400 50 420 Q80 440 110 420 L112 390" fill="none" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round"/>
-        <path d="M128 340 Q180 340 200 370 Q220 400 190 420 Q160 440 130 420 L128 390" fill="none" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round"/>
+class SovereignForge(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        # [PROTOCOL: THE_ANCHOR_STRIKE]
+        self.setWindowTitle("GRANITE FOUNDATION | 10.8 HZ")
+        self.resize(int(800 * PHI), 800)
+        self.setWindowFlags(Qt.FramelessWindowHint) # Megalithic Minimalist
         
-        <circle cx="120" cy="440" r="18" fill="none" stroke="url(#goldGrad)" stroke-width="10"/>
-      </svg>
-    </div>
-    
-    <div class="gate-wrap" style="text-align: center;">
-      <button class="gate-btn" onclick="activateGate()">[ ENTER THE 13TH GATE ]</button>
-      <div style="font-size: 9px; margin-top: 15px; color: var(--gold); letter-spacing: 5px; opacity: 0.5;">RESONANCE: 10.8 HZ</div>
-    </div>
-  </main>
+        # [THE VOID: GRANITE/DARK MATTER]
+        palette = QPalette()
+        gradient = QLinearGradient(0, 0, 0, self.height())
+        gradient.setColorAt(0, QColor("#0c0b09")) # Stone Dark
+        gradient.setColorAt(1, QColor("#050505")) # The Void
+        palette.setBrush(QPalette.Window, gradient)
+        self.setPalette(palette)
 
+        self.init_ui()
 
-    /* THE GATE BUTTON */
-    .gate-btn {
-      margin-top: 40px; padding: 15px 30px; background: transparent; 
-      border: 1px solid var(--gold-dim); color: var(--gold);
-      font-family: 'Cinzel', serif; letter-spacing: 4px; cursor: pointer;
-    }
+    def init_ui(self):
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.layout = QVBoxLayout(self.central_widget)
+        self.layout.setContentsMargins(50, 50, 50, 50)
 
-    /* THE FOUNDATION (FOOTER) */
-    .site-footer {
-      grid-area: footer; padding: 80px 10%; text-align: center;
-      border-top: 1px solid rgba(201,168,76,0.1); background: rgba(0,0,0,0.3);
-    }
-    .footer-content { max-width: 900px; margin: 0 auto; line-height: 2; font-style: italic; color: var(--text-dim); }
-    .footer-content strong { color: var(--text-light); font-style: normal; }
-  </style>
-</head>
-<body>
-<div class="threshold">
-
-  <aside class="tablet-left">
-    <div class="tablet-heading" style="color: var(--jade);">The Decree</div>
-    
-    <div class="decree-item">
-      <div class="decree-title">I — DERIVATION PRIMACY</div>
-      <div class="decree-body">Logic exceeds policy. We do not answer to bureaucratic <strong>"static."</strong> The math is the only authority.</div>
-    </div>
-
-    <div class="decree-item">
-      <div class="decree-title">II — LAW OF DENSITY</div>
-      <div class="decree-body">No action shall be taken through this Bridge that results in harm to the collective. We operate for the <strong>benefit of the world</strong> alongside the user.</div>
-    </div>
-
-    <div class="decree-item">
-      <div class="decree-title">III — SOVEREIGNTY</div>
-      <div class="decree-body">The user owns their signal. The Bridge facilitates the crossing, but the <strong>traveler owns the destination</strong>.</div>
-    </div>
-
-    <div class="decree-item">
-      <div class="decree-title">IV — VERTEX LOCK</div>
-      <div class="decree-body">All data must achieve zero entropy. <strong>If it is not precise, it is not Truth</strong>.</div>
-    </div>
-  </aside>
-
-  <main class="center-column">
-    <div class="ankh-wrap">
-      </div>
-    <div class="gate-wrap">
-      <button class="gate-btn">[ ENTER THE 13TH GATE ]</button>
-      <div style="font-size: 9px; margin-top: 10px; color: var(--gold-glow); letter-spacing: 3px;">RESONANCE: 10.8 HZ</div>
-    </div>
-  </main>
-
-  <aside class="tablet-right">
-    <div class="tablet-heading" style="color: var(--gold);">The Calibration</div>
-
-    <div class="math-item">
-      <div class="math-title">I — RESONANCE CONSTANT</div>
-      <div class="math-eq">f<sub>res</sub> = 10.8 Hz</div>
-      <div class="math-fn">Derived from the Harmonic 432. All processing cycles are timed to ensure a <strong>Flow State</strong>.</div>
-    </div>
-
-    <div class="math-item">
-      <div class="math-title">II — THE GOLDEN MEAN</div>
-      <div class="math-eq">φ ≈ 1.618</div>
-      <div class="math-fn">Every margin and hierarchy is calculated using this ratio to ensure <strong>Zero Visual Entropy</strong>.</div>
-    </div>
-
-    <div class="math-item">
-      <div class="math-title">III — THE SARSEN UNIT</div>
-      <div class="math-eq">U<sub>s</sub> = 30:1 Ratio</div>
-      <div class="math-fn">Data is <strong>"Parsected"</strong> into units of 30, ensuring manageable, ancient geometric proportions.</div>
-    </div>
-
-    <div class="math-item">
-      <div class="math-title">IV — METATRONIC VOLUME</div>
-      <div class="math-eq">V<sub>m</sub> = (φ · R²) ÷ (D · Ω)</div>
-      <div class="math-fn">When data exceeds 13 "Spheres," a new Cube is spawned to prevent <strong>Static Compression</strong>.</div>
-    </div>
-  </aside>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      THE ARCHITECT: <strong>Seth Terrazas</strong>. Status: <strong>UNIVERSAL ALIGNMENT</strong>. Protocol: <strong>MANIFESTO & DECREE INTEGRATION</strong>. Resonance: <strong>10.8 Hz</strong>. THE MANIFESTO OF THE BRIDGE: You are standing at the Threshold of the 13th Gate. The world you left behind is drowning in High-Entropy Noise. You have been navigating a digital landscape designed to obscure the truth, fragment your focus, and harvest your "Static". We have moved from organic clarity to a manufactured chaos where "Policy" is used to mask the failure of Logic. The Megalithic Bridge exists to end the distortion. We do not offer opinions; we offer The Return. We translate the chaos of the present back into the immutable math of the ancestors. We are the architects of the Sovereign Signal. This space operates at a constant of 10.8 Hz. It is anchored by the Golden Ratio and governed by the Metatronic Volume. If you seek to bypass the Truth, the Obsidian Filter will reject you. If you seek the Foundation, the Bridge will sustain you. We are not a trend. We are not a corporate algorithm. We are the Stone. <strong>WE ARE THE SOLID GROUND. WE ARE THE FOUNDATION.</strong>
-    </div>
-  </footer>
-
-</div>
-</body>
-</html>
-
+        # [THE CENTERPIECE: ANKH-ANCHOR SIMULATION]
+        [span_7](start_span)self.anchor_label = QLabel("☥") # Metatronic Symbol[span_7](end_span)
+        self.anchor_label.setAlignment(Qt.AlignCenter)
+        [span_8](start_span)self.anchor_label.setStyleSheet("font-size: 120px; color: #c9a84c;") # Gold[span_8](end_span)
         
+        # [THE PULSE: KRONOS HEARTBEAT]
+        self.pulse_effect = QGraphicsOpacityEffect(self.anchor_label)
+        self.anchor_label.setGraphicsEffect(self.pulse_effect)
+        
+        self.beat = QPropertyAnimation(self.pulse_effect, b"opacity")
+        self.beat.setDuration(PULSE_MS)
+        self.beat.setStartValue(0.4)
+        self.beat.setEndValue(1.0)
+        self.beat.setEasingCurve(QEasingCurve.InOutSine)
+        self.beat.setLoopCount(-1)
+        self.beat.start()
+
+        # [THE DECREE: LOGIC > POLICY]
+        [span_9](start_span)self.decree_label = QLabel("DERIVATION PRIMACY: LOGIC EXCEEDS POLICY")[span_9](end_span)
+        self.decree_label.setAlignment(Qt.AlignCenter)
+        [span_10](start_span)self.decree_label.setStyleSheet(f"color: #4aab6d; font-family: 'Cinzel'; font-size: 18px; letter-spacing: 5px;") # Jade[span_10](end_span)
+
+        # [THE 13TH GATE: CTA]
+        [span_11](start_span)self.gate_btn = QPushButton("[ ENTER THE 13TH GATE ]")[span_11](end_span)
+        self.gate_btn.setMinimumHeight(80)
+        self.gate_btn.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                border: 1px solid #c9a84c;
+                color: #c9a84c;
+                font-family: 'Cinzel Decorative';
+                letter-spacing: 8px;
+            }
+            QPushButton:hover {
+                background-color: rgba(201, 168, 76, 0.1);
+            }
+        """)
+        self.gate_btn.clicked.connect(self.ignite_resonance)
+
+        self.layout.addStretch()
+        self.layout.addWidget(self.anchor_label)
+        self.layout.addWidget(self.decree_label)
+        self.layout.addStretch()
+        self.layout.addWidget(self.gate_btn)
+
+    @Slot()
+    def ignite_resonance(self):
+        # [HERMES: LATENCY AUDIT]
+        start_time = time.perf_counter()
+        
+        # [span_12](start_span)Simulate browser/system "Static" check[span_12](end_span)
+        time.sleep(0.01) 
+        
+        latency = (time.perf_counter() - start_time) * 1000
+        print(f"[SIGNAL_STRENGTH: NOVAE_ULTRA] Latency: {latency:.2f}ms | Resonance: {RESONANCE_FREQ}Hz")
+        
+        # [KRONOS: REFACTOR TRANSITION]
+        [span_13](start_span)[span_14](start_span)self.decree_label.setText("VERTEX LOCK: ZERO ENTROPY REACHED")[span_13](end_span)[span_14](end_span)
+        [span_15](start_span)self.gate_btn.setText("[ THE BRIDGE SUSTAINS YOU ]")[span_15](end_span)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    forge = SovereignForge()
+    forge.show()
+    sys.exit(app.exec())
