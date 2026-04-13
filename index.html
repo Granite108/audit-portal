@@ -2,27 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>THE GLOBAL CIRCUIT | LADDER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRANITE FOUNDATION | THE THRESHOLD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <style>
-        :root { --phi: 1.618; --gold: #c9a84c; --jade: #4aab6d; --void: #050505; }
-        body { background-color: var(--void); color: #e8dfc8; font-family: 'EB Garamond', serif; margin: 0; padding: 0 5vw; }
-        .helix-axis { position: fixed; left: 50%; top: 0; width: 2px; height: 100vh; background: linear-gradient(var(--jade), var(--gold)); opacity: 0.3; z-index: -1; }
-        .section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .content-box { background: rgba(26, 26, 26, 0.9); padding: 40px; border: 1px solid var(--gold); max-width: 600px; text-align: center; position: relative; }
-        .price-tag { color: var(--gold); font-family: monospace; font-size: 1.2rem; margin-bottom: 10px; }
-        input { background: transparent; border: 1px solid var(--jade); color: white; padding: 10px; width: 80%; margin-top: 15px; }
-        .geometry-display { font-size: 5rem; color: var(--jade); opacity: 0.1; position: absolute; top: -20px; }
-        .footer-slab { padding: 100px; background: #111; text-align: center; border-top: 5px solid var(--gold); }
+        :root { --phi: 1.618; --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; }
+        body, html { margin: 0; padding: 0; background-color: var(--void); color: #e8dfc8; font-family: 'EB Garamond', serif; overflow: hidden; height: 100%; }
+        .chassis { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); height: 100vh; width: 100vw; position: relative; }
+        .anchor-container { grid-column: 3; grid-row: 3; display: flex; justify-content: center; align-items: center; z-index: 10; }
+        .ankh-svg { height: 350px; filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.3)); animation: heartbeat 1.85s infinite ease-in-out; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.03); opacity: 1; } }
+        .tablet { position: absolute; width: calc(100vw / 5 / var(--phi)); padding: 20px; border: 1px solid rgba(74, 171, 109, 0.3); background: rgba(11, 15, 26, 0.8); }
+        .tablet-left { left: 10%; top: 35%; border-left: 3px solid var(--jade); }
+        .tablet-right { right: 10%; top: 35%; border-right: 3px solid var(--gold); }
+        .tablet-title { font-family: 'Cinzel', serif; color: var(--jade); font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 10px; }
+        .manifesto-footer { grid-column: 1 / span 5; grid-row: 5; text-align: center; padding: 40px; border-top: 1px solid rgba(201, 168, 76, 0.2); }
+        .gate-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 15px 40px; font-family: 'Cinzel Decorative', cursive; letter-spacing: 5px; cursor: pointer; transition: 0.5s; text-decoration: none; display: inline-block; }
+        .gate-btn:hover { background: var(--gold); color: var(--void); box-shadow: 0 0 30px var(--gold); }
     </style>
 </head>
 <body>
-    <div class="helix-axis"></div>
-    <section class="section"><div class="geometry-display">○</div><div class="content-box"><div class="price-tag">$0.00</div><h2>THE SEED</h2><p>Diagnostic Scrape Initiated.</p><input type="text" placeholder="URL"><input type="email" placeholder="EMAIL"></div></section>
-    <section class="section"><div class="geometry-display">┬</div><div class="content-box"><div class="price-tag">$16.18</div><h2>THE SCALES</h2><p>Initial resistance recognized.</p></div></section>
-    <section class="section"><div class="geometry-display">△</div><div class="content-box"><div class="price-tag">$56.18</div><h2>TRIAD PYRAMID</h2><p>Lattice Stability: 100%.</p></div></section>
-    <section class="section"><div class="geometry-display">⬠</div><div class="content-box"><div class="price-tag">$161.80</div><h2>THE PENTAGON</h2><p>Vector Equilibrium reached.</p></div></section>
-    <section class="section"><div class="geometry-display">⬡</div><div class="content-box"><div class="price-tag">$561.80</div><h2>THE HEXAGON</h2><p>Synthetic Birth Pending.</p></div></section>
-    <section class="section"><div class="geometry-display">💠</div><div class="content-box"><div class="price-tag">$1,618.03</div><h2>THE APEX</h2><p>VERTEX LOCK ENGAGED.</p></div></section>
-    <footer class="footer-slab"><h2>GRANITE FOUNDATION</h2><p>Logic exceeds policy.</p></footer>
+    <div class="chassis">
+        <div class="tablet tablet-left">
+            <div class="tablet-title">EMERALD DECREE</div>
+            <div>"Logic exceeds policy. The world you left behind is drowning in High-Entropy Noise. We are not a trend. We are the Stone."</div>
+        </div>
+        <div class="anchor-container">
+            <svg class="ankh-svg" viewBox="0 0 100 180">
+                <defs><clipPath id="figure8"><circle cx="50" cy="35" r="18" /><circle cx="50" cy="65" r="18" /></clipPath></defs>
+                <rect x="0" y="0" width="100" height="100" fill="var(--gold)" clip-path="url(#figure8)" />
+                <rect x="10" y="85" width="80" height="10" fill="var(--gold)" />
+                <rect x="45" y="85" width="10" height="95" fill="var(--gold)" />
+            </svg>
+        </div>
+        <div class="tablet tablet-right">
+            <div class="tablet-title">EMERALD MATH</div>
+            <div>"Resonance: 10.8 Hz. Scaling: 1.618. Zero Entropy verified. We translate the chaos back into immutable math."</div>
+        </div>
+        <footer class="manifesto-footer">
+            <p style="color: var(--gold); letter-spacing: 2px;">MANIFESTO OF ALIGNMENT</p>
+            <a href="ladder.html" class="gate-btn">[ ENTER THE 13TH GATE ]</a>
+        </footer>
+    </div>
 </body>
 </html>
+
