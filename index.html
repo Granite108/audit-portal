@@ -6,45 +6,125 @@
     <title>GRANITE FOUNDATION | THE THRESHOLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <style>
-        :root { --phi: 1.618; --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; }
-        body, html { margin: 0; padding: 0; background-color: var(--void); color: #e8dfc8; font-family: 'EB Garamond', serif; overflow: hidden; height: 100%; }
-        .chassis { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); height: 100vh; width: 100vw; position: relative; }
-        .anchor-container { grid-column: 3; grid-row: 3; display: flex; justify-content: center; align-items: center; z-index: 10; }
-        .ankh-svg { height: 350px; filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.3)); animation: heartbeat 1.85s infinite ease-in-out; }
-        @keyframes heartbeat { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.03); opacity: 1; } }
-        .tablet { position: absolute; width: calc(100vw / 5 / var(--phi)); padding: 20px; border: 1px solid rgba(74, 171, 109, 0.3); background: rgba(11, 15, 26, 0.8); }
-        .tablet-left { left: 10%; top: 35%; border-left: 3px solid var(--jade); }
-        .tablet-right { right: 10%; top: 35%; border-right: 3px solid var(--gold); }
-        .tablet-title { font-family: 'Cinzel', serif; color: var(--jade); font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 10px; }
-        .manifesto-footer { grid-column: 1 / span 5; grid-row: 5; text-align: center; padding: 40px; border-top: 1px solid rgba(201, 168, 76, 0.2); }
-        .gate-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 15px 40px; font-family: 'Cinzel Decorative', cursive; letter-spacing: 5px; cursor: pointer; transition: 0.5s; text-decoration: none; display: inline-block; }
-        .gate-btn:hover { background: var(--gold); color: var(--void); box-shadow: 0 0 30px var(--gold); }
+        :root {
+            --phi: 1.61803398875;
+            --gold: #c9a84c;
+            --jade: #4aab6d;
+            --void: #0b0f1a;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--void);
+            color: #e8dfc8;
+            font-family: 'EB Garamond', serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* I. THE COORDINATE CHASSIS (5x5 PHI-MATRIX) */
+        .chassis {
+            display: grid;
+            width: 100vw;
+            height: 100vh;
+            grid-template-columns: 1fr calc(1fr * var(--phi)) 1.5fr calc(1fr * var(--phi)) 1fr;
+            grid-template-rows: 1fr 1fr 1.5fr 1fr 1fr;
+            align-items: center;
+            justify-items: center;
+            position: relative;
+            background: radial-gradient(circle at center, #0d1a12 0%, var(--void) 100%);
+        }
+
+        /* II. EMERALD TABLETS (HARD-DOCKED) */
+        .tablet {
+            background: linear-gradient(135deg, #002200 0%, #001100 100%);
+            border: 1px solid var(--jade);
+            padding: calc(1rem * var(--phi));
+            box-shadow: inset 0 0 15px rgba(74, 171, 109, 0.2);
+            z-index: 15;
+        }
+
+        .tablet-left { grid-column: 2; grid-row: 3; border-left: 4px solid var(--jade); }
+        .tablet-right { grid-column: 4; grid-row: 3; border-right: 4px solid var(--gold); }
+
+        .tablet-title {
+            font-family: 'Cinzel', serif;
+            color: var(--jade);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+        }
+
+        /* III. THE ANCHOR (CENTER 3,3) */
+        .anchor-container {
+            grid-column: 3; grid-row: 3;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10;
+        }
+
+        .ankh-svg {
+            height: 320px;
+            filter: drop-shadow(0 0 20px var(--gold));
+            animation: heartbeat 1.85s infinite ease-in-out;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* IV. THE GATE (FOOTER) */
+        .manifesto-footer {
+            grid-column: 1 / span 5;
+            grid-row: 5;
+            text-align: center;
+            z-index: 20;
+        }
+
+        .gate-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 15px 45px;
+            font-family: 'Cinzel Decorative', cursive;
+            letter-spacing: 5px;
+            cursor: pointer;
+            transition: 0.5s;
+            text-decoration: none;
+        }
+
+        .gate-btn:hover { background: var(--gold); color: var(--void); box-shadow: 0 0 40px var(--gold); }
     </style>
 </head>
 <body>
+
     <div class="chassis">
         <div class="tablet tablet-left">
             <div class="tablet-title">EMERALD DECREE</div>
-            <div>"Logic exceeds policy. The world you left behind is drowning in High-Entropy Noise. We are not a trend. We are the Stone."</div>
+            <p>"Logic exceeds policy. The world is drowning in High-Entropy Noise. We are the Stone."</p>
         </div>
+
         <div class="anchor-container">
             <svg class="ankh-svg" viewBox="0 0 100 180">
-                <defs><clipPath id="figure8"><circle cx="50" cy="35" r="18" /><circle cx="50" cy="65" r="18" /></clipPath></defs>
+                <defs>
+                    <clipPath id="figure8"><circle cx="50" cy="35" r="18" /><circle cx="50" cy="65" r="18" /></clipPath>
+                </defs>
                 <rect x="0" y="0" width="100" height="100" fill="var(--gold)" clip-path="url(#figure8)" />
                 <rect x="10" y="85" width="80" height="10" fill="var(--gold)" />
                 <rect x="45" y="85" width="10" height="95" fill="var(--gold)" />
             </svg>
         </div>
+
         <div class="tablet tablet-right">
             <div class="tablet-title">EMERALD MATH</div>
-            <div>"Resonance: 10.8 Hz. Scaling: 1.618. Zero Entropy verified. We translate the chaos back into immutable math."</div>
+            <p>"Resonance: 10.8 Hz. Scaling: 1.618. Zero Entropy verified. Immutable math is authority."</p>
         </div>
+
         <footer class="manifesto-footer">
-            <p style="color: var(--gold); letter-spacing: 2px;">MANIFESTO OF ALIGNMENT</p>
             <a href="ladder.html" class="gate-btn">[ ENTER THE 13TH GATE ]</a>
         </footer>
     </div>
+
 </body>
 </html>
-
-            
