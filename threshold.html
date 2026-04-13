@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE THRESHOLD | GRANITE FOUNDATION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root { --phi: 1.618; --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; }
+        body, html { margin: 0; padding: 0; background-color: var(--void); color: #e8dfc8; font-family: 'EB Garamond', serif; overflow: hidden; height: 100%; }
+        .chassis { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); height: 100vh; width: 100vw; position: relative; }
+        .main-container { grid-column: 2 / span 3; grid-row: 2 / span 3; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 2px solid var(--gold); padding: 60px; background: rgba(11, 15, 26, 0.9); z-index: 10; }
+        .main-title { font-family: 'Cinzel Decorative', cursive; color: var(--gold); font-size: 2.5rem; letter-spacing: 4px; margin-bottom: 30px; }
+        .subtitle { font-family: 'Cinzel', serif; color: var(--jade); font-size: 1rem; letter-spacing: 3px; margin-bottom: 40px; }
+        .content { color: #e8dfc8; font-size: 1.1rem; line-height: 1.8; margin-bottom: 50px; max-width: 600px; }
+        .nav-buttons { display: flex; gap: 30px; justify-content: center; }
+        .nav-btn { background: transparent; border: 2px solid var(--gold); color: var(--gold); padding: 15px 40px; font-family: 'Cinzel Decorative', cursive; letter-spacing: 3px; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+        .nav-btn:hover { background: var(--gold); color: var(--void); box-shadow: 0 0 30px var(--gold); }
+        .nav-btn.secondary { border-color: var(--jade); color: var(--jade); }
+        .nav-btn.secondary:hover { background: var(--jade); color: var(--void); box-shadow: 0 0 30px var(--jade); }
+    </style>
+</head>
+<body>
+    <div class="chassis">
+        <div class="main-container">
+            <div class="main-title">THE THRESHOLD</div>
+            <div class="subtitle">BEYOND THE GATE</div>
+            <div class="content">
+                <p>"You have crossed the first threshold. The path before you demands clarity of purpose and alignment with immutable truth. Ascend through the gates of understanding."</p>
+                <p style="margin-top: 30px; color: var(--jade);">Resonance verified. Zero entropy sustained.</p>
+            </div>
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn secondary">[ RETURN TO ENTRANCE ]</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
