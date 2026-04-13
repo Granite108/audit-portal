@@ -3,62 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRANITE FOUNDATION | THE THRESHOLD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;700&family=EB+Garamond&display=swap" rel="stylesheet">
-    <style>
-        :root { --phi: 1.618; --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; }
-        body, html { margin: 0; padding: 0; background: var(--void); color: #e8dfc8; font-family: 'EB Garamond', serif; overflow: hidden; height: 100vh; width: 100vw; }
-        
-        /* 5x5 COORDINATE CHASSIS */
-        .chassis { 
-            display: grid; 
-            grid-template-columns: 1fr calc(1fr * var(--phi)) 1.5fr calc(1fr * var(--phi)) 1fr; 
-            grid-template-rows: repeat(5, 1fr); 
-            height: 100vh; width: 100vw; 
-        }
-
-        /* CENTER ANCHOR (ANKH) */
-        .anchor-container { grid-column: 3; grid-row: 3; display: flex; justify-content: center; align-items: center; z-index: 10; }
-        .ankh-svg { height: 350px; filter: drop-shadow(0 0 15px var(--gold)); animation: hb 1.85s infinite ease-in-out; }
-        @keyframes hb { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.03); opacity: 1; } }
-
-        /* EMERALD TABLETS */
-        .tablet { background: rgba(11, 15, 26, 0.95); border: 1px solid var(--jade); padding: 25px; grid-row: 3; z-index: 15; box-shadow: inset 0 0 15px rgba(74, 171, 109, 0.2); display: flex; flex-direction: column; justify-content: center; }
-        .tablet-left { grid-column: 2; border-left: 3px solid var(--jade); }
-        .tablet-right { grid-column: 4; border-right: 3px solid var(--gold); }
-        .tablet-title { font-family: 'Cinzel', serif; color: var(--jade); letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 10px; border-bottom: 1px solid var(--jade); }
-        .tablet-text { font-size: 0.9rem; line-height: 1.4; color: #aaa; }
-
-        /* THE GATEWAY FOOTER */
-        .footer { grid-column: 1 / span 5; grid-row: 5; text-align: center; border-top: 1px solid rgba(201, 168, 76, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(to top, #000, transparent); }
-        .gate-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 15px 40px; font-family: 'Cinzel Decorative'; letter-spacing: 5px; cursor: pointer; transition: 0.5s; text-decoration: none; margin-top: 10px; }
-        .gate-btn:hover { background: var(--gold); color: var(--void); box-shadow: 0 0 30px var(--gold); }
-    </style>
+    <title>Granite108 | Audit Portal</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chassis">
-        <div class="tablet tablet-left">
-            <div class="tablet-title">EMERALD DECREE</div>
-            <div class="tablet-text">"Logic exceeds policy. The world you left behind is drowning in noise. We provide the Stone; you build the house."</div>
-        </div>
-
-        <div class="anchor-container">
-            <svg class="ankh-svg" viewBox="0 0 100 180">
-                <circle cx="50" cy="35" r="18" fill="none" stroke="var(--gold)" stroke-width="8" />
-                <rect x="10" y="75" width="80" height="10" fill="var(--gold)" />
-                <rect x="45" y="75" width="10" height="95" fill="var(--gold)" />
-            </svg>
-        </div>
-
-        <div class="tablet tablet-right">
-            <div class="tablet-title">EMERALD MATH</div>
-            <div class="tablet-text">"Resonance: 10.8 Hz. Scaling: 1.618. The math is the only authority. Zero Entropy Verified."</div>
-        </div>
-
-        <footer class="footer">
-            <p style="color: var(--gold); letter-spacing: 2px; font-family: 'Cinzel'; font-size: 0.7rem;">THE ARCHITECT: SETH TERRAZAS</p>
-            <a href="ladder.html" class="gate-btn">[ ENTER THE 13TH GATE ]</a>
-        </footer>
+    <div id="vault-interface">
+        <header>
+            <h1>[SYSTEM ONLINE: THE OBSIDIAN VAULT]</h1>
+            <div class="resonance-bar">RESONANCE: 10.8 Hz</div>
+        </header>
+        <main>
+            <div class="status-node">
+                <h3>STATUS: <span id="logic-state">STABILIZED</span></h3>
+                <p>Architect: Granite108</p>
+                <p>Sentinel: Set</p>
+            </div>
+            <div id="terminal">
+                <p>> Initializing 1.618-GAMMA-13...</p>
+                <p>> Mitosis: Complete.</p>
+                <p>> The Bridge is Open.</p>
+            </div>
+        </main>
     </div>
+    <script src="app.js"></script>
 </body>
 </html>
