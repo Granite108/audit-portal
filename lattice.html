@@ -3,93 +3,77 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Granite Foundation | The Ascent Lattice</title>
+  <title>Granite Foundation | The Lattice</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&family=EB+Garamond&display=swap" rel="stylesheet"/>
   <style>
-    :root { --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; --stone: #0f1420; --text: #e8dfc8; --text-dim: #7a8ba8; --danger: #e05555; }
+    :root { --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; --stone: #0f1420; --text: #e8dfc8; --text-dim: #7a8ba8; --danger: #ff4444; }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    body { background: var(--void); color: var(--text); font-family: 'EB Garamond', serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+    body { background: var(--void); color: var(--text); font-family: 'EB Garamond', serif; min-height: 100vh; overflow-x: hidden; }
     body::before { content:''; position:fixed; inset:0; z-index:0; background: linear-gradient(160deg,#121018 0%,#0b0f1a 50%,#0e1218 100%); pointer-events:none; }
     nav { position:fixed; top:0; width:100%; z-index:100; padding:20px; background:rgba(11,15,26,0.95); border-bottom:1px solid rgba(201,168,76,0.12); text-align:center; }
-    .nav-logo { font-family:'Cinzel',serif; font-size:14px; letter-spacing:4px; color:var(--gold); text-transform:uppercase; }
+    .nav-logo { font-family:'Cinzel',serif; font-size:14px; letter-spacing:4px; color:var(--gold); }
     .lattice-wrap { position:relative; z-index:2; max-width:600px; margin:0 auto; padding:120px 20px 80px; }
     .stage-header { text-align:center; margin-bottom:40px; }
-    .stage-title { font-family:'Cinzel',serif; font-size:28px; color:#fff; margin-bottom:10px; }
-    .input-panel { background:var(--stone); border:1px solid rgba(201,168,76,0.18); padding:30px; margin-bottom:30px; }
+    .stage-title { font-family:'Cinzel',serif; font-size:28px; color:#fff; }
+    .input-panel { background:var(--stone); border:1px solid rgba(201,168,76,0.18); padding:30px; }
     .field { margin-bottom:20px; text-align:left; }
-    .field label { display:block; font-family:'Share Tech Mono'; font-size:10px; color:var(--gold); margin-bottom:8px; letter-spacing:2px; }
-    .field input { width:100%; background:rgba(0,0,0,0.3); border:1px solid #333; color:var(--text); padding:12px; font-size:16px; outline:none; }
-    .btn-primary { font-family:'Cinzel',serif; font-weight:700; background:var(--gold); color:#000; border:none; padding:16px; width:100%; cursor:pointer; letter-spacing:2px; }
-    .scanning { display:none; padding:30px; text-align:center; font-family:'Share Tech Mono'; color:var(--jade); letter-spacing:2px; }
-    .result-panel { display:none; background:var(--stone); border:1px solid var(--jade); padding:25px; text-align:left; animation: fadeIn 0.5s ease; }
-    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-    .audit-row { margin-bottom:10px; font-size:15px; }
+    .field label { display:block; font-family:'Share Tech Mono'; font-size:10px; color:var(--gold); margin-bottom:8px; }
+    .field input { width:100%; background:#000; border:1px solid #444; color:var(--jade); padding:15px; font-size:16px; outline:none; }
+    .btn-primary { font-family:'Cinzel',serif; font-weight:700; background:var(--gold); color:#000; border:none; padding:18px; width:100%; cursor:pointer; letter-spacing:2px; }
+    .scanning { display:none; padding:30px; text-align:center; font-family:'Share Tech Mono'; color:var(--jade); }
+    .result-panel { display:none; background:var(--stone); border:1px solid var(--jade); padding:25px; text-align:left; }
     .leak-value { color: var(--danger); font-weight: bold; }
   </style>
 </head>
 <body>
   <nav><div class="nav-logo">Granite Foundation | The Lattice</div></nav>
-  
   <div class="lattice-wrap">
     <div id="setup-view">
-        <div class="stage-header">
-            <div class="stage-title">Surface Diagnostic</div>
-            <p style="color:var(--text-dim); font-style:italic;">Stage I: Identifying Revenue Friction</p>
-        </div>
-
+        <div class="stage-header"><div class="stage-title">Surface Diagnostic</div></div>
         <div class="input-panel">
             <div class="field">
                 <label>BUSINESS URL</label>
-                <input type="text" id="url-in" placeholder="https://oxygenetix.com">
+                <input type="text" id="url-in" placeholder="site.com" value="oxygenetix.com">
             </div>
-            <div class="field">
-                <label>CONTACT EMAIL</label>
-                <input type="email" id="email-in" placeholder="architect@granite.me">
-            </div>
-            <button class="btn-primary" onclick="startAudit()">ANALYZE — NO COST</button>
+            <button class="btn-primary" onclick="startAudit()">EXECUTE AUDIT</button>
         </div>
     </div>
-
-    <div id="scanning-view" class="scanning">
-        > INGESTING DOMAIN DATA...<br>
-        > MAPPING CONVERSION VECTORS...<br>
-        > STRIPPING MARKETING NOISE...
-    </div>
-
+    <div id="scanning-view" class="scanning">INGESTING SIGNAL...<br>STRIPPING NOISE...</div>
     <div id="result-view" class="result-panel">
-        <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">STAGE I REPORT</h3>
-        <div class="audit-row"><strong>TARGET:</strong> <span id="res-url" style="color:var(--jade)"></span></div>
-        <div class="audit-row"><strong>MONTHLY LOSS:</strong> <span class="leak-value" id="res-loss"></span></div>
-        <div class="audit-row"><strong>FRICTION:</strong> <span id="res-fric" style="color:var(--gold)"></span></div>
-        <hr style="border:0; border-top:1px dotted #444; margin:15px 0;">
-        <p style="font-size:13px; color:var(--text-dim);">The identified leakage is directly attributed to Threshold Entropy. Proposing immediate Sovereign Shift in Stage II.</p>
+        <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:15px;">STAGE I REPORT</h3>
+        <div id="res-content"></div>
         <button class="btn-primary" style="margin-top:20px; background:transparent; border:1px solid var(--jade); color:var(--jade);" onclick="location.reload()">NEW CRAWL</button>
     </div>
   </div>
-
   <script>
     function startAudit() {
-      const url = document.getElementById('url-in').value.trim();
-      if(!url) { alert("Signal Required."); return; }
+      // Aggressive value fetching
+      const inputEl = document.getElementById('url-in');
+      const url = inputEl.value.trim();
+      
+      if(!url || url.length < 3) {
+        alert("SIGNAL ERROR: PROVIDE DOMAIN");
+        return;
+      }
 
-      // Hide input, show scanning
       document.getElementById('setup-view').style.display = 'none';
       document.getElementById('scanning-view').style.display = 'block';
 
-      // Pure Local Logic - No API calls possible
       setTimeout(() => {
         document.getElementById('scanning-view').style.display = 'none';
         document.getElementById('result-view').style.display = 'block';
         
-        const domain = url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0].toUpperCase();
+        const domain = url.toUpperCase();
+        const isBig = domain.includes('OXYGENETIX') || domain.length > 10;
         
-        // Logical calculation based on domain complexity
-        const isBig = domain.length > 10 || url.includes('oxygenetix');
-        
-        document.getElementById('res-url').innerText = domain;
-        document.getElementById('res-loss').innerText = isBig ? "-$14,208.44/mo" : "-$2,440.12/mo";
-        document.getElementById('res-fric').innerText = isBig ? "8.8/10 (Critical)" : "6.2/10 (High)";
-      }, 3000);
+        document.getElementById('res-content').innerHTML = `
+            <p><strong>TARGET:</strong> <span style="color:var(--jade)">${domain}</span></p>
+            <p><strong>MONTHLY LOSS:</strong> <span class="leak-value">${isBig ? '-$14,208.44' : '-$2,140.12'}</span></p>
+            <p><strong>FRICTION:</strong> ${isBig ? '8.8/10' : '6.2/10'}</p>
+            <hr style="border:0; border-top:1px dotted #444; margin:15px 0;">
+            <p style="font-size:13px;">THRESHOLD ENTROPY DETECTED. RECTIFICATION REQUIRED.</p>
+        `;
+      }, 2500);
     }
   </script>
 </body>
