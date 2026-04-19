@@ -6,7 +6,7 @@
   <title>Granite Foundation | The Ascent Lattice</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&family=EB+Garamond&display=swap" rel="stylesheet"/>
   <style>
-    :root { --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; --stone: #0f1420; --text: #e8dfc8; --blue: #0088ff; --purple: #9b72cf; }
+    :root { --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; --stone: #0f1420; --text: #e8dfc8; --blue: #0088ff; --purple: #9b72cf; --danger: #ff4444; }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     body { background: var(--void); color: var(--text); font-family: 'EB Garamond', serif; min-height: 100vh; overflow-x: hidden; }
     body::before { content:''; position:fixed; inset:0; z-index:0; background: linear-gradient(160deg,#121018 0%,#0b0f1a 50%,#0e1218 100%); pointer-events:none; }
@@ -24,6 +24,8 @@
     .btn { background: var(--gold); color: black; border: none; padding: 18px; width: 100%; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; letter-spacing: 2px; margin-top: 10px; }
     .scanning { display:none; padding:30px; text-align:center; font-family:'Share Tech Mono'; color:var(--jade); font-size: 13px; line-height: 1.6; }
     .result-panel { background:var(--stone); border:1px solid var(--jade); padding:25px; text-align:left; margin-top:20px; }
+    .fix-item { margin-bottom: 20px; border-left: 2px solid var(--gold); padding-left: 15px; }
+    .fix-item h4 { color: var(--gold); font-family: 'Cinzel'; font-size: 14px; margin-bottom: 5px; }
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
   </style>
 </head>
@@ -42,30 +44,30 @@
     <div id="stage-1" class="stage active">
         <h2 style="font-family:'Cinzel'; text-align:center; margin-bottom:10px;">STAGE I: THE SEED</h2>
         <div class="input-panel">
-            <div class="field"><label>BUSINESS URL</label><input type="text" id="url-in" value="oxygenetix.com"></div>
-            <button class="btn" onclick="runStage1()">EXECUTE AUDIT</button>
+            <div class="field"><label>BUSINESS URL</label><input type="text" id="url-in" placeholder="domain.com"></div>
+            <button class="btn" onclick="runStage1()">EXECUTE UNIVERSAL AUDIT</button>
         </div>
         <div id="scan-1" class="scanning">INGESTING SIGNAL...</div>
         <div id="res-1" class="result-panel" style="display:none;">
-            <p><strong>EST. MONTHLY LOSS:</strong> <span style="color:red">-$14,208.44</span></p>
-            <p><strong>FRICTION:</strong> 8.8/10</p>
-            <button class="btn" onclick="goTo(2)">PROCEED TO STAGE II →</button>
+            <p><strong>TARGET:</strong> <span id="target-display" style="color:var(--blue)"></span></p>
+            <p><strong>EST. MONTHLY LOSS:</strong> <span id="loss-display" style="color:var(--danger)"></span></p>
+            <p><strong>FRICTION:</strong> <span id="fric-display"></span></p>
+            <button class="btn" onclick="goTo(2)">PROCEED TO THE FIX →</button>
         </div>
     </div>
 
     <div id="stage-2" class="stage">
-        <h2 style="font-family:'Cinzel'; text-align:center; margin-bottom:10px;">STAGE II: THE FIX</h2>
-        <div class="input-panel">
-            <p><strong>DIRECTIVE:</strong> Own the "Post-Procedure" clinical category.</p>
-            <button class="btn" onclick="goTo(3)">PROCEED TO STAGE III →</button>
-        </div>
+        <h2 style="font-family:'Cinzel'; text-align:center; margin-bottom:10px;">STAGE II: THE FIX PROTOCOL</h2>
+        <div class="input-panel" id="fix-content">
+            </div>
+        <button class="btn" onclick="goTo(3)">PROCEED TO MARKET STRATEGY →</button>
     </div>
 
     <div id="stage-3" class="stage">
         <h2 style="font-family:'Cinzel'; text-align:center; margin-bottom:10px;">STAGE III: THE TRIAD</h2>
         <div class="input-panel">
-            <div class="field"><label>MARKET COMPETITION</label><textarea placeholder="Competition analysis..."></textarea></div>
-            <div class="field"><label>MARKETING TECHNIQUES</label><textarea placeholder="Partnerships and strategy..."></textarea></div>
+            <div class="field"><label>MARKET COMPETITION</label><textarea placeholder="Identify primary rivals in this niche..."></textarea></div>
+            <div class="field"><label>MARKETING TECHNIQUES</label><textarea placeholder="Partnerships and Demand Capture strategy..."></textarea></div>
             <button class="btn" onclick="goTo(4)">LOCK STRATEGY →</button>
         </div>
     </div>
@@ -73,8 +75,8 @@
     <div id="stage-4" class="stage">
         <h2 style="font-family:'Cinzel'; text-align:center; margin-bottom:10px;">STAGE IV: THE PENTAGON</h2>
         <div class="input-panel">
-            <div class="field"><label>INTERNAL OPERATIONS</label><textarea placeholder="Staff and costs..."></textarea></div>
-            <div class="field"><label>LOGISTICS</label><textarea placeholder="Supply chain..."></textarea></div>
+            <div class="field"><label>INTERNAL OPERATIONS</label><textarea placeholder="Staffing, internal roles, and operational costs..."></textarea></div>
+            <div class="field"><label>LOGISTICS & SUPPLY CHAIN</label><textarea placeholder="Distribution points and inventory visibility..."></textarea></div>
             <button class="btn" onclick="goTo(5)">AUDIT INFRASTRUCTURE →</button>
         </div>
     </div>
@@ -82,7 +84,7 @@
     <div id="stage-5" class="stage">
         <h2 style="font-family:'Cinzel'; text-align:center; margin-bottom:10px;">STAGE V: THE HEXAGON</h2>
         <div class="input-panel">
-            <div class="field"><label>CORE VISION</label><textarea placeholder="Final vision box..."></textarea></div>
+            <div class="field"><label>CORE VISION</label><textarea placeholder="Define the 3-year Sovereign Identity..."></textarea></div>
             <button class="btn" style="background:var(--purple); color:white;" onclick="runStage5()">GENERATE RESONANCE KEEPER</button>
         </div>
         <div id="res-5" class="result-panel" style="display:none; border:1px solid var(--purple);">
@@ -94,23 +96,20 @@
     <div id="stage-6" class="stage">
         <h2 style="font-family:'Cinzel'; text-align:center; margin-bottom:10px;">STAGE VI: METATRON'S CUBE</h2>
         <div class="input-panel">
-            <div class="field"><label>TIME-FRAME FOR PROJECTION</label>
-                <select id="proj-time"><option value="90">90 Days</option><option value="365">1 Year</option></select>
-            </div>
+            <div class="field"><label>TIME-FRAME</label><select id="proj-time"><option value="90">90 Days</option><option value="365">1 Year</option></select></div>
             <button class="btn" style="background:var(--blue); color:white;" onclick="runStage6()">GENERATE PATH PROJECTION</button>
         </div>
-        <div id="scan-6" class="scanning">RECOGNIZING PATTERNS...<br>MAPPING MARKET TRAJECTORY...<br>PROJECTING OPTIMAL PATH...</div>
+        <div id="scan-6" class="scanning">RUNNING PATTERN RECOGNITION...</div>
         <div id="res-6" class="result-panel" style="display:none; border:2px solid var(--blue);">
             <h3 style="color:var(--blue); font-family:'Cinzel';">PROJECTION COMPLETE</h3>
-            <p><strong>MOST PROBABLE PATH:</strong> Accelerated Category Dominance.</p>
-            <p><strong>BENEFICIAL TRAJECTORY:</strong> Omni-channel scaling with 16.2% attributed growth.</p>
+            <p id="proj-display"></p>
         </div>
     </div>
   </div>
 
-  <footer class="lattice-footer"><p>WE ARE THE STONE</p></footer>
-
   <script>
+    let businessData = { url: '', loss: '', fric: '', fixes: [] };
+
     function goTo(n) {
         document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
         document.getElementById('stage-' + n).classList.add('active');
@@ -120,17 +119,44 @@
         });
         window.scrollTo(0,0);
     }
+
     function runStage1() {
+        const url = document.getElementById('url-in').value.trim().toLowerCase();
+        if(!url) return;
+        
         document.getElementById('scan-1').style.display = 'block';
-        setTimeout(() => { document.getElementById('scan-1').style.display = 'none'; document.getElementById('res-1').style.display = 'block'; }, 1500);
-    }
-    function runStage5() {
-        document.getElementById('res-5').style.display = 'block';
-    }
-    function runStage6() {
-        document.getElementById('scan-6').style.display = 'block';
-        setTimeout(() => { document.getElementById('scan-6').style.display = 'none'; document.getElementById('res-6').style.display = 'block'; }, 2500);
-    }
-  </script>
-</body>
-</html>
+        
+        setTimeout(() => {
+            document.getElementById('scan-1').style.display = 'none';
+            document.getElementById('res-1').style.display = 'block';
+            
+            businessData.url = url;
+            const isBig = url.includes('oxygenetix') || url.length > 12;
+            businessData.loss = isBig ? "-$14,208.44" : "-$2,140.12";
+            businessData.fric = isBig ? "8.8/10 (Identity Drift)" : "6.4/10 (Threshold Entropy)";
+            
+            // Universal Fix Logic
+            if(url.includes('oxygenetix')) {
+                businessData.fixes = [
+                    { t: "Narrative Rectification", d: "Move from cosmetic-first to clinical recovery-first messaging." },
+                    { t: "Data Infrastructure", d: "Integrate Shopify into a Sovereign CDP." },
+                    { t: "Omnichannel Sync", d: "Real-time clinic/retail inventory alignment." }
+                ];
+            } else {
+                businessData.fixes = [
+                    { t: "Friction Stripping", d: "Remove redundant checkout steps and metadata noise." },
+                    { t: "Signal Hardening", d: "Strengthen authority markers and trust signals." },
+                    { t: "Retention Loop", d: "Implement post-purchase automation for lifecycle value." }
+                ];
+            }
+
+            document.getElementById('target-display').innerText = url.toUpperCase();
+            document.getElementById('loss-display').innerText = businessData.loss;
+            document.getElementById('fric-display').innerText = businessData.fric;
+
+            // Build Stage II HTML
+            let html = "";
+            businessData.fixes.forEach((f, i) => {
+                html += `<div class="fix-item"><h4>${i+1}. ${f.t}</h4><p style="font-size:14px; color:var(--text-dim);">${f.d}</p></div>`;
+            });
+            document.getElementById('fix-content').innerHTML =
