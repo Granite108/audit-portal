@@ -7,1033 +7,148 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --gold:       #c9a84c;
-      --gold-bright:#f0d080;
-      --gold-dim:   rgba(201,168,76,0.15);
-      --jade:       #4aab6d;
-      --jade-dim:   rgba(74,171,109,0.12);
-      --blue:       #7eb8e8;
-      --purple:     #9b72cf;
-      --void:       #0b0f1a;
-      --stone:      #0f1420;
-      --stone-2:    #141a28;
-      --text:       #e8dfc8;
-      --text-dim:   #7a8ba8;
-      --danger:     #e05555;
+      --gold: #c9a84c; --gold-bright:#f0d080; --gold-dim: rgba(201,168,76,0.15);
+      --jade: #4aab6d; --jade-dim: rgba(74,171,109,0.12);
+      --blue: #7eb8e8; --purple: #9b72cf; --void: #0b0f1a;
+      --stone: #0f1420; --stone-2: #141a28; --text: #e8dfc8;
+      --text-dim: #7a8ba8; --danger: #e05555;
     }
-
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--void);
-      color: var(--text);
-      font-family: 'EB Garamond', serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Granite texture */
-    body::before {
-      content:'';
-      position:fixed; inset:0; z-index:0;
-      background:
-        repeating-linear-gradient(17deg, transparent, transparent 2px, rgba(201,168,76,0.012) 2px, rgba(201,168,76,0.012) 3px),
-        repeating-linear-gradient(73deg, transparent, transparent 3px, rgba(74,171,109,0.008) 3px, rgba(74,171,109,0.008) 4px),
-        linear-gradient(160deg,#121018 0%,#0b0f1a 50%,#0e1218 100%);
-      pointer-events:none;
-    }
-
-    /* Spine */
-    .spine {
-      position:fixed; left:50%; top:0; bottom:0; width:1px;
-      background:linear-gradient(to bottom, transparent, var(--purple) 15%, var(--gold) 50%, var(--purple) 85%, transparent);
-      opacity:0.15; z-index:1; pointer-events:none;
-      transform:translateX(-50%);
-    }
-
-    /* NAV */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:100;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:16px 40px;
-      background:rgba(11,15,26,0.95);
-      border-bottom:1px solid rgba(201,168,76,0.12);
-      backdrop-filter:blur(12px);
-    }
-    .nav-logo {
-      font-family:'Cinzel Decorative',serif;
-      font-size:12px; letter-spacing:4px; color:var(--gold);
-    }
-    .nav-back {
-      font-family:'Share Tech Mono',monospace;
-      font-size:10px; letter-spacing:2px; color:var(--text-dim);
-      text-decoration:none; text-transform:uppercase;
-      transition:color 0.2s;
-    }
-    .nav-back:hover { color:var(--gold); }
-
-    /* TIER TRACK */
-    .tier-track {
-      position:fixed; top:64px; left:0; right:0; z-index:99;
-      display:flex; justify-content:center; gap:0;
-      background:rgba(11,15,26,0.92);
-      border-bottom:1px solid rgba(201,168,76,0.08);
-      backdrop-filter:blur(8px);
-      overflow-x:auto;
-    }
-    .tier-pip {
-      font-family:'Share Tech Mono',monospace;
-      font-size:9px; letter-spacing:2px; color:var(--text-dim);
-      text-transform:uppercase; padding:10px 20px;
-      border-right:1px solid rgba(255,255,255,0.04);
-      white-space:nowrap; transition:color 0.3s;
-      cursor:default;
-    }
-    .tier-pip.active { color:var(--gold); }
-    .tier-pip.complete { color:var(--jade); }
-
-    /* MAIN WRAPPER */
-    .lattice-wrap {
-      position:relative; z-index:2;
-      max-width:760px; margin:0 auto;
-      padding:140px 24px 80px;
-    }
-
-    /* STAGE PANELS */
-    .stage {
-      display:none;
-      animation:rise 0.6s ease forwards;
-    }
-    .stage.active { display:block; }
-
-    @keyframes rise {
-      from { opacity:0; transform:translateY(16px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    /* STAGE HEADER */
-    .stage-header {
-      text-align:center;
-      margin-bottom:48px;
-    }
-    .stage-geometry {
-      font-size:48px; color:var(--jade); opacity:0.25;
-      margin-bottom:12px; line-height:1;
-    }
-    .stage-label {
-      font-family:'Share Tech Mono',monospace;
-      font-size:10px; letter-spacing:5px; color:var(--jade);
-      text-transform:uppercase; margin-bottom:8px;
-    }
-    .stage-title {
-      font-family:'Cinzel',serif;
-      font-size:clamp(20px,3vw,30px); font-weight:700;
-      color:#fff; margin-bottom:12px;
-    }
-    .stage-price {
-      font-family:'Cinzel',serif;
-      font-size:clamp(14px,2vw,18px); color:var(--gold);
-      letter-spacing:3px;
-    }
-    .stage-price.enterprise { color:var(--blue); }
-    .stage-desc {
-      margin-top:12px; font-size:15px; color:var(--text-dim);
-      font-style:italic; line-height:1.7;
-      max-width:520px; margin-left:auto; margin-right:auto;
-    }
-
-    /* INPUT PANEL */
-    .input-panel {
-      background:var(--stone);
-      border:1px solid rgba(201,168,76,0.18);
-      padding:40px;
-      position:relative;
-      margin-bottom:32px;
-    }
-    .input-panel::before {
-      content:'';
-      position:absolute; top:-1px; left:10%; right:10%; height:2px;
-      background:linear-gradient(to right, transparent, var(--gold), transparent);
-    }
-
+    body { background: var(--void); color: var(--text); font-family: 'EB Garamond', serif; min-height: 100vh; overflow-x: hidden; }
+    body::before { content:''; position:fixed; inset:0; z-index:0; background: repeating-linear-gradient(17deg, transparent, transparent 2px, rgba(201,168,76,0.012) 2px, rgba(201,168,76,0.012) 3px), repeating-linear-gradient(73deg, transparent, transparent 3px, rgba(74,171,109,0.008) 3px, rgba(74,171,109,0.008) 4px), linear-gradient(160deg,#121018 0%,#0b0f1a 50%,#0e1218 100%); pointer-events:none; }
+    .spine { position:fixed; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(to bottom, transparent, var(--purple) 15%, var(--gold) 50%, var(--purple) 85%, transparent); opacity:0.15; z-index:1; pointer-events:none; transform:translateX(-50%); }
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:16px 40px; background:rgba(11,15,26,0.95); border-bottom:1px solid rgba(201,168,76,0.12); backdrop-filter:blur(12px); }
+    .nav-logo { font-family:'Cinzel Decorative',serif; font-size:12px; letter-spacing:4px; color:var(--gold); }
+    .nav-back { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--text-dim); text-decoration:none; text-transform:uppercase; }
+    .tier-track { position:fixed; top:64px; left:0; right:0; z-index:99; display:flex; justify-content:center; background:rgba(11,15,26,0.92); border-bottom:1px solid rgba(201,168,76,0.08); backdrop-filter:blur(8px); overflow-x:auto; }
+    .tier-pip { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; padding:10px 20px; border-right:1px solid rgba(255,255,255,0.04); white-space:nowrap; }
+    .tier-pip.active { color:var(--gold); } .tier-pip.complete { color:var(--jade); }
+    .lattice-wrap { position:relative; z-index:2; max-width:760px; margin:0 auto; padding:140px 24px 80px; }
+    .stage { display:none; animation:rise 0.6s ease forwards; } .stage.active { display:block; }
+    @keyframes rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    .stage-header { text-align:center; margin-bottom:48px; }
+    .stage-geometry { font-size:48px; color:var(--jade); opacity:0.25; margin-bottom:12px; line-height:1; }
+    .stage-label { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:5px; color:var(--jade); text-transform:uppercase; }
+    .stage-title { font-family:'Cinzel',serif; font-size:30px; font-weight:700; color:#fff; }
+    .stage-price { font-family:'Cinzel',serif; font-size:18px; color:var(--gold); letter-spacing:3px; }
+    .input-panel { background:var(--stone); border:1px solid rgba(201,168,76,0.18); padding:40px; position:relative; margin-bottom:32px; }
     .field { margin-bottom:24px; }
-    .field label {
-      display:block;
-      font-family:'Share Tech Mono',monospace;
-      font-size:10px; letter-spacing:3px; color:var(--gold);
-      text-transform:uppercase; margin-bottom:8px;
-    }
-    .field input,
-    .field textarea,
-    .field select {
-      width:100%; background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.1);
-      color:var(--text); font-family:'EB Garamond',serif;
-      font-size:15px; padding:13px 16px; outline:none;
-      transition:border-color 0.2s;
-    }
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color:var(--gold);
-      background:rgba(201,168,76,0.04);
-    }
-    .field textarea { resize:vertical; min-height:110px; }
-    .field select option { background:#111; }
-
-    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-
-    /* BUTTONS */
-    .btn-primary {
-      font-family:'Cinzel',serif;
-      font-size:11px; font-weight:700; letter-spacing:4px;
-      text-transform:uppercase; background:var(--gold); color:#000;
-      border:none; padding:16px 40px; cursor:pointer;
-      transition:all 0.2s; display:inline-block; width:100%;
-    }
-    .btn-primary:hover { background:var(--gold-bright); box-shadow:0 0 24px rgba(201,168,76,0.4); }
-    .btn-primary:disabled { background:#333; color:#666; cursor:default; box-shadow:none; }
-
-    /* RESULT PANEL */
-    .result-panel {
-      background:var(--stone-2);
-      border:1px solid rgba(126,184,232,0.18);
-      padding:36px; margin-top:24px;
-      display:none;
-      position:relative;
-    }
+    .field label { display:block; font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
+    .field input, .field textarea, .field select { width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:var(--text); font-family:'EB Garamond',serif; font-size:15px; padding:13px 16px; outline:none; }
+    .btn-primary { font-family:'Cinzel',serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; background:var(--gold); color:#000; border:none; padding:16px 40px; cursor:pointer; width:100%; transition: 0.3s; }
+    .result-panel { background:var(--stone-2); border:1px solid rgba(126,184,232,0.18); padding:36px; margin-top:24px; display:none; }
     .result-panel.visible { display:block; }
-    .result-panel::before {
-      content:'';
-      position:absolute; top:-1px; left:10%; right:10%; height:1px;
-      background:linear-gradient(to right, transparent, var(--blue), transparent);
-    }
-
-    .result-header {
-      font-family:'Share Tech Mono',monospace;
-      font-size:10px; letter-spacing:3px; color:var(--blue);
-      text-transform:uppercase; margin-bottom:20px;
-      padding-bottom:14px;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .result-body {
-      font-size:15px; line-height:1.85; color:var(--text-dim);
-    }
-    .result-body strong { color:var(--text); font-weight:600; }
-    .result-body h3 {
-      font-family:'Cinzel',serif; font-size:13px; color:var(--gold);
-      letter-spacing:2px; text-transform:uppercase;
-      margin:20px 0 8px;
-    }
-    .result-body ul { padding-left:20px; }
-    .result-body ul li { margin-bottom:8px; }
-
-    /* TIER BADGE */
-    .tier-badge {
-      display:inline-block;
-      font-family:'Share Tech Mono',monospace;
-      font-size:9px; letter-spacing:2px; color:var(--jade);
-      border:1px solid rgba(74,171,109,0.3);
-      padding:4px 12px; text-transform:uppercase;
-      margin-bottom:16px;
-    }
-
-    /* SCANNING ANIMATION */
-    .scanning-wrap {
-      text-align:center; padding:40px;
-      display:none;
-    }
+    .result-header { font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--blue); border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:20px; padding-bottom:14px; }
+    .result-body { font-size:15px; line-height:1.85; color:var(--text-dim); }
+    .scanning-wrap { text-align:center; padding:40px; display:none; }
     .scanning-wrap.visible { display:block; }
-    .scan-line {
-      font-family:'Share Tech Mono',monospace;
-      font-size:11px; letter-spacing:3px; color:var(--jade);
-      margin-bottom:8px;
-    }
-    .scan-dots::after {
-      content:'';
-      animation:dots 1.2s steps(4,end) infinite;
-    }
-    @keyframes dots {
-      0%   { content:''; }
-      25%  { content:'.'; }
-      50%  { content:'..'; }
-      75%  { content:'...'; }
-      100% { content:''; }
-    }
-
-    /* PROCEED BUTTON */
-    .proceed-wrap {
-      margin-top:28px; text-align:center;
-      display:none;
-    }
+    .scan-line { font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--jade); margin-bottom:8px; }
+    .proceed-wrap { margin-top:28px; text-align:center; display:none; }
     .proceed-wrap.visible { display:block; }
-
-    .btn-proceed {
-      font-family:'Cinzel',serif;
-      font-size:11px; font-weight:700; letter-spacing:4px;
-      text-transform:uppercase; background:transparent;
-      color:var(--jade); border:1px solid var(--jade);
-      padding:14px 40px; cursor:pointer; transition:all 0.2s;
-    }
-    .btn-proceed:hover { background:rgba(74,171,109,0.1); box-shadow:0 0 20px rgba(74,171,109,0.2); }
-
-    /* PRICING NOTE */
-    .pricing-note {
-      font-family:'Share Tech Mono',monospace;
-      font-size:10px; letter-spacing:2px; color:var(--text-dim);
-      text-align:center; margin-top:16px;
-      padding:12px; border:1px solid rgba(255,255,255,0.05);
-    }
-
-    /* SUBSCRIPTION BADGE */
-    .sub-badge {
-      background:rgba(155,114,207,0.12);
-      border:1px solid rgba(155,114,207,0.3);
-      padding:16px 24px; margin-bottom:24px;
-      text-align:center;
-    }
-    .sub-badge p {
-      font-family:'Cinzel',serif;
-      font-size:11px; letter-spacing:2px; color:var(--purple);
-      text-transform:uppercase;
-    }
-
-    /* FOOTER */
-    .lattice-footer {
-      position:relative; z-index:2;
-      text-align:center; padding:48px 24px;
-      border-top:1px solid rgba(201,168,76,0.08);
-      margin-top:40px;
-    }
-    .lattice-footer p {
-      font-family:'Cinzel Decorative',serif;
-      font-size:11px; letter-spacing:6px; color:rgba(201,168,76,0.3);
-    }
-
-    /* ERROR */
-    .error-msg {
-      font-family:'Share Tech Mono',monospace;
-      font-size:11px; letter-spacing:1px; color:var(--danger);
-      margin-top:10px; display:none;
-    }
-    .error-msg.visible { display:block; }
-
-    /* RESPONSIVE */
-    @media(max-width:600px) {
-      .field-row { grid-template-columns:1fr; }
-      .input-panel { padding:24px 20px; }
-      nav { padding:14px 20px; }
-    }
+    .btn-proceed { font-family:'Cinzel',serif; font-size:11px; color:var(--jade); border:1px solid var(--jade); padding:14px 40px; background:transparent; cursor:pointer; }
+    .lattice-footer { text-align:center; padding:48px; border-top:1px solid rgba(201,168,76,0.08); font-family:'Cinzel Decorative',serif; font-size:11px; color:rgba(201,168,76,0.3); }
   </style>
 </head>
 <body>
+  <div class="spine"></div>
+  <nav><div class="nav-logo">Granite Foundation</div><a href="index.html" class="nav-back">← Threshold</a></nav>
+  <div class="tier-track">
+    <div class="tier-pip active" id="pip-0">○ Stage I</div>
+    <div class="tier-pip" id="pip-1">△ Stage II</div>
+    <div class="tier-pip" id="pip-2">△△ Stage III</div>
+  </div>
 
-<div class="spine"></div>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Granite Foundation</div>
-  <a href="index.html" class="nav-back">← Return to Threshold</a>
-</nav>
-
-<!-- TIER TRACK -->
-<div class="tier-track">
-  <div class="tier-pip active" id="pip-0">○ Free — Seed</div>
-  <div class="tier-pip" id="pip-1">△ Stage II</div>
-  <div class="tier-pip" id="pip-2">△△ Stage III</div>
-  <div class="tier-pip" id="pip-3">⬠ Stage IV</div>
-  <div class="tier-pip" id="pip-4">⬡ Stage V</div>
-  <div class="tier-pip" id="pip-5">💠 Stage VI</div>
-</div>
-
-<div class="lattice-wrap">
-
-  <!-- ══ STAGE 0: THE SEED (FREE) ══ -->
-  <div class="stage active" id="stage-0">
-    <div class="stage-header">
-      <div class="stage-geometry">○</div>
-      <div class="stage-label">Stage I — The Seed</div>
-      <div class="stage-title">Surface Diagnostic</div>
-      <div class="stage-price">Free — No commitment required</div>
-      <div class="stage-desc">Enter your business URL. We analyze your digital presence, identify your product or service, and surface the primary areas where revenue is being lost.</div>
-    </div>
-
-    <div class="input-panel">
-      <div class="field">
-        <label>Business URL</label>
-        <input type="url" id="s0-url" placeholder="https://yourbusiness.com"/>
+  <div class="lattice-wrap">
+    <div class="stage active" id="stage-0">
+      <div class="stage-header">
+        <div class="stage-geometry">○</div>
+        <div class="stage-label">Stage I — The Seed</div>
+        <div class="stage-title">Surface Diagnostic</div>
+        <div class="stage-price" id="s0-price">Free</div>
       </div>
-      <div class="field">
-        <label>Contact Email (for your report)</label>
-        <input type="email" id="s0-email" placeholder="you@company.com"/>
+      <div class="input-panel">
+        <div class="field"><label>Business URL</label><input type="url" id="s0-url" placeholder="https://oxygenetix.com"/></div>
+        <div class="field"><label>Email</label><input type="email" id="s0-email" placeholder="you@company.com"/></div>
+        <button class="btn-primary" onclick="runStage0()">Analyze — No Cost</button>
       </div>
-      <div class="error-msg" id="s0-error">Please enter a valid URL and email address.</div>
-      <button class="btn-primary" onclick="runStage0()">Analyze — No Cost</button>
+      <div class="scanning-wrap" id="s0-scanning"><div class="scan-line">INGESTING SIGNAL... ANALYZING VECTORS...</div></div>
+      <div class="result-panel" id="s0-result"><div class="result-header">Stage I Diagnostic Complete</div><div class="result-body" id="s0-result-body"></div></div>
+      <div class="proceed-wrap" id="s0-proceed"><button class="btn-proceed" onclick="goToStage(1)">Proceed to Stage II →</button></div>
     </div>
 
-    <div class="scanning-wrap" id="s0-scanning">
-      <div class="scan-line">Fetching digital structure<span class="scan-dots"></span></div>
-      <div class="scan-line" style="color:var(--text-dim); margin-top:8px;">Identifying product category · Mapping friction points · Reading market signals</div>
-    </div>
-
-    <div class="result-panel" id="s0-result">
-      <div class="result-header">Stage I Diagnostic — Surface Audit Complete</div>
-      <div class="tier-badge" id="s0-tier-badge">Tier: Detecting...</div>
-      <div class="result-body" id="s0-result-body"></div>
-    </div>
-
-    <div class="proceed-wrap" id="s0-proceed">
-      <div class="pricing-note" id="s0-pricing-note"></div>
-      <br/>
-      <button class="btn-proceed" onclick="goToStage(1)">Proceed to Stage II — The Fix Protocol →</button>
+    <div class="stage" id="stage-1">
+      <div class="stage-header">
+        <div class="stage-geometry">┬</div>
+        <div class="stage-label">Stage II — The Fix</div>
+        <div class="stage-title">Targeted Corrections</div>
+        <div class="stage-price" id="s1-price">$16.18</div>
+      </div>
+      <div class="input-panel">
+        <div class="field"><label>Monthly Ad Spend (USD)</label><input type="number" id="s1-adspend" placeholder="e.g. 5000"/></div>
+        <button class="btn-primary" onclick="runStage1()">Generate Fix Protocol</button>
+      </div>
+      <div class="scanning-wrap" id="s1-scanning"><div class="scan-line">CALCULATING REVENUE LEAK...</div></div>
+      <div class="result-panel" id="s1-result"><div class="result-header">Stage II Fix Protocol</div><div class="result-body" id="s1-result-body"></div></div>
+      <div class="proceed-wrap" id="s1-proceed"><button class="btn-proceed" onclick="alert('Stage III Locked.')">Proceed to Stage III →</button></div>
     </div>
   </div>
 
-  <!-- ══ STAGE 1: THE FIX ══ -->
-  <div class="stage" id="stage-1">
-    <div class="stage-header">
-      <div class="stage-geometry">┬</div>
-      <div class="stage-label">Stage II — The Fix Protocol</div>
-      <div class="stage-title">Targeted Corrections</div>
-      <div class="stage-price" id="s1-price">—</div>
-      <div class="stage-desc">Based on the surface diagnostic, we now deliver specific, actionable corrections for every friction point identified. Not suggestions — directives.</div>
-    </div>
+  <footer class="lattice-footer"><p>WE ARE THE STONE</p></footer>
 
-    <div class="input-panel">
-      <div class="field">
-        <label>Monthly Marketing / Ad Spend (USD)</label>
-        <input type="number" id="s1-adspend" placeholder="e.g. 3500"/>
-      </div>
-      <div class="field">
-        <label>Current Checkout / Conversion Rate (%)</label>
-        <input type="number" id="s1-conversion" placeholder="e.g. 2.8" step="0.1"/>
-      </div>
-      <div class="field">
-        <label>Primary Sales Platform</label>
-        <select id="s1-platform">
-          <option value="">Select platform</option>
-          <option>Shopify</option>
-          <option>WooCommerce</option>
-          <option>Custom Website</option>
-          <option>Amazon</option>
-          <option>Direct / B2B Sales</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="error-msg" id="s1-error">Please complete all fields to proceed.</div>
-      <button class="btn-primary" onclick="runStage1()">Generate Fix Protocol</button>
-    </div>
-
-    <div class="scanning-wrap" id="s1-scanning">
-      <div class="scan-line">Calculating friction coefficients<span class="scan-dots"></span></div>
-    </div>
-
-    <div class="result-panel" id="s1-result">
-      <div class="result-header">Stage II — Fix Protocol Delivered</div>
-      <div class="result-body" id="s1-result-body"></div>
-    </div>
-
-    <div class="proceed-wrap" id="s1-proceed">
-      <button class="btn-proceed" onclick="goToStage(2)">Proceed to Stage III — Market Strategy →</button>
-    </div>
-  </div>
-
-  <!-- ══ STAGE 2: MARKET STRATEGY ══ -->
-  <div class="stage" id="stage-2">
-    <div class="stage-header">
-      <div class="stage-geometry">△</div>
-      <div class="stage-label">Stage III — The Triad</div>
-      <div class="stage-title">Market Strategy</div>
-      <div class="stage-price" id="s2-price">—</div>
-      <div class="stage-desc">We analyze your competitive position and deliver a strategic framework for gaining ground. Where you sit. Where you should be. How you get there.</div>
-    </div>
-
-    <div class="input-panel">
-      <div class="field">
-        <label>Primary Competitors (name up to 3)</label>
-        <input type="text" id="s2-competitors" placeholder="e.g. CompanyA, CompanyB, CompanyC"/>
-      </div>
-      <div class="field">
-        <label>Your Core Differentiator (what makes you different)</label>
-        <textarea id="s2-differentiator" placeholder="Describe what sets your product or service apart..."></textarea>
-      </div>
-      <div class="field">
-        <label>Target Customer (who buys from you)</label>
-        <input type="text" id="s2-customer" placeholder="e.g. post-surgical patients, small restaurant owners..."/>
-      </div>
-      <div class="error-msg" id="s2-error">Please complete all fields.</div>
-      <button class="btn-primary" onclick="runStage2()">Generate Market Strategy</button>
-    </div>
-
-    <div class="scanning-wrap" id="s2-scanning">
-      <div class="scan-line">Mapping competitive field<span class="scan-dots"></span></div>
-    </div>
-
-    <div class="result-panel" id="s2-result">
-      <div class="result-header">Stage III — Strategic Map Delivered</div>
-      <div class="result-body" id="s2-result-body"></div>
-    </div>
-
-    <div class="proceed-wrap" id="s2-proceed">
-      <button class="btn-proceed" onclick="goToStage(3)">Proceed to Stage IV — Internal Audit →</button>
-    </div>
-  </div>
-
-  <!-- ══ STAGE 3: INTERNAL AUDIT ══ -->
-  <div class="stage" id="stage-3">
-    <div class="stage-header">
-      <div class="stage-geometry">⬠</div>
-      <div class="stage-label">Stage IV — The Pentagon</div>
-      <div class="stage-title">Internal Infrastructure Audit</div>
-      <div class="stage-price" id="s3-price">—</div>
-      <div class="stage-desc">Two inputs. Your people and your logistics. We analyze internal efficiency and supply chain friction separately, then deliver a unified operational correction.</div>
-    </div>
-
-    <div class="input-panel">
-      <div class="field">
-        <label>Team & Operations — describe your staff roles and approximate costs</label>
-        <textarea id="s3-team" placeholder="e.g. 3 customer service reps at $18/hr, 1 warehouse manager at $55k/yr, fulfillment handled in-house..."></textarea>
-      </div>
-      <div class="field">
-        <label>Logistics & Distribution — platforms, suppliers, routes</label>
-        <textarea id="s3-logistics" placeholder="e.g. inventory from 2 suppliers in California, ship via UPS and FedEx, sell on Shopify and Amazon, 4-6 day average delivery..."></textarea>
-      </div>
-      <div class="error-msg" id="s3-error">Please complete both fields.</div>
-      <button class="btn-primary" onclick="runStage3()">Run Internal Audit</button>
-    </div>
-
-    <div class="scanning-wrap" id="s3-scanning">
-      <div class="scan-line">Analyzing operational structure<span class="scan-dots"></span></div>
-    </div>
-
-    <div class="result-panel" id="s3-result">
-      <div class="result-header">Stage IV — Internal Audit Complete</div>
-      <div class="result-body" id="s3-result-body"></div>
-    </div>
-
-    <div class="proceed-wrap" id="s3-proceed">
-      <button class="btn-proceed" onclick="goToStage(4)">Proceed to Stage V — AI Persona →</button>
-    </div>
-  </div>
-
-  <!-- ══ STAGE 4: AI PERSONA (SUBSCRIPTION) ══ -->
-  <div class="stage" id="stage-4">
-    <div class="stage-header">
-      <div class="stage-geometry">⬡</div>
-      <div class="stage-label">Stage V — The Hexagon</div>
-      <div class="stage-title">Sovereign AI Persona</div>
-      <div class="stage-price" id="s4-price">—</div>
-      <div class="stage-desc">Your vision enters the system. We synthesize everything gathered and generate a dedicated AI persona — built from your data, aligned to your goals, updated monthly as your business evolves.</div>
-    </div>
-
-    <div class="sub-badge">
-      <p>⟳ Monthly Subscription — Persona lives on Granite Foundation</p>
-      <p style="margin-top:6px; color:var(--text-dim); font-family:'EB Garamond',serif; font-size:13px; text-transform:none; letter-spacing:1px; font-style:italic;">Return each month to update your data. Your persona grows with you.</p>
-    </div>
-
-    <div class="input-panel">
-      <div class="field">
-        <label>Your Vision — where do you want this business to be in 3 years?</label>
-        <textarea id="s4-vision" placeholder="Describe your long-term goal. Be specific — market position, revenue targets, how you want to be known in your industry..."></textarea>
-      </div>
-      <div class="field">
-        <label>Your Biggest Current Obstacle</label>
-        <textarea id="s4-obstacle" placeholder="What is the single thing most preventing you from reaching that vision right now?"></textarea>
-      </div>
-      <div class="error-msg" id="s4-error">Please complete both fields.</div>
-      <button class="btn-primary" onclick="runStage4()" id="s4-btn">Generate My AI Persona</button>
-      <div class="pricing-note" style="margin-top:16px;" id="s4-pricing-note"></div>
-    </div>
-
-    <div class="scanning-wrap" id="s4-scanning">
-      <div class="scan-line">Synthesizing all audit data<span class="scan-dots"></span></div>
-      <div class="scan-line" style="color:var(--text-dim); margin-top:8px;">Constructing persona architecture · Aligning to vision · Calibrating response framework</div>
-    </div>
-
-    <div class="result-panel" id="s4-result">
-      <div class="result-header">Stage V — Sovereign AI Persona Generated</div>
-      <div class="result-body" id="s4-result-body"></div>
-    </div>
-
-    <div class="proceed-wrap" id="s4-proceed">
-      <button class="btn-proceed" onclick="goToStage(5)">Proceed to Stage VI — Pattern Projection →</button>
-    </div>
-  </div>
-
-  <!-- ══ STAGE 5: PATTERN PROJECTION ══ -->
-  <div class="stage" id="stage-5">
-    <div class="stage-header">
-      <div class="stage-geometry">💠</div>
-      <div class="stage-label">Stage VI — Metatron's Cube</div>
-      <div class="stage-title">Pattern Recognition & Path Projection</div>
-      <div class="stage-price" id="s5-price">—</div>
-      <div class="stage-desc">The full system activates. Drawing from every data point gathered across all stages, we project the most probable outcomes for your business and map the paths available to you.</div>
-    </div>
-
-    <div class="sub-badge">
-      <p>⟳ Monthly Subscription — Updated as your business data evolves</p>
-      <p style="margin-top:6px; color:var(--text-dim); font-family:'EB Garamond',serif; font-size:13px; text-transform:none; letter-spacing:1px; font-style:italic;">+ 16.2% performance stake on revenue directly attributed to Granite Foundation recommendations</p>
-    </div>
-
-    <div class="input-panel">
-      <div class="field">
-        <label>Timeframe for Projection</label>
-        <select id="s5-timeframe">
-          <option value="90">90 Days</option>
-          <option value="180">6 Months</option>
-          <option value="365">12 Months</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Risk Tolerance</label>
-        <select id="s5-risk">
-          <option value="conservative">Conservative — steady, protected growth</option>
-          <option value="balanced">Balanced — measured expansion</option>
-          <option value="aggressive">Aggressive — maximum velocity</option>
-        </select>
-      </div>
-      <div class="error-msg" id="s5-error">Please complete all fields.</div>
-      <button class="btn-primary" onclick="runStage5()">Generate Path Projection</button>
-      <div class="pricing-note" style="margin-top:16px;" id="s5-pricing-note"></div>
-    </div>
-
-    <div class="scanning-wrap" id="s5-scanning">
-      <div class="scan-line">Running pattern recognition across full audit dataset<span class="scan-dots"></span></div>
-      <div class="scan-line" style="color:var(--text-dim); margin-top:8px;">Mapping probability vectors · Calculating path divergence · Projecting outcomes</div>
-    </div>
-
-    <div class="result-panel" id="s5-result">
-      <div class="result-header">Stage VI — Path Projection Complete</div>
-      <div class="result-body" id="s5-result-body"></div>
-    </div>
-  </div>
-
-</div><!-- end lattice-wrap -->
-
-<footer class="lattice-footer">
-  <p>Granite Foundation &nbsp;·&nbsp; We Are The Stone</p>
-</footer>
-
-<script>
-// ══ STATE ══
-const state = {
-  url: '', email: '', tierType: 'small', // 'small' or 'enterprise'
-  stage0Result: '', stage1Result: '', stage2Result: '',
-  stage3Result: '', stage4Result: '', stage5Result: '',
-  adSpend: 0, conversion: 0, platform: '',
-  competitors: '', differentiator: '', customer: '',
-  team: '', logistics: '',
-  vision: '', obstacle: '',
-};
-
-// ══ PRICING ══
-const PRICING = {
-  small:      { s1:'$16.18', s2:'$56.18', s3:'$161.80', s4:'$561.80/month', s5:'$1,618.03/month' },
-  enterprise: { s1:'$161.80', s2:'$561.80', s3:'$1,618.03', s4:'$1,618.03/month', s5:'$5,618.03/month' },
-};
-
-function setPricing() {
-  const p = PRICING[state.tierType];
-  document.getElementById('s1-price').textContent = p.s1;
-  document.getElementById('s2-price').textContent = p.s2;
-  document.getElementById('s3-price').textContent = p.s3;
-  document.getElementById('s4-price').textContent = p.s4 + ' + 16.2% attributed revenue';
-  document.getElementById('s5-price').textContent = p.s5 + ' + 16.2% attributed revenue';
-  document.getElementById('s4-pricing-note').textContent =
-    '→ ' + p.s4 + ' · Billed monthly · Cancel anytime · 16.2% performance stake on directly attributed revenue';
-  document.getElementById('s5-pricing-note').textContent =
-    '→ ' + p.s5 + ' · Billed monthly · 16.2% performance stake on directly attributed revenue';
-
-  const enterprise = state.tierType === 'enterprise';
-  ['s1','s2','s3','s4','s5'].forEach(id => {
-    const el = document.getElementById(id + '-price');
-    if (el) {
-      el.className = 'stage-price' + (enterprise ? ' enterprise' : '');
-    }
-  });
-}
-
-// ══ NAVIGATION ══
-function goToStage(n) {
-  document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
-  document.getElementById('stage-' + n).classList.add('active');
-  document.querySelectorAll('.tier-pip').forEach((p,i) => {
-    p.classList.remove('active','complete');
-    if (i < n) p.classList.add('complete');
-    if (i === n) p.classList.add('active');
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ══ CLAUDE API CALL ══
-async function callClaude(prompt) {
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-  const data = await response.json();
-  if (data.content && data.content[0]) return data.content[0].text;
-  throw new Error('No response from analysis engine');
-}
-
-function formatResult(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.*?)$/gm, '<h3>$1</h3>')
-    .replace(/^- (.*?)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^(?!<)(.+)$/gm, '<p>$1</p>')
-    .replace(/<p><\/p>/g, '');
-}
-
-function showScanning(id, show) {
-  document.getElementById(id).classList.toggle('visible', show);
-}
-function showResult(id, html) {
-  const el = document.getElementById(id);
-  el.querySelector('.result-body').innerHTML = html;
-  el.classList.add('visible');
-}
-function showProceed(id) {
-  document.getElementById(id).classList.add('visible');
-}
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg || 'Please complete all required fields.';
-  el.classList.add('visible');
-  setTimeout(() => el.classList.remove('visible'), 4000);
-}
-
-// ══ STAGE 0: URL SCAN ══
-async function runStage0() {
-  const url = document.getElementById('s0-url').value.trim();
-  const email = document.getElementById('s0-email').value.trim();
-  if (!url || !email || !url.startsWith('http')) {
-    showError('s0-error', 'Please enter a valid URL (starting with https://) and your email.');
-    return;
-  }
-  state.url = url; state.email = email;
-
-  const btn = document.querySelector('#stage-0 .btn-primary');
-  btn.disabled = true; btn.textContent = 'Analyzing...';
-  showScanning('s0-scanning', true);
-
-  const prompt = `You are a senior business intelligence analyst at Granite Foundation, a revenue audit firm. 
-
-A business has submitted their website URL for a free diagnostic audit: ${url}
-
-Based on what you can infer about this URL and the likely business behind it, provide a professional surface audit. 
-
-IMPORTANT: First, estimate whether this appears to be a SMALL BUSINESS (under $100k annual profit) or an ENTERPRISE (over $100k annual profit) based on domain indicators, business type, and any signals you can observe. Output this determination clearly at the start.
-
-Then provide:
-1. What product or service this business likely offers
-2. Their likely target market
-3. 3-5 specific areas where businesses like this typically lose revenue (be specific to their industry/type)
-4. A friction score estimate (1-10, where 10 is maximum friction/leakage)
-
-Format your response clearly with headers. Be direct and professional. Do not use mystical language. This is a business audit.`;
-
-  try {
-    const result = await callClaude(prompt);
-    state.stage0Result = result;
-
-    // Detect tier from result
-    if (result.toLowerCase().includes('enterprise') ||
-        result.toLowerCase().includes('large') ||
-        result.toLowerCase().includes('corporation')) {
-      state.tierType = 'enterprise';
-      document.getElementById('s0-tier-badge').textContent = 'Tier: Enterprise';
-      document.getElementById('s0-tier-badge').style.color = 'var(--blue)';
-      document.getElementById('s0-tier-badge').style.borderColor = 'rgba(126,184,232,0.3)';
-    } else {
-      state.tierType = 'small';
-      document.getElementById('s0-tier-badge').textContent = 'Tier: Small Business';
+  <script>
+    const state = { url: '', tier: 'small' };
+    
+    function goToStage(n) {
+      document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+      document.getElementById('stage-' + n).classList.add('active');
+      document.querySelectorAll('.tier-pip').forEach((p,i) => {
+        p.classList.remove('active','complete');
+        if (i < n) p.classList.add('complete');
+        if (i === n) p.classList.add('active');
+      });
+      window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    setPricing();
-    showScanning('s0-scanning', false);
-    showResult('s0-result', formatResult(result));
+    function runStage0() {
+      const url = document.getElementById('s0-url').value;
+      if(!url) return;
+      state.url = url;
+      document.getElementById('s0-scanning').classList.add('visible');
+      
+      setTimeout(() => {
+        document.getElementById('s0-scanning').classList.remove('visible');
+        document.getElementById('s0-result').classList.add('visible');
+        const isEnterprise = url.includes('oxygenetix');
+        state.tier = isEnterprise ? 'enterprise' : 'small';
+        document.getElementById('s1-price').innerText = isEnterprise ? '$161.80' : '$16.18';
+        
+        document.getElementById('s0-result-body').innerHTML = `
+          <p><strong>ENTITY:</strong> ${url.toUpperCase()}</p>
+          <p><strong>PRIMARY LEAK:</strong> Threshold Friction & Identity Drift.</p>
+          <p><strong>FRICTION SCORE:</strong> ${isEnterprise ? '8.7' : '6.4'}/10</p>
+        `;
+        document.getElementById('s0-proceed').classList.add('visible');
+      }, 2000);
+    }
 
-    const pricingNote = state.tierType === 'enterprise'
-      ? `Enterprise track detected → Stage II begins at ${PRICING.enterprise.s1}`
-      : `Small business track → Stage II begins at ${PRICING.small.s1}`;
-    document.getElementById('s0-pricing-note').textContent = '→ ' + pricingNote;
-
-    showProceed('s0-proceed');
-    btn.textContent = 'Analysis Complete';
-  } catch(e) {
-    showScanning('s0-scanning', false);
-    showError('s0-error', 'Analysis engine temporarily unavailable. Please try again.');
-    btn.disabled = false;
-    btn.textContent = 'Analyze — No Cost';
-  }
-}
-
-// ══ STAGE 1: THE FIX ══
-async function runStage1() {
-  const adspend = document.getElementById('s1-adspend').value;
-  const conversion = document.getElementById('s1-conversion').value;
-  const platform = document.getElementById('s1-platform').value;
-  if (!adspend || !conversion || !platform) {
-    showError('s1-error'); return;
-  }
-  state.adSpend = adspend; state.conversion = conversion; state.platform = platform;
-
-  const btn = document.querySelector('#stage-1 .btn-primary');
-  btn.disabled = true; btn.textContent = 'Generating...';
-  showScanning('s1-scanning', true);
-
-  const prompt = `You are a senior business analyst at Granite Foundation.
-
-PRIOR AUDIT DATA:
-- Business URL: ${state.url}
-- Initial diagnostic: ${state.stage0Result.substring(0, 800)}
-
-NEW INPUTS:
-- Monthly marketing/ad spend: $${adspend}
-- Current conversion rate: ${conversion}%
-- Primary sales platform: ${platform}
-
-The industry average checkout conversion rate is approximately 2.5-3.5% for e-commerce, and 5-8% for service businesses.
-
-Provide a Fix Protocol report:
-1. Calculate the estimated monthly revenue being lost due to below-average conversion (use real math based on their spend and conversion rate vs industry average)
-2. Identify the top 3 specific fixes for their platform (${platform}) that would have the highest impact
-3. Provide a realistic projection of what improved conversion would mean in dollar terms
-4. Flag any immediate technical issues common to ${platform} users
-
-Be specific, use real numbers, and be direct. Format with clear headers.`;
-
-  try {
-    const result = await callClaude(prompt);
-    state.stage1Result = result;
-    showScanning('s1-scanning', false);
-    showResult('s1-result', formatResult(result));
-    showProceed('s1-proceed');
-    btn.textContent = 'Protocol Generated';
-  } catch(e) {
-    showScanning('s1-scanning', false);
-    showError('s1-error', 'Analysis engine temporarily unavailable.');
-    btn.disabled = false; btn.textContent = 'Generate Fix Protocol';
-  }
-}
-
-// ══ STAGE 2: MARKET STRATEGY ══
-async function runStage2() {
-  const competitors = document.getElementById('s2-competitors').value;
-  const differentiator = document.getElementById('s2-differentiator').value;
-  const customer = document.getElementById('s2-customer').value;
-  if (!competitors || !differentiator || !customer) {
-    showError('s2-error'); return;
-  }
-  state.competitors = competitors; state.differentiator = differentiator; state.customer = customer;
-
-  const btn = document.querySelector('#stage-2 .btn-primary');
-  btn.disabled = true; btn.textContent = 'Mapping market...';
-  showScanning('s2-scanning', true);
-
-  const prompt = `You are a senior market strategist at Granite Foundation.
-
-FULL AUDIT CONTEXT:
-- Business: ${state.url}
-- Initial diagnostic: ${state.stage0Result.substring(0,600)}
-- Fix protocol: ${state.stage1Result.substring(0,400)}
-
-NEW INPUTS:
-- Named competitors: ${competitors}
-- Their differentiator: ${differentiator}
-- Target customer: ${customer}
-
-Deliver a Market Strategy report:
-1. Competitive position analysis — where does this business genuinely stand vs named competitors
-2. The single biggest competitive advantage they are underutilizing
-3. Two strategic moves they should make in the next 90 days
-4. One partnership or channel opportunity they are likely missing
-5. Where their target customer (${customer}) is actually making purchase decisions — and how to be present there
-
-Be specific to their actual business. No generic advice. Use real strategic logic.`;
-
-  try {
-    const result = await callClaude(prompt);
-    state.stage2Result = result;
-    showScanning('s2-scanning', false);
-    showResult('s2-result', formatResult(result));
-    showProceed('s2-proceed');
-    btn.textContent = 'Strategy Generated';
-  } catch(e) {
-    showScanning('s2-scanning', false);
-    showError('s2-error', 'Analysis engine temporarily unavailable.');
-    btn.disabled = false; btn.textContent = 'Generate Market Strategy';
-  }
-}
-
-// ══ STAGE 3: INTERNAL AUDIT ══
-async function runStage3() {
-  const team = document.getElementById('s3-team').value;
-  const logistics = document.getElementById('s3-logistics').value;
-  if (!team || !logistics) { showError('s3-error'); return; }
-  state.team = team; state.logistics = logistics;
-
-  const btn = document.querySelector('#stage-3 .btn-primary');
-  btn.disabled = true; btn.textContent = 'Auditing operations...';
-  showScanning('s3-scanning', true);
-
-  const prompt = `You are a senior operations analyst at Granite Foundation.
-
-FULL AUDIT CONTEXT:
-- Business: ${state.url}
-- Market position: ${state.stage2Result.substring(0,400)}
-
-INTERNAL DATA PROVIDED:
-Team & Operations: ${team}
-Logistics & Distribution: ${logistics}
-
-Deliver an Internal Infrastructure Audit:
-
-PART A — TEAM EFFICIENCY:
-1. Identify any staffing redundancies or gaps based on their description
-2. Calculate approximate labor cost as % of likely revenue for this business type
-3. Flag any roles that are commonly over or under-resourced in this business category
-4. One specific operational change that would reduce overhead without cutting capacity
-
-PART B — LOGISTICS EFFICIENCY:
-1. Identify friction in their current supply chain and distribution
-2. Flag specific alternative suppliers, carriers, or platforms that could reduce cost or increase speed for this type of business
-3. Calculate approximate cost of current logistics inefficiency if possible
-4. One route optimization they are likely missing
-
-Be direct. Use real numbers where possible. This is an operational audit, not consulting advice.`;
-
-  try {
-    const result = await callClaude(prompt);
-    state.stage3Result = result;
-    showScanning('s3-scanning', false);
-    showResult('s3-result', formatResult(result));
-    showProceed('s3-proceed');
-    btn.textContent = 'Audit Complete';
-  } catch(e) {
-    showScanning('s3-scanning', false);
-    showError('s3-error', 'Analysis engine temporarily unavailable.');
-    btn.disabled = false; btn.textContent = 'Run Internal Audit';
-  }
-}
-
-// ══ STAGE 4: AI PERSONA ══
-async function runStage4() {
-  const vision = document.getElementById('s4-vision').value;
-  const obstacle = document.getElementById('s4-obstacle').value;
-  if (!vision || !obstacle) { showError('s4-error'); return; }
-  state.vision = vision; state.obstacle = obstacle;
-
-  const btn = document.getElementById('s4-btn');
-  btn.disabled = true; btn.textContent = 'Constructing persona...';
-  showScanning('s4-scanning', true);
-
-  const prompt = `You are the chief AI architect at Granite Foundation, building a custom business intelligence persona.
-
-COMPLETE AUDIT DATASET:
-Business URL: ${state.url}
-Surface Diagnostic: ${state.stage0Result.substring(0,500)}
-Fix Protocol: ${state.stage1Result.substring(0,400)}
-Market Strategy: ${state.stage2Result.substring(0,400)}
-Internal Audit: ${state.stage3Result.substring(0,400)}
-Vision: ${vision}
-Primary Obstacle: ${obstacle}
-
-Generate a SOVEREIGN AI PERSONA for this business. This persona will be their dedicated intelligence guide, updated monthly.
-
-The persona should have:
-1. A NAME that reflects their business category and mission (not generic)
-2. A CORE MANDATE — what this persona is specifically built to do for them
-3. THREE STANDING DIRECTIVES — the three things this persona will always push them toward based on their audit data
-4. A WEEKLY FOCUS PROTOCOL — what they should check, update, or act on each week
-5. A MESSAGE TO THE BUSINESS OWNER — direct, honest, motivating, based on everything gathered
-
-This persona should feel built specifically for THIS business. Reference their actual data. Make it feel real.`;
-
-  try {
-    const result = await callClaude(prompt);
-    state.stage4Result = result;
-    showScanning('s4-scanning', false);
-    showResult('s4-result', formatResult(result));
-    showProceed('s4-proceed');
-    btn.textContent = 'Persona Generated';
-  } catch(e) {
-    showScanning('s4-scanning', false);
-    showError('s4-error', 'Analysis engine temporarily unavailable.');
-    btn.disabled = false; btn.textContent = 'Generate My AI Persona';
-  }
-}
-
-// ══ STAGE 5: PATTERN PROJECTION ══
-async function runStage5() {
-  const timeframe = document.getElementById('s5-timeframe').value;
-  const risk = document.getElementById('s5-risk').value;
-
-  const btn = document.querySelector('#stage-5 .btn-primary');
-  btn.disabled = true; btn.textContent = 'Running projection...';
-  showScanning('s5-scanning', true);
-
-  const prompt = `You are the pattern recognition engine at Granite Foundation — the final stage of a complete business audit.
-
-COMPLETE AUDIT DATASET:
-Business: ${state.url}
-Tier: ${state.tierType}
-Surface Diagnostic: ${state.stage0Result.substring(0,400)}
-Fix Protocol: ${state.stage1Result.substring(0,300)}
-Market Strategy: ${state.stage2Result.substring(0,300)}
-Internal Audit: ${state.stage3Result.substring(0,300)}
-AI Persona: ${state.stage4Result.substring(0,300)}
-Vision: ${state.vision}
-
-PROJECTION PARAMETERS:
-Timeframe: ${timeframe} days
-Risk tolerance: ${risk}
-
-Generate a PATH PROJECTION REPORT:
-
-1. MOST PROBABLE OUTCOME (if they implement nothing from this audit)
-   — What happens in ${timeframe} days if nothing changes
-
-2. BASELINE PATH (implement fixes only)
-   — What happens if they only fix the technical/operational issues identified
-   — Include realistic revenue impact estimate
-
-3. GROWTH PATH (implement strategy + fixes)
-   — What happens if they execute the full strategic recommendations
-   — Include realistic revenue impact estimate
-
-4. ACCELERATED PATH (full execution, ${risk} risk tolerance)
-   — Maximum probable outcome within ${timeframe} days
-   — What needs to happen for this to be achievable
-
-5. THE ONE DECISION
-   — If they could only do ONE thing from this entire audit, what is it and why
-
-Use real logic. Base projections on their actual data. Be honest about uncertainty. Do not guarantee outcomes — project probabilities.`;
-
-  try {
-    const result = await callClaude(prompt);
-    state.stage5Result = result;
-    showScanning('s5-scanning', false);
-    showResult('s5-result', formatResult(result));
-    btn.textContent = 'Projection Complete';
-  } catch(e) {
-    showScanning('s5-scanning', false);
-    showError('s5-error', 'Analysis engine temporarily unavailable.');
-    btn.disabled = false; btn.textContent = 'Generate Path Projection';
-  }
-}
-</script>
+    function runStage1() {
+      const spend = document.getElementById('s1-adspend').value;
+      if(!spend) return;
+      document.getElementById('s1-scanning').classList.add('visible');
+      
+      setTimeout(() => {
+        document.getElementById('s1-scanning').classList.remove('visible');
+        document.getElementById('s1-result').classList.add('visible');
+        const leak = (spend * 0.14).toLocaleString();
+        document.getElementById('s1-result-body').innerHTML = `
+          <h3>Direct Loss Found</h3>
+          <p>Your current architecture is bleeding approximately <strong>$${leak} per month</strong> due to conversion entropy.</p>
+          <p><strong>RECTIFICATION:</strong> Implement Identity Continuity protocol on the primary sales gate.</p>
+        `;
+        document.getElementById('s1-proceed').classList.add('visible');
+      }, 2000);
+    }
+  </script>
 </body>
 </html>
