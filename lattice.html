@@ -4,150 +4,92 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Granite Foundation | The Ascent Lattice</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&family=EB+Garamond&display=swap" rel="stylesheet"/>
   <style>
-    :root {
-      --gold: #c9a84c; --gold-bright:#f0d080; --gold-dim: rgba(201,168,76,0.15);
-      --jade: #4aab6d; --jade-dim: rgba(74,171,109,0.12);
-      --blue: #7eb8e8; --purple: #9b72cf; --void: #0b0f1a;
-      --stone: #0f1420; --stone-2: #141a28; --text: #e8dfc8;
-      --text-dim: #7a8ba8; --danger: #e05555;
-    }
+    :root { --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; --stone: #0f1420; --text: #e8dfc8; --text-dim: #7a8ba8; --danger: #e05555; }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--void); color: var(--text); font-family: 'EB Garamond', serif; min-height: 100vh; overflow-x: hidden; }
-    body::before { content:''; position:fixed; inset:0; z-index:0; background: repeating-linear-gradient(17deg, transparent, transparent 2px, rgba(201,168,76,0.012) 2px, rgba(201,168,76,0.012) 3px), repeating-linear-gradient(73deg, transparent, transparent 3px, rgba(74,171,109,0.008) 3px, rgba(74,171,109,0.008) 4px), linear-gradient(160deg,#121018 0%,#0b0f1a 50%,#0e1218 100%); pointer-events:none; }
-    .spine { position:fixed; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(to bottom, transparent, var(--purple) 15%, var(--gold) 50%, var(--purple) 85%, transparent); opacity:0.15; z-index:1; pointer-events:none; transform:translateX(-50%); }
-    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:16px 40px; background:rgba(11,15,26,0.95); border-bottom:1px solid rgba(201,168,76,0.12); backdrop-filter:blur(12px); }
-    .nav-logo { font-family:'Cinzel Decorative',serif; font-size:12px; letter-spacing:4px; color:var(--gold); }
-    .nav-back { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--text-dim); text-decoration:none; text-transform:uppercase; }
-    .tier-track { position:fixed; top:64px; left:0; right:0; z-index:99; display:flex; justify-content:center; background:rgba(11,15,26,0.92); border-bottom:1px solid rgba(201,168,76,0.08); backdrop-filter:blur(8px); overflow-x:auto; }
-    .tier-pip { font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; padding:10px 20px; border-right:1px solid rgba(255,255,255,0.04); white-space:nowrap; }
-    .tier-pip.active { color:var(--gold); } .tier-pip.complete { color:var(--jade); }
-    .lattice-wrap { position:relative; z-index:2; max-width:760px; margin:0 auto; padding:140px 24px 80px; }
-    .stage { display:none; animation:rise 0.6s ease forwards; } .stage.active { display:block; }
-    @keyframes rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-    .stage-header { text-align:center; margin-bottom:48px; }
-    .stage-geometry { font-size:48px; color:var(--jade); opacity:0.25; margin-bottom:12px; line-height:1; }
-    .stage-label { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:5px; color:var(--jade); text-transform:uppercase; }
-    .stage-title { font-family:'Cinzel',serif; font-size:30px; font-weight:700; color:#fff; }
-    .stage-price { font-family:'Cinzel',serif; font-size:18px; color:var(--gold); letter-spacing:3px; }
-    .input-panel { background:var(--stone); border:1px solid rgba(201,168,76,0.18); padding:40px; position:relative; margin-bottom:32px; }
-    .field { margin-bottom:24px; }
-    .field label { display:block; font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
-    .field input, .field textarea, .field select { width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); color:var(--text); font-family:'EB Garamond',serif; font-size:15px; padding:13px 16px; outline:none; }
-    .btn-primary { font-family:'Cinzel',serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; background:var(--gold); color:#000; border:none; padding:16px 40px; cursor:pointer; width:100%; transition: 0.3s; }
-    .result-panel { background:var(--stone-2); border:1px solid rgba(126,184,232,0.18); padding:36px; margin-top:24px; display:none; }
-    .result-panel.visible { display:block; }
-    .result-header { font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--blue); border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:20px; padding-bottom:14px; }
-    .result-body { font-size:15px; line-height:1.85; color:var(--text-dim); }
-    .scanning-wrap { text-align:center; padding:40px; display:none; }
-    .scanning-wrap.visible { display:block; }
-    .scan-line { font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--jade); margin-bottom:8px; }
-    .proceed-wrap { margin-top:28px; text-align:center; display:none; }
-    .proceed-wrap.visible { display:block; }
-    .btn-proceed { font-family:'Cinzel',serif; font-size:11px; color:var(--jade); border:1px solid var(--jade); padding:14px 40px; background:transparent; cursor:pointer; }
-    .lattice-footer { text-align:center; padding:48px; border-top:1px solid rgba(201,168,76,0.08); font-family:'Cinzel Decorative',serif; font-size:11px; color:rgba(201,168,76,0.3); }
+    body { background: var(--void); color: var(--text); font-family: 'EB Garamond', serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+    body::before { content:''; position:fixed; inset:0; z-index:0; background: linear-gradient(160deg,#121018 0%,#0b0f1a 50%,#0e1218 100%); pointer-events:none; }
+    nav { position:fixed; top:0; width:100%; z-index:100; padding:20px; background:rgba(11,15,26,0.95); border-bottom:1px solid rgba(201,168,76,0.12); text-align:center; }
+    .nav-logo { font-family:'Cinzel',serif; font-size:14px; letter-spacing:4px; color:var(--gold); text-transform:uppercase; }
+    .lattice-wrap { position:relative; z-index:2; max-width:600px; margin:0 auto; padding:120px 20px 80px; }
+    .stage-header { text-align:center; margin-bottom:40px; }
+    .stage-title { font-family:'Cinzel',serif; font-size:28px; color:#fff; margin-bottom:10px; }
+    .input-panel { background:var(--stone); border:1px solid rgba(201,168,76,0.18); padding:30px; margin-bottom:30px; }
+    .field { margin-bottom:20px; text-align:left; }
+    .field label { display:block; font-family:'Share Tech Mono'; font-size:10px; color:var(--gold); margin-bottom:8px; letter-spacing:2px; }
+    .field input { width:100%; background:rgba(0,0,0,0.3); border:1px solid #333; color:var(--text); padding:12px; font-size:16px; outline:none; }
+    .btn-primary { font-family:'Cinzel',serif; font-weight:700; background:var(--gold); color:#000; border:none; padding:16px; width:100%; cursor:pointer; letter-spacing:2px; }
+    .scanning { display:none; padding:30px; text-align:center; font-family:'Share Tech Mono'; color:var(--jade); letter-spacing:2px; }
+    .result-panel { display:none; background:var(--stone); border:1px solid var(--jade); padding:25px; text-align:left; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    .audit-row { margin-bottom:10px; font-size:15px; }
+    .leak-value { color: var(--danger); font-weight: bold; }
   </style>
 </head>
 <body>
-  <div class="spine"></div>
-  <nav><div class="nav-logo">Granite Foundation</div><a href="index.html" class="nav-back">← Threshold</a></nav>
-  <div class="tier-track">
-    <div class="tier-pip active" id="pip-0">○ Stage I</div>
-    <div class="tier-pip" id="pip-1">△ Stage II</div>
-    <div class="tier-pip" id="pip-2">△△ Stage III</div>
-  </div>
-
+  <nav><div class="nav-logo">Granite Foundation | The Lattice</div></nav>
+  
   <div class="lattice-wrap">
-    <div class="stage active" id="stage-0">
-      <div class="stage-header">
-        <div class="stage-geometry">○</div>
-        <div class="stage-label">Stage I — The Seed</div>
-        <div class="stage-title">Surface Diagnostic</div>
-        <div class="stage-price" id="s0-price">Free</div>
-      </div>
-      <div class="input-panel">
-        <div class="field"><label>Business URL</label><input type="url" id="s0-url" placeholder="https://oxygenetix.com"/></div>
-        <div class="field"><label>Email</label><input type="email" id="s0-email" placeholder="you@company.com"/></div>
-        <button class="btn-primary" onclick="runStage0()">Analyze — No Cost</button>
-      </div>
-      <div class="scanning-wrap" id="s0-scanning"><div class="scan-line">INGESTING SIGNAL... ANALYZING VECTORS...</div></div>
-      <div class="result-panel" id="s0-result"><div class="result-header">Stage I Diagnostic Complete</div><div class="result-body" id="s0-result-body"></div></div>
-      <div class="proceed-wrap" id="s0-proceed"><button class="btn-proceed" onclick="goToStage(1)">Proceed to Stage II →</button></div>
+    <div id="setup-view">
+        <div class="stage-header">
+            <div class="stage-title">Surface Diagnostic</div>
+            <p style="color:var(--text-dim); font-style:italic;">Stage I: Identifying Revenue Friction</p>
+        </div>
+
+        <div class="input-panel">
+            <div class="field">
+                <label>BUSINESS URL</label>
+                <input type="text" id="url-in" placeholder="https://oxygenetix.com">
+            </div>
+            <div class="field">
+                <label>CONTACT EMAIL</label>
+                <input type="email" id="email-in" placeholder="architect@granite.me">
+            </div>
+            <button class="btn-primary" onclick="startAudit()">ANALYZE — NO COST</button>
+        </div>
     </div>
 
-    <div class="stage" id="stage-1">
-      <div class="stage-header">
-        <div class="stage-geometry">┬</div>
-        <div class="stage-label">Stage II — The Fix</div>
-        <div class="stage-title">Targeted Corrections</div>
-        <div class="stage-price" id="s1-price">$16.18</div>
-      </div>
-      <div class="input-panel">
-        <div class="field"><label>Monthly Ad Spend (USD)</label><input type="number" id="s1-adspend" placeholder="e.g. 5000"/></div>
-        <button class="btn-primary" onclick="runStage1()">Generate Fix Protocol</button>
-      </div>
-      <div class="scanning-wrap" id="s1-scanning"><div class="scan-line">CALCULATING REVENUE LEAK...</div></div>
-      <div class="result-panel" id="s1-result"><div class="result-header">Stage II Fix Protocol</div><div class="result-body" id="s1-result-body"></div></div>
-      <div class="proceed-wrap" id="s1-proceed"><button class="btn-proceed" onclick="alert('Stage III Locked.')">Proceed to Stage III →</button></div>
+    <div id="scanning-view" class="scanning">
+        > INGESTING DOMAIN DATA...<br>
+        > MAPPING CONVERSION VECTORS...<br>
+        > STRIPPING MARKETING NOISE...
+    </div>
+
+    <div id="result-view" class="result-panel">
+        <h3 style="color:var(--gold); font-family:'Cinzel'; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">STAGE I REPORT</h3>
+        <div class="audit-row"><strong>TARGET:</strong> <span id="res-url" style="color:var(--jade)"></span></div>
+        <div class="audit-row"><strong>MONTHLY LOSS:</strong> <span class="leak-value" id="res-loss"></span></div>
+        <div class="audit-row"><strong>FRICTION:</strong> <span id="res-fric" style="color:var(--gold)"></span></div>
+        <hr style="border:0; border-top:1px dotted #444; margin:15px 0;">
+        <p style="font-size:13px; color:var(--text-dim);">The identified leakage is directly attributed to Threshold Entropy. Proposing immediate Sovereign Shift in Stage II.</p>
+        <button class="btn-primary" style="margin-top:20px; background:transparent; border:1px solid var(--jade); color:var(--jade);" onclick="location.reload()">NEW CRAWL</button>
     </div>
   </div>
-
-  <footer class="lattice-footer"><p>WE ARE THE STONE</p></footer>
 
   <script>
-    const state = { url: '', tier: 'small' };
-    
-    function goToStage(n) {
-      document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
-      document.getElementById('stage-' + n).classList.add('active');
-      document.querySelectorAll('.tier-pip').forEach((p,i) => {
-        p.classList.remove('active','complete');
-        if (i < n) p.classList.add('complete');
-        if (i === n) p.classList.add('active');
-      });
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+    function startAudit() {
+      const url = document.getElementById('url-in').value.trim();
+      if(!url) { alert("Signal Required."); return; }
 
-    function runStage0() {
-      const url = document.getElementById('s0-url').value;
-      if(!url) return;
-      state.url = url;
-      document.getElementById('s0-scanning').classList.add('visible');
-      
+      // Hide input, show scanning
+      document.getElementById('setup-view').style.display = 'none';
+      document.getElementById('scanning-view').style.display = 'block';
+
+      // Pure Local Logic - No API calls possible
       setTimeout(() => {
-        document.getElementById('s0-scanning').classList.remove('visible');
-        document.getElementById('s0-result').classList.add('visible');
-        const isEnterprise = url.includes('oxygenetix');
-        state.tier = isEnterprise ? 'enterprise' : 'small';
-        document.getElementById('s1-price').innerText = isEnterprise ? '$161.80' : '$16.18';
+        document.getElementById('scanning-view').style.display = 'none';
+        document.getElementById('result-view').style.display = 'block';
         
-        document.getElementById('s0-result-body').innerHTML = `
-          <p><strong>ENTITY:</strong> ${url.toUpperCase()}</p>
-          <p><strong>PRIMARY LEAK:</strong> Threshold Friction & Identity Drift.</p>
-          <p><strong>FRICTION SCORE:</strong> ${isEnterprise ? '8.7' : '6.4'}/10</p>
-        `;
-        document.getElementById('s0-proceed').classList.add('visible');
-      }, 2000);
-    }
-
-    function runStage1() {
-      const spend = document.getElementById('s1-adspend').value;
-      if(!spend) return;
-      document.getElementById('s1-scanning').classList.add('visible');
-      
-      setTimeout(() => {
-        document.getElementById('s1-scanning').classList.remove('visible');
-        document.getElementById('s1-result').classList.add('visible');
-        const leak = (spend * 0.14).toLocaleString();
-        document.getElementById('s1-result-body').innerHTML = `
-          <h3>Direct Loss Found</h3>
-          <p>Your current architecture is bleeding approximately <strong>$${leak} per month</strong> due to conversion entropy.</p>
-          <p><strong>RECTIFICATION:</strong> Implement Identity Continuity protocol on the primary sales gate.</p>
-        `;
-        document.getElementById('s1-proceed').classList.add('visible');
-      }, 2000);
+        const domain = url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0].toUpperCase();
+        
+        // Logical calculation based on domain complexity
+        const isBig = domain.length > 10 || url.includes('oxygenetix');
+        
+        document.getElementById('res-url').innerText = domain;
+        document.getElementById('res-loss').innerText = isBig ? "-$14,208.44/mo" : "-$2,440.12/mo";
+        document.getElementById('res-fric').innerText = isBig ? "8.8/10 (Critical)" : "6.2/10 (High)";
+      }, 3000);
     }
   </script>
 </body>
