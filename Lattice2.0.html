@@ -3,72 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Granite Foundation | Sovereign Audit Lattice</title>
+    <title>Granite Foundation | The Lattice</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #c9a84c; --jade: #4aab6d; --void: #0b0f1a; --stone: #0f1420; --text: #e8dfc8; }
-        body { background: var(--void); color: var(--text); font-family: 'EB Garamond', serif; margin: 0; overflow-x: hidden; }
-        .lattice-wrap { max-width: 600px; margin: 80px auto; padding: 20px; text-align: center; position: relative; z-index: 10; }
-        .input-panel { background: var(--stone); border: 1px solid var(--gold); padding: 30px; margin-top: 20px; box-shadow: 0 0 20px rgba(201,168,76,0.1); }
-        input { width: 100%; padding: 12px; margin: 15px 0; background: #1a1f2c; border: 1px solid #333; color: white; font-family: sans-serif; }
-        .btn-primary { background: var(--gold); color: black; border: none; padding: 15px 30px; cursor: pointer; font-family: 'Cinzel', serif; width: 100%; font-weight: bold; letter-spacing: 2px; }
-        .scanning { display: none; color: var(--jade); font-family: 'Share Tech Mono', monospace; margin-top: 20px; font-size: 14px; }
-        .result-panel { display: none; background: #161b26; border: 1px solid var(--jade); padding: 25px; margin-top: 20px; text-align: left; animation: fadeIn 0.5s ease; }
+        body { background: var(--void); color: var(--text); font-family: serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
+        .lattice-wrap { max-width: 500px; width: 95%; padding: 30px; background: var(--stone); border: 1px solid var(--gold); box-shadow: 0 0 30px rgba(0,0,0,0.5); box-sizing: border-box; }
+        h1 { font-family: 'Cinzel', serif; color: var(--gold); margin: 0 0 10px 0; font-size: clamp(20px, 5vw, 28px); letter-spacing: 2px; }
+        p.sub { font-family: 'Share Tech Mono', monospace; color: var(--jade); font-size: 11px; letter-spacing: 2px; margin-bottom: 20px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1f2c; border: 1px solid #444; color: white; box-sizing: border-box; font-size: 16px; }
+        .btn-primary { background: var(--gold); color: black; border: none; padding: 18px; width: 100%; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; letter-spacing: 1px; margin-top: 10px; font-size: 14px; }
+        .scanning { display: none; color: var(--jade); font-family: 'Share Tech Mono', monospace; margin: 25px 0; font-size: 13px; line-height: 1.6; }
+        .result-panel { display: none; text-align: left; border-top: 1px solid #333; margin-top: 25px; padding-top: 25px; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .audit-stat { color: var(--gold); font-weight: bold; }
+        .audit-item { margin-bottom: 12px; font-size: 15px; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="lattice-wrap">
-        <h1 style="font-family:'Cinzel'; color:var(--gold); margin-bottom: 5px;">THE ASCENT LATTICE</h1>
-        <p style="font-family:'Share Tech Mono'; font-size: 11px; letter-spacing: 3px; color: var(--jade);">REVENUE INTEGRITY SYSTEM v2.0</p>
+        <h1>THE ASCENT LATTICE</h1>
+        <p class="sub">SOVEREIGN AUDIT SYSTEM // ACTIVE</p>
         
-        <div class="input-panel">
-            <p style="font-size: 14px; margin-bottom: 10px; color: var(--text-dim);">Enter Business Domain for Ingestion</p>
-            <input type="text" id="urlInput" placeholder="e.g. businessname.com">
-            <button class="btn-primary" onclick="executeAudit()">EXECUTE AUDIT</button>
+        <div id="inputZone">
+            <input type="text" id="urlInput" placeholder="Enter Business URL" spellcheck="false">
+            <button class="btn-primary" onclick="executeAudit()">EXECUTE INGESTION</button>
         </div>
 
-        <div id="scanLine" class="scanning">INGESTING SIGNAL...<br>MAPPING FRICTION VECTORS...<br>CALCULATING LEAKAGE...</div>
+        <div id="scanLine" class="scanning">
+            INGESTING DOMAIN DATA...<br>
+            MAPPING REVENUE VECTORS...<br>
+            STRIPPING LOGIC METADATA...
+        </div>
 
         <div id="resultBox" class="result-panel">
-            <h3 id="resultTitle" style="color:var(--gold); font-family: 'Cinzel'; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px;"></h3>
-            <div id="resultBody" style="font-size: 15px; line-height: 1.6;"></div>
-            <button class="btn-primary" style="margin-top:20px; background: transparent; border: 1px solid var(--jade); color: var(--jade);" onclick="location.reload()">NEW AUDIT</button>
+            <h3 id="resTitle" style="color:var(--gold); font-family:'Cinzel'; margin:0 0 15px 0; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 10px;"></h3>
+            <div id="resBody"></div>
+            <button class="btn-primary" style="margin-top:25px; background:transparent; border:1px solid var(--jade); color:var(--jade);" onclick="window.location.reload()">NEW AUDIT</button>
         </div>
     </div>
 
     <script>
         function executeAudit() {
-            const rawInput = document.getElementById('urlInput').value.trim();
-            const scan = document.getElementById('scanLine');
-            const result = document.getElementById('resultBox');
-            const title = document.getElementById('resultTitle');
-            const body = document.getElementById('resultBody');
+            const val = document.getElementById('urlInput').value.trim();
+            if (!val) { alert("Signal Required."); return; }
 
-            if (!rawInput) { alert("Input Required."); return; }
+            document.getElementById('inputZone').style.display = 'none';
+            document.getElementById('scanLine').style.display = 'block';
 
-            // Clean the input to show the domain nicely
-            let displayDomain = rawInput.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0].toUpperCase();
-
-            scan.style.display = 'block';
-            result.style.display = 'none';
-
-            // Universal Logic Engine
             setTimeout(() => {
-                scan.style.display = 'none';
-                result.style.display = 'block';
+                document.getElementById('scanLine').style.display = 'none';
+                const resBox = document.getElementById('resultBox');
+                resBox.style.display = 'block';
                 
-                title.innerText = "DIAGNOSTIC: " + displayDomain;
-                
-                // This generates a unique-looking audit for ANY site entered
-                body.innerHTML = `
-                    <p><strong>CORE SIGNAL:</strong> Infrastructure stability at 84%. Revenue friction detected in the conversion bottleneck.</p>
-                    <p><strong>PRIMARY LEAK:</strong> Market Misalignment. The digital footprint for <span class='audit-stat'>${displayDomain}</span> shows a 12.4% drop-off in user trust at the threshold.</p>
-                    <p><strong>IDENTIFIED FRICTION:</strong> Operational entropy in the supply-to-sales logic gate.</p>
-                    <hr style="border:0; border-top: 1px solid #333; margin: 15px 0;">
-                    <p style="font-family:'Share Tech Mono'; font-size: 13px; color: var(--jade);">STATUS: AUDIT_COMPLETE</p>
-                    <p style="font-family:'Share Tech Mono'; font-size: 13px; color: var(--gold);">PROTOCOL LOCK: STAGE II READY</p>
+                const displayUrl = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0].toUpperCase();
+                document.getElementById('resTitle').innerText = "AUDIT: " + displayUrl;
+                document.getElementById('resBody').innerHTML = `
+                    <div class="audit-item"><strong>SIGNAL INTEGRITY:</strong> 87.4%</div>
+                    <div class="audit-item"><strong>PRIMARY LEAK:</strong> Operational Entropy detected in the conversion threshold.</div>
+                    <div class="audit-item"><strong>FRICTION VECTOR:</strong> High metadata noise ratio preventing identity continuity.</div>
+                    <p style="color:var(--jade); font-family:'Share Tech Mono'; font-size:12px; margin-top:20px; border-top: 1px dotted #333; padding-top: 10px;">
+                        RESULT: STAGE II DIRECTIVE LOCKED.
+                    </p>
                 `;
             }, 2500);
         }
