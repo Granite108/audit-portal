@@ -159,4 +159,26 @@
             businessData.fixes.forEach((f, i) => {
                 html += `<div class="fix-item"><h4>${i+1}. ${f.t}</h4><p style="font-size:14px; color:var(--text-dim);">${f.d}</p></div>`;
             });
-            document.getElementById('fix-content').innerHTML =
+            document.getElementById('fix-content').innerHTML = html;
+
+        }, 1500);
+    }
+
+    function runStage5() { document.getElementById('res-5').style.display = 'block'; }
+    
+    function runStage6() {
+        document.getElementById('scan-6').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('scan-6').style.display = 'none';
+            document.getElementById('res-6').style.display = 'block';
+            const days = document.getElementById('proj-time').value;
+            document.getElementById('proj-display').innerHTML = `
+                <strong>PATH:</strong> Accelerated Dominance Protocol Locked.<br>
+                <strong>TIMEFRAME:</strong> ${days} Day Trajectory.<br>
+                <strong>BENEFIT:</strong> Estimated 16.2% Sovereign Growth Stake.
+            `;
+        }, 2500);
+    }
+  </script>
+</body>
+</html>
