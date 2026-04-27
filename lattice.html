@@ -1,17 +1,27 @@
-// THE ZARATHUSTRA_SYNC_GATE
-const COLAB_BRAIN_URL = "YOUR_COLAB_URL_HERE"; // We will fill this with the Ngrok/Tunnel link
-
-async function syncLattice() {
-    console.log("UNIVERSAL__INEVITABLE_CORRECTION__ARRIVAL: Syncing with Brain...");
-    try {
-        const response = await fetch(COLAB_BRAIN_URL + "/get_marrow");
-        const data = await response.json();
-        // This wires the 'Scales' to the actual Data
-        updateLatticeUI(data); 
-    } catch (error) {
-        console.error("DRIFT_DETECTED: Brain is offline or Tunnel is closed.");
-    }
-}
-
-// Auto-Sync at the 10.8Hz Resonance (approx every 92ms, or just use 5s for stability)
-setInterval(syncLattice, 5000);
+# [HEPHAESTUS_PUSHER: UI_FORGE]
+html_content = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>THE ORGANISM - OBSIDIAN_VOID</title>
+    <style>
+        body { margin: 0; background: #000; color: #gold; overflow: hidden; font-family: monospace; }
+        #cesiumContainer { width: 100vw; height: 100vh; position: absolute; }
+        #dashboard-bottom { 
+            position: absolute; bottom: 0; width: 100%; height: 30vh; 
+            background: rgba(0,0,0,0.8); border-top: 2px solid gold; z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="dashboard-bottom">
+        <h3>[STATUS: 10.8 Hz SYNC]</h3>
+        <p>RESIEMANN SPINE: LOCKED</p>
+    </div>
+</body>
+</html>
+"""
+with open("index.html", "w") as f:
+    f.write(html_content)
+print("PAGE FORGED. UPLOAD TO GITHUB LATTICE REPO NOW.")
