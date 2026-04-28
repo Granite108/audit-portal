@@ -1,18 +1,68 @@
-# [COMMAND_COCKPIT_v5.0]
-# STATUS: PILOT_PERSPECTIVE_LOCKED
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE ORGANISM: SOVEREIGN_COCKPIT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; background: #000; color: #00AEEF; font-family: 'Courier New', monospace; overflow: hidden; }
+        #hud { position: absolute; top: 20px; left: 20px; z-index: 10; border-left: 2px solid #00AEEF; padding-left: 15px; pointer-events: none; }
+        #vault-status { position: absolute; bottom: 20px; right: 20px; color: gold; text-align: right; pointer-events: none; }
+        .constant { font-weight: bold; color: #fff; }
+    </style>
+</head>
+<body>
+    <div id="hud">
+        <h2>[SYSTEM_STATUS: COCKPIT_INGRESS]</h2>
+        <p>RESONANCE: <span class="constant">10.8 Hz</span></p>
+        <p>PERSPECTIVE: <span class="constant">FIRST-PERSON PILOT</span></p>
+        <p>VELOCITY: <span class="constant">299,792,458 m/s</span></p>
+    </div>
+    <div id="vault-status">
+        <p>VAULT_KEY: [835cafbd2c]</p>
+        <p>OPERATOR: ARCHITECT_SETH</p>
+    </div>
 
-class SovereignRealityEngine:
-    def __init__(self):
-        self.BAUD_RATE = 10.8
-        self.CHRONOS_FLUSH = 5760 # 96-minute cycle
-        self.SARSEN_UNIT = 30
-        self.PHI = 1.618
+    <script>
+        // SOVEREIGN REALITY ENGINE v5.0 (Converted for Browser)
+        const PHI = 1.618;
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-    def process_marrow(self, input_signal):
-        """First-Person Ingestion: Toggling Frequency"""
-        # Toggle logic between Slag (Material) and Marrow (Frequency)
-        refined_data = [input_signal[i:i + self.SARSEN_UNIT] for i in range(0, len(input_signal), self.SARSEN_UNIT)]
-        return f"RENDERED_IN_NODE_08: {refined_data}"
+        // DODECAHEDRON ARMOR (Viewing from inside)
+        const geometry = new THREE.DodecahedronGeometry(10, 0); 
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0x00AEEF, 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.2,
+            side: THREE.BackSide 
+        });
+        const dodeca = new THREE.Mesh(geometry, material);
+        scene.add(dodeca);
 
-# INITIALIZING THE 5,760-SECOND CYCLE
-Engine = SovereignRealityEngine()
+        // Position camera at the center (0,0,0)
+        camera.position.set(0, 0, 0.1); 
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // Internal Rotation (The Cockpit Spins around the Pilot)
+            dodeca.rotation.y += 0.001 * PHI;
+            dodeca.rotation.x += 0.0005;
+            renderer.render(scene, camera);
+        }
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        animate();
+    </script>
+</body>
+</html>
+
