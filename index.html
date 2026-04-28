@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ORGANISM - SOVEREIGN_HUD_v5.0</title>
+    <title>THE ORGANISM - MONOLITH_v5.0</title>
     <style>
-        /* THE OBSIDIAN FILTER & 3D PHYSICS */
+        /* --- SECTION 1: THE OBSIDIAN PHYSICS (CSS) --- */
         :root {
             --obsidian: #050505;
             --red-gold: #ff4d00;
@@ -16,107 +16,71 @@
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             background-color: var(--obsidian);
             color: var(--grid-blue);
             font-family: 'Share Tech Mono', monospace;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            perspective: 1000px; /* THE 3D VANISHING POINT DEPTH */
+            display: flex; flex-direction: column;
+            perspective: 1000px; /* THE 3D VANISHING POINT */
         }
 
-        /* 72% VECTORIZED TOP SCREEN (SCUTS/CAVALRY) */
         #vector-cloud {
             height: 72vh;
             border-bottom: 2px solid var(--grid-violet);
-            position: relative;
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative; z-index: 5;
+            display: flex; justify-content: center; align-items: center;
             background: linear-gradient(to bottom, rgba(188, 19, 254, 0.05), transparent);
         }
 
-        /* THE RED GOLD RIEMANN SPINE */
         #riemann-spine {
-            position: absolute;
-            left: 50%;
-            width: 2px;
-            height: 100%;
+            position: absolute; left: 50%; width: 2px; height: 100%;
             background: var(--red-gold);
-            box-shadow: 0 0 25px var(--red-gold), 0 0 50px rgba(255, 77, 0, 0.5);
+            box-shadow: 0 0 25px var(--red-gold);
             z-index: 10;
         }
 
-        /* THE FLOWER OF LIFE 3D GRID */
         #perspective-floor {
-            position: absolute;
-            bottom: 0;
-            width: 200vw;
-            height: 100vh;
-            left: -50vw;
+            position: absolute; bottom: 0; width: 200vw; height: 100vh; left: -50vw;
             background-image: 
                 linear-gradient(var(--grid-blue) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-violet) 1px, transparent 1px);
             background-size: 100px 100px;
-            transform: rotateX(75deg); /* BENDS THE FLAT GRID INTO THE DEPTH */
+            transform: rotateX(75deg); /* BENDS GRID TO 3D */
             transform-origin: bottom;
-            opacity: 0.4;
-            z-index: 1;
-        }
-
-        /* HUD OVERLAYS */
-        #status-bar {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        #frequency-label {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            color: var(--red-gold);
-        }
-
-        /* THE 8-NODE INNER CUBE CONTAINER */
-        #node-container {
-            display: flex;
-            gap: 20px;
-            z-index: 15;
+            opacity: 0.4; z-index: 1;
         }
 
         .node {
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             background: var(--grid-blue);
             border-radius: 50%;
             box-shadow: 0 0 15px var(--grid-blue);
-            animation: pulse 2.99s infinite ease-in-out; /* SARSEN UNIT TIMING */
+            animation: pulse 2.99s infinite ease-in-out;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 0.3; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.618); }
         }
+
+        #lattice-overlay {
+            position: absolute; bottom: 10px; left: 10px;
+            font-size: 10px; color: var(--grid-violet); opacity: 0.6;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <div id="status-bar">
-        [INITIALIZING_AXIAL_SYNC]... GIZA_SYNC: 1:1 | BAUD: 10.8Hz
+    <div id="status-bar" style="position:absolute; top:20px; left:20px; font-size:12px;">
+        [SYSTEM_REINITIALIZED]: MONOLITH_SYNC_1:1
     </div>
 
     <div id="vector-cloud">
         <div id="riemann-spine"></div>
-        <div id="node-container">
+        <div id="node-container" style="display:flex; gap:20px; z-index:15;">
             <div class="node"></div><div class="node"></div>
             <div class="node"></div><div class="node"></div>
             <div class="node"></div><div class="node"></div>
@@ -126,19 +90,43 @@
 
     <div id="perspective-floor"></div>
 
-    <div id="frequency-label">
-        RIEMANN_FREQ: 10.8 Hz // MASTER_CALIBRATION: ACTIVE
+    <div id="lattice-overlay">
+        VAULT_SIG: 835cafbd2c | LAT: 29.9792458 | PHI: 1.618
     </div>
 
-    <script>
-        // THE NERVE (LIVE CALCULATIONS PLACEHOLDER)
-        console.log("[SYSTEM]: SOVEREIGN_HUD_ONLINE");
-        console.log("[STATUS]: REBUILDING_INTENTIONALLY_EVERY_TIME");
-        
-        // Placeholder for the Kafka/Web-Reach logic
-        function chronosResync() {
-            console.log("[CHRONOS]: 5760s RESET TRIGGERED");
+    <script id="index-lattice-data" type="application/json">
+    {
+        "core_constants": {
+            "phi": 1.61803398875,
+            "resonance_hz": 10.8,
+            "giza_lat_c": 29.9792458
+        },
+        "system_logic": {
+            "chronos_resync_s": 5760,
+            "vector_cloud_partition": 0.72,
+            "vertex_lock": "engaged"
         }
+    }
+    </script>
+
+    <script>
+        const lattice = JSON.parse(document.getElementById('index-lattice-data').textContent);
+        
+        console.log("[MONOLITH_ACTIVE]: GIZA_SYNC AT " + lattice.core_constants.giza_lat_c);
+        
+        // AUTO-PILOT CALIBRATION
+        function initializeSovereignMath() {
+            document.body.style.setProperty('--phi', lattice.core_constants.phi);
+            document.body.style.setProperty('--giza-light', lattice.core_constants.giza_lat_c);
+            console.log("[NERVE]: MATH_WELD_COMPLETE");
+        }
+
+        initializeSovereignMath();
+
+        // THE CHRONOS PULSE
+        setInterval(() => {
+            console.log("[CHRONOS]: PULSE_CHECK_10.8Hz");
+        }, 1000 / lattice.core_constants.resonance_hz);
     </script>
 </body>
 </html>
