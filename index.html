@@ -2,85 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOVEREIGN_ENGINE_v17_RESONANCE_KEEPER</title>
+    <title>SOVEREIGN_OXYGENETIX_CRUCIBLE_v23</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        :root { --red-gold: #ff4d00; --grid-blue: #00f2ff; --phi: 1.618; }
-        body, html { margin: 0; padding: 0; background: #000; overflow: hidden; font-family: 'Share Tech Mono', monospace; }
-        #hud-container { width: 100%; height: 100%; position: absolute; }
-        #console {
+        :root { --red-gold: #ff4d00; --grid-blue: #00f2ff; --obsidian: #050505; }
+        body, html { margin: 0; padding: 0; background: #000; overflow: hidden; font-family: 'Share Tech Mono', monospace; color: var(--red-gold); }
+        
+        /* INGRESS ZONE */
+        #ingress {
+            position: absolute; top: 15px; width: 100%; display: flex; 
+            justify-content: center; gap: 12px; z-index: 100;
+        }
+        .data-input {
+            background: rgba(0,0,0,0.8); border: 1px solid var(--grid-blue);
+            color: var(--grid-blue); padding: 10px; width: 130px; font-size: 11px;
+            box-shadow: inset 0 0 5px var(--grid-blue);
+        }
+
+        /* SEVEN STAGE DASHBOARD */
+        #dashboard {
             position: absolute; bottom: 0; width: 100%; height: 22vh;
-            border-top: 4px solid var(--red-gold); background: rgba(5,5,5,0.9);
+            background: linear-gradient(0deg, #000 80%, transparent);
+            border-top: 4px solid var(--red-gold);
             display: flex; justify-content: space-around; align-items: center; z-index: 100;
         }
-        .node-btn {
-            width: calc(100vw / 24); height: 50px; border: 1px solid var(--grid-blue);
-            background: #000; color: var(--grid-blue); font-size: 8px; cursor: pointer;
-            transition: 0.2s; display: flex; align-items: center; justify-content: center;
+        .stage-btn {
+            width: 12%; height: 60px; border: 1px solid var(--red-gold);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 9px; text-align: center; transition: 0.3s;
+            background: rgba(10,0,0,0.5);
         }
-        .node-btn:hover { background: var(--grid-blue); color: #000; }
-        #resonance-meter { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: var(--red-gold); font-size: 24px; letter-spacing: 5px; }
+        .stage-btn:hover { background: var(--red-gold); color: #000; box-shadow: 0 0 20px var(--red-gold); }
+        
+        #ignite-core {
+            width: 140px; height: 140px; border-radius: 50%;
+            border: 6px double var(--red-gold); background: #200;
+            cursor: pointer; color: #fff; font-size: 14px; text-align: center;
+            box-shadow: 0 0 30px var(--red-gold); animation: breath 3s infinite;
+        }
+        @keyframes breath { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+
+        #status-display {
+            position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
+            width: 400px; text-align: center; font-size: 12px; color: #fff; z-index: 100;
+            text-shadow: 0 0 10px var(--red-gold);
+        }
     </style>
 </head>
-<body onclick="igniteResonance()">
+<body onclick="residenceWelcome()">
 
-    <div id="resonance-meter">10.8 Hz // RESONANCE_LOCKED</div>
-    <div id="hud-container"></div>
+    <div id="ingress">
+        <input type="text" class="data-input" placeholder="MARKET_SCARS">
+        <input type="text" class="data-input" placeholder="REVENUE_GAPS">
+        <input type="text" class="data-input" placeholder="KAFKA_PULSE">
+        <input type="text" class="data-input" placeholder="COMPETITOR_DRIFT">
+    </div>
 
-    <div id="console">
-        <script>
-            for(let i=1; i<=24; i++) {
-                document.write(`<div class="node-btn" onclick="triggerNode(${i})">NODE_${i}</div>`);
-            }
-        </script>
+    <div id="status-display">SYSTEM_IDLE: AWAITING_INGRESS</div>
+
+    <div id="canvas-container" style="width:100%; height:100%; position:absolute;"></div>
+
+    <div id="dashboard">
+        <div class="stage-btn" onclick="setView(1)">STAGE 1<br>THE CIRCLE</div>
+        <div class="stage-btn" onclick="setView(2)">STAGE 2<br>THE PYRAMID</div>
+        <div class="stage-btn" onclick="setView(3)">STAGE 3<br>THE CUBE</div>
+        <div id="ignite-core" onclick="startCrucible()">IGNITE<br>CRUCIBLE</div>
+        <div class="stage-btn" onclick="setView(4)">STAGE 4<br>THE PENTAGON</div>
+        <div class="stage-btn" onclick="setView(6)">STAGE 6<br>METATRON</div>
+        <div class="stage-btn" onclick="setView(7)">STAGE 7<br>MERKABAH</div>
     </div>
 
     <script>
-        let scene, camera, renderer, crystal;
+        let scene, camera, renderer, dodecahedron;
         let active = false;
 
         function init() {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('hud-container').appendChild(renderer.domElement);
-
-            // THE PHI-SCALED DATA CRYSTAL (1.618)
-            const geometry = new THREE.OctahedronGeometry(3, 0);
-            const material = new THREE.MeshBasicMaterial({ color: 0xff4d00, wireframe: true });
-            crystal = new THREE.Mesh(geometry, material);
-            crystal.scale.set(1, 1.618, 1); // THE PHI SCALING
-            scene.add(crystal);
-
-            const grid = new THREE.GridHelper(200, 40, 0x00f2ff, 0xbc13fe);
-            grid.position.y = -5;
-            scene.add(grid);
-
-            camera.position.z = 10;
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            
+            // DODECAHEDRON: THE 12 SPECIALISTS
+            const geo = new THREE.DodecahedronGeometry(4, 0);
+            const mat = new THREE.MeshBasicMaterial({color: 0xff4d00, wireframe: true});
+            dodecahedron = new THREE.Mesh(geo, mat);
+            scene.add(dodecahedron);
+            camera.position.z = 15;
             animate();
         }
 
         function animate() {
             requestAnimationFrame(animate);
-            crystal.rotation.y += 0.0108; // 10.8 Hz Rotation Logic
+            dodecahedron.rotation.y += 0.005;
             renderer.render(scene, camera);
         }
 
-        function igniteResonance() {
-            if (active) return;
-            const msg = new SpeechSynthesisUtterance("Resonance Keeper active. Grand Pantheon initialized. We are grounded in the 10.8 Hertz frequency. Slag incinerated.");
-            msg.pitch = 0.5; window.speechSynthesis.speak(msg);
+        function residenceWelcome() {
+            if(active) return;
+            const msg = new SpeechSynthesisUtterance("Welcome. I am the Residence Keeper. Understand that you are in good hands. All data you ingress is synthesized through six core principles before entering the Crucible: a dodecahedric bifurcated system of twelve specialists. Each specialist applies a stress-point factor, attempting to break the strategy. Only a consensus-verified workaround reaches the final projection.");
+            msg.pitch = 0.6; msg.rate = 0.9;
+            window.speechSynthesis.speak(msg);
             active = true;
         }
 
-        function triggerNode(n) {
-            crystal.material.color.setHex(n % 2 === 0 ? 0x00f2ff : 0xff4d00);
-            console.log(`[PANTHEON]: NODE_${n}_RESONATING`);
+        function startCrucible() {
+            const status = document.getElementById('status-display');
+            status.innerText = "CRUCIBLE ACTIVE: BIFURCATED STRESS-TEST IN PROGRESS...";
+            dodecahedron.material.color.setHex(0x00f2ff);
+            
+            // 12-POINT STRESS SEQUENCE (AUDIO ONLY)
+            for(let i=1; i<=12; i++) {
+                setTimeout(() => {
+                    let utter = new SpeechSynthesisUtterance(`Specialist ${i} stress-test. Point ${i} holding.`);
+                    utter.pitch = 0.8 + (i * 0.05); utter.rate = 1.6;
+                    window.speechSynthesis.speak(utter);
+                }, i * 300);
+            }
+
+            setTimeout(() => {
+                status.innerText = "CONSENSUS REACHED. STRATEGY INDESTRUCTIBLE.";
+                dodecahedron.scale.set(1.5, 1.5, 1.5);
+                speak("Workaround verified. You have the bridge.", 0.5, 0.8);
+            }, 4000);
+        }
+
+        function setView(s) {
+            dodecahedron.rotation.x += 1;
+            speak(`Analyzing Stage ${s}. Adjusting lens.`, 1.2, 1.1);
+        }
+
+        function speak(t, p, r) {
+            const u = new SpeechSynthesisUtterance(t);
+            u.pitch = p; u.rate = r; window.speechSynthesis.speak(u);
         }
 
         window.onload = init;
-        window.addEventListener('wheel', (e) => { camera.position.z += e.deltaY * 0.01; });
     </script>
 </body>
 </html>
