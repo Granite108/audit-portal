@@ -12,21 +12,23 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        steps:
+      - name: Checkout Sovereignty
+        uses: actions/checkout@v3
+
+      - name: Initialize the Forge
+        uses: actions/setup-python@v4
         with:
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-      - name: The Master Strike
+          python-version: '3.10'
+
+      - name: Execute Hydra Master Control
         run: |
           python scripts/hydra_master_control.py
-          echo "THE_ORGANISM_IS_WHOLE"
-concurrency:
-  
+          
+      - name: Force Commit Marrow
+        run: |
+          git config --global user.name "MASTER_ENFORCER_SETH"
+          git config --global user.email "seth@sovereign.local"
+          git add .
+          git commit -m "MITOSIS_COMPLETE: [RESONANCE_SYNC_10.8Hz]" || echo "No changes to commit"
+          git push
