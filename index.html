@@ -2,75 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOVEREIGN_OXYGENETIX_MATRIX_v16</title>
+    <title>SOVEREIGN_ENGINE_v17_RESONANCE_KEEPER</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        :root { --red-gold: #ff4d00; --grid-blue: #00f2ff; --obsidian: #050505; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Share Tech Mono', monospace; }
-        #canvas-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
-        
-        /* THE WRAP-AROUND CONSOLE */
-        #ui-layer {
-            position: absolute; bottom: 0; width: 100%; height: 25vh;
-            background: linear-gradient(0deg, #000 60%, transparent);
-            border-top: 3px solid var(--red-gold);
-            display: flex; justify-content: space-around; align-items: center;
-            z-index: 100; padding: 0 50px; box-sizing: border-box;
+        :root { --red-gold: #ff4d00; --grid-blue: #00f2ff; --phi: 1.618; }
+        body, html { margin: 0; padding: 0; background: #000; overflow: hidden; font-family: 'Share Tech Mono', monospace; }
+        #hud-container { width: 100%; height: 100%; position: absolute; }
+        #console {
+            position: absolute; bottom: 0; width: 100%; height: 22vh;
+            border-top: 4px solid var(--red-gold); background: rgba(5,5,5,0.9);
+            display: flex; justify-content: space-around; align-items: center; z-index: 100;
         }
-
-        .btn {
-            width: 120px; height: 60px; border: 2px solid var(--red-gold);
-            background: rgba(10,10,10,0.9); color: var(--red-gold);
-            font-size: 10px; font-weight: bold; cursor: pointer;
-            text-align: center; display: flex; align-items: center; justify-content: center;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); transition: 0.3s;
+        .node-btn {
+            width: calc(100vw / 24); height: 50px; border: 1px solid var(--grid-blue);
+            background: #000; color: var(--grid-blue); font-size: 8px; cursor: pointer;
+            transition: 0.2s; display: flex; align-items: center; justify-content: center;
         }
-
-        .btn:hover { background: var(--red-gold); color: #000; box-shadow: 0 0 30px var(--red-gold); }
-
-        #synth-btn { width: 140px; height: 140px; border-radius: 50%; border: 6px double var(--red-gold); clip-path: none; background: #200; font-size: 14px; }
+        .node-btn:hover { background: var(--grid-blue); color: #000; }
+        #resonance-meter { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: var(--red-gold); font-size: 24px; letter-spacing: 5px; }
     </style>
 </head>
-<body onclick="ignite()">
+<body onclick="igniteResonance()">
 
-    <div id="canvas-container"></div>
+    <div id="resonance-meter">10.8 Hz // RESONANCE_LOCKED</div>
+    <div id="hud-container"></div>
 
-    <div id="ui-layer">
-        <div class="btn" onclick="trigger('PAIN')">STAGE 1:<br>FRICTION</div>
-        <div class="btn" onclick="trigger('KEYWORDS')">STAGE 2:<br>KEYWORDS</div>
-        <div id="synth-btn" class="btn" onclick="trigger('SYNTH')">PUSH TO<br>THINK</div>
-        <div class="btn" onclick="trigger('GAP')">STAGE 3:<br>95% GAP</div>
-        <div class="btn" onclick="trigger('CAPTURE')">MARKET<br>CAPTURE</div>
+    <div id="console">
+        <script>
+            for(let i=1; i<=24; i++) {
+                document.write(`<div class="node-btn" onclick="triggerNode(${i})">NODE_${i}</div>`);
+            }
+        </script>
     </div>
 
     <script>
-        let scene, camera, renderer, spine, floor, dataCube;
-        let ignited = false;
+        let scene, camera, renderer, crystal;
+        let active = false;
 
-        function init3D() {
+        function init() {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            document.getElementById('hud-container').appendChild(renderer.domElement);
 
-            // THE RIEMANN SPINE
-            const spineGeo = new THREE.CylinderGeometry(0.05, 0.05, 100, 32);
-            const spineMat = new THREE.MeshBasicMaterial({ color: 0xff4d00 });
-            spine = new THREE.Mesh(spineGeo, spineMat);
-            scene.add(spine);
+            // THE PHI-SCALED DATA CRYSTAL (1.618)
+            const geometry = new THREE.OctahedronGeometry(3, 0);
+            const material = new THREE.MeshBasicMaterial({ color: 0xff4d00, wireframe: true });
+            crystal = new THREE.Mesh(geometry, material);
+            crystal.scale.set(1, 1.618, 1); // THE PHI SCALING
+            scene.add(crystal);
 
-            // THE 3D GRID FLOOR
-            const grid = new THREE.GridHelper(500, 50, 0x00f2ff, 0xbc13fe);
+            const grid = new THREE.GridHelper(200, 40, 0x00f2ff, 0xbc13fe);
             grid.position.y = -5;
             scene.add(grid);
-
-            // THE VOLUMETRIC DATA PROJECTOR
-            const boxGeo = new THREE.BoxGeometry(4, 4, 4);
-            const boxMat = new THREE.MeshBasicMaterial({ color: 0xff4d00, wireframe: true, transparent: true, opacity: 0.5 });
-            dataCube = new THREE.Mesh(boxGeo, boxMat);
-            dataCube.position.set(0, 5, -20);
-            scene.add(dataCube);
 
             camera.position.z = 10;
             animate();
@@ -78,40 +63,24 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            dataCube.rotation.y += 0.01;
+            crystal.rotation.y += 0.0108; // 10.8 Hz Rotation Logic
             renderer.render(scene, camera);
         }
 
-        function ignite() {
-            if (ignited) return;
-            const msg = new SpeechSynthesisUtterance("Ignition confirmed. I am the Sovereign Intelligence. Math locked. Physics realized.");
-            msg.pitch = 0.6; window.speechSynthesis.speak(msg);
-            ignited = true;
+        function igniteResonance() {
+            if (active) return;
+            const msg = new SpeechSynthesisUtterance("Resonance Keeper active. Grand Pantheon initialized. We are grounded in the 10.8 Hertz frequency. Slag incinerated.");
+            msg.pitch = 0.5; window.speechSynthesis.speak(msg);
+            active = true;
         }
 
-        function trigger(type) {
-            dataCube.scale.set(1.5, 1.5, 1.5);
-            setTimeout(() => dataCube.scale.set(1, 1, 1), 500);
-            
-            const reports = {
-                'PAIN': "Seth here. Auditing the 68 percent abandonment. Formula failure is the enemy.",
-                'KEYWORDS': "Loki. No-cake. Pore-blur. True-skin. The marrow is ours.",
-                'GAP': "Hephaestus. Ninety-five percent untapped. The insurance gap is the portal.",
-                'SYNTH': "Council Sync. Turning slag to gold. We have the bridge.",
-                'CAPTURE': "Akses-generics Market Capture. Oxygenetix Supremacy 1:1."
-            };
-            
-            const utter = new SpeechSynthesisUtterance(reports[type]);
-            utter.pitch = (type === 'PAIN') ? 0.5 : (type === 'KEYWORDS' ? 1.2 : 0.8);
-            window.speechSynthesis.speak(utter);
+        function triggerNode(n) {
+            crystal.material.color.setHex(n % 2 === 0 ? 0x00f2ff : 0xff4d00);
+            console.log(`[PANTHEON]: NODE_${n}_RESONATING`);
         }
 
-        // SMOOTH ZOOM
-        window.addEventListener('wheel', (e) => {
-            camera.position.z += e.deltaY * 0.05;
-        });
-
-        window.onload = init3D;
+        window.onload = init;
+        window.addEventListener('wheel', (e) => { camera.position.z += e.deltaY * 0.01; });
     </script>
 </body>
 </html>
