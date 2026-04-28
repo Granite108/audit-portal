@@ -24,4 +24,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
+      - name: The Master Strike
+        run: |
+          python scripts/hydra_master_control.py
+          echo "THE_ORGANISM_IS_WHOLE"
+concurrency:
+  
