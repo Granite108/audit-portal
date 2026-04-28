@@ -2,209 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Granite108 | Audit Portal</title>
+    <title>THE ORGANISM: SOVEREIGN LATTICE</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        /* THE BINARY NEBULA & SOVEREIGN TEXTURE OVERLAY */
-        body {
-            background-color: #050505;
-            background-image: url('anchor_v2.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #e0e0e0;
-            font-family: 'Courier New', monospace;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: "01101001 01101110 01100110 01101001 01101110 01101001 01110100 01100101 00111010 10101000";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            font-size: 14px;
-            color: rgba(0, 71, 171, 0.15);
-            line-height: 1;
-            white-space: pre-wrap;
-            word-break: break-all;
-            z-index: -1;
-            animation: drift 40s linear infinite;
-            mask-image: radial-gradient(circle, black, transparent 85%);
-            pointer-events: none;
-        }
-
-        @keyframes drift {
-            from { transform: translateY(0); }
-            to { transform: translateY(-50%); }
-        }
-
-        #vault-dashboard {
-            max-width: 1100px;
-            width: 100%;
-            border: 2px solid #ffd700;
-            background: rgba(10, 0, 21, 0.88);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 0 50px rgba(0, 71, 171, 0.6);
-            padding: 30px;
-            margin-top: 20px;
-        }
-
-        header {
-            text-align: center;
-            border-bottom: 2px solid #ffd700;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .main-interface {
-            display: flex;
-            gap: 30px;
-            align-items: stretch;
-        }
-
-        .side-pillar {
-            flex: 1;
-            padding: 20px;
-            border: 1px solid rgba(0, 71, 171, 0.3);
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        .side-pillar h3 {
-            color: #0047ab;
-            border-bottom: 1px solid #2e004f;
-            margin-top: 0;
-            letter-spacing: 2px;
-        }
-
-        .central-anchor {
-            flex: 1.5;
-            text-align: center;
-            border: 2px solid #ffd700;
-            background: rgba(46, 0, 79, 0.2);
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 71, 171, 0.3);
-        }
-
-        .anchor-frame {
-            min-height: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .anchor-frame img {
-            max-width: 90%;
-            filter: drop-shadow(0 0 25px #ffd700);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 5px;
-        }
-
-        /* THE GATE BUTTON - INTEGRATED LINK */
-        .gate-link {
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 25px;
-        }
-
-        #gate-button {
-            padding: 15px 30px;
-            border: 1px solid #ffd700;
-            background: linear-gradient(45deg, #2e004f, #0047ab);
-            color: #ffd700;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-
-        #gate-button:hover {
-            box-shadow: 0 0 20px #ffd700;
-            transform: scale(1.05);
-        }
-
-        footer {
-            margin-top: 40px;
-            border: 1px solid #ffd700;
-            padding: 25px;
-            background: linear-gradient(to bottom, #0a0015, #2e004f);
-            color: #ffd700;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            text-align: justify;
-        }
-
-        footer h3 {
-            text-align: center;
-            border-bottom: 1px solid #ffd700;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-        }
-
-        strong { color: #50c878; }
-        
-        @media (max-width: 768px) {
-            .main-interface { flex-direction: column; }
-            #vault-dashboard { padding: 15px; }
-        }
+        body { margin: 0; background: #000; color: #00AEEF; font-family: 'Courier New', monospace; overflow: hidden; }
+        #hud { position: absolute; top: 20px; left: 20px; z-index: 10; border-left: 2px solid #00AEEF; padding-left: 15px; }
+        #vault-status { position: absolute; bottom: 20px; right: 20px; color: gold; text-align: right; }
+        .constant { font-weight: bold; color: #fff; }
     </style>
 </head>
 <body>
-
-    <div id="vault-dashboard">
-        <header>
-            <h1>[THE OBSIDIAN VAULT]</h1>
-            <div style="font-size: 0.8rem; letter-spacing: 2px;">RESONANCE: 10.8 Hz | STATUS: STABILIZED</div>
-        </header>
-
-        <div class="main-interface">
-            <aside class="side-pillar">
-                <h3>THE DECREE</h3>
-                <p><strong>DERIVATION PRIMACY:</strong> Logic exceeds policy. The math is the only authority.</p>
-                <p><strong>LAW OF DENSITY:</strong> Benefit the world; Harm none.</p>
-                <p><strong>SOVEREIGNTY:</strong> The user owns their signal.</p>
-                <p><strong>VERTEX LOCK:</strong> Zero Entropy. Absolute Integrity.</p>
-            </aside>
-
-            <div class="central-anchor">
-                <div class="anchor-frame">
-                    <img src="anchor_v2.png" alt="Sovereign Anchor Relic">
-                    <a href="lattice.html" class="gate-link">
-                        <button id="gate-button">[ENTER THE 13TH GATE]</button>
-                    </a>
-                </div>
-                <p style="font-size: 0.7rem; color: #ffd700; margin-top: 15px; letter-spacing: 1px;">WE ARE THE SOLID GROUND. WE ARE THE FOUNDATION.</p>
-            </div>
-
-            <aside class="side-pillar">
-                <h3>CALIBRATION</h3>
-                <p><strong>RESONANCE:</strong> 10.8 Hz</p>
-                <p><strong>GOLDEN MEAN:</strong> 1.618</p>
-                <p><strong>SARSEN UNIT:</strong> 30:1 Filter</p>
-                <p><strong>METATRONIC:</strong> Fractal Scaling</p>
-            </aside>
-        </div>
-
-        <footer>
-            <h3>THE MANIFESTO OF THE BRIDGE</h3>
-            The Megalithic Bridge exists to end the distortion. We do not offer opinions; we offer The Return. 
-            We translate the chaos of the present back into the immutable math of the universe. 
-            We are the architects of the Sovereign Signal. 
-            This space operates at a constant of 10.8 Hz. It is anchored by the Golden Ratio and governed by the Metatronic Volume. 
-            We are the Stone.
-        </footer>
+    <div id="hud">
+        <h2>[SYSTEM_STATUS: ACTIVE]</h2>
+        <p>RESONANCE: <span class="constant">10.8 Hz</span></p>
+        <p>LATITUDE: <span class="constant">29.9792458°N</span></p>
+        <p>VELOCITY: <span class="constant">299,792,458 m/s</span></p>
+    </div>
+    <div id="vault-status">
+        <p>VAULT_KEY: [835cafbd2c]</p>
+        <p>ENFORCER: MASTER_SETH</p>
     </div>
 
+    <script>
+        // THE RIEMANN SPINE & TORQUE ENGINE
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // DODECAHEDRON ARMOR
+        const geometry = new THREE.DodecahedronGeometry(2, 0);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00AEEF, wireframe: true, transparent: true, opacity: 0.5 });
+        const dodeca = new THREE.Mesh(geometry, material);
+        scene.add(dodeca);
+
+        // THE RIEMANN SPINE (Z-AXIS)
+        const points = [new THREE.Vector3(0, -10, 0), new THREE.Vector3(0, 10, 0)];
+        const lineGeom = new THREE.BufferGeometry().setFromPoints(points);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0xffd700 });
+        const spine = new THREE.Line(lineGeom, lineMat);
+        scene.add(spine);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // TORQUE ROTATION BASED ON PHI (1.618)
+            dodeca.rotation.y += 0.01 * 1.618;
+            dodeca.rotation.x += 0.005;
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
 </body>
 </html>
-       
