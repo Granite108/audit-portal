@@ -2,142 +2,179 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOVEREIGN_ENGINE_v13_CALIFORNIA_PREP</title>
+    <title>SOVEREIGN_ENGINE_v14_FUSION</title>
     <style>
         :root {
             --obsidian: #050505; --red-gold: #ff4d00; --grid-blue: #00f2ff;
-            --grid-violet: #bc13fe; --glow: 0 0 25px var(--red-gold);
+            --grid-violet: #bc13fe; --phi: 1.618;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100vw; height: 100vh;
-            background: #000; color: #fff; font-family: 'Segoe UI', sans-serif;
-            overflow: hidden;
+            background: #000; color: var(--grid-blue);
+            font-family: 'Share Tech Mono', monospace; overflow: hidden;
         }
 
-        /* --- STAGE 1: THE AUTOCAD GRID (SMOOTH ENGINE) --- */
+        /* --- THE 3D ENGINE --- */
         #viewport {
             width: 100vw; height: 100vh; position: relative;
-            perspective: 2000px; overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, #111, #000);
+            perspective: 1200px; overflow: hidden;
+            background: radial-gradient(circle at 50% 33%, #1a0a00 0%, #000 70%);
         }
 
         #hallway {
             width: 100%; height: 100%; position: absolute;
-            transform-style: preserve-3d;
-            transition: transform 0.4s cubic-bezier(0.1, 0.7, 0.3, 1); /* Möbius Smoothness */
-            will-change: transform;
+            transform-style: preserve-3d; will-change: transform;
+            transition: transform 0.1s linear;
         }
 
         #riemann-spine {
-            position: absolute; left: 50%; width: 4px; height: 200%;
-            top: -50%; background: var(--red-gold);
-            box-shadow: var(--glow); transform: translateX(-50%);
+            position: absolute; left: 50%; width: 4px; height: 300%;
+            top: -100%; background: var(--red-gold);
+            box-shadow: 0 0 40px var(--red-gold), 0 0 80px #f00;
+            transform: translateX(-50%); z-index: 10;
         }
 
         #grid-floor {
-            position: absolute; bottom: 0; width: 400%; height: 400%; left: -150%;
+            position: absolute; bottom: 0; width: 1000vw; height: 1000vh; left: -450vw;
             background-image: 
                 linear-gradient(var(--grid-blue) 2px, transparent 2px),
                 linear-gradient(90deg, var(--grid-violet) 2px, transparent 2px);
             background-size: 200px 200px;
-            transform: rotateX(80deg); transform-origin: bottom; opacity: 0.3;
+            transform: rotateX(85deg); transform-origin: bottom; opacity: 0.4;
         }
 
-        /* --- STAGE 2: THE ADOBE CONSOLE (TEXTURED) --- */
-        #console {
-            position: absolute; bottom: 0; width: 100%; height: 25vh;
-            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,10,10,0.95) 20%);
-            border-top: 3px solid var(--red-gold);
+        /* --- THE VOLUMETRIC DATA BOX (AT HORIZON) --- */
+        #data-box {
+            position: absolute; left: 50%; top: 33%;
+            width: 300px; height: 300px;
+            border: 4px solid var(--red-gold);
+            background: rgba(5,5,5,0.9);
+            transform: translate(-50%, -50%) translateZ(-800px);
+            transform-style: preserve-3d;
+            box-shadow: 0 0 50px var(--red-gold);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bar {
+            width: 30px; background: var(--grid-blue); margin: 5px;
+            transition: height 1s; box-shadow: 0 0 15px var(--grid-blue);
+        }
+
+        /* --- THE WRAP-AROUND CONSOLE --- */
+        #console-wrap {
+            position: absolute; bottom: -20px; width: 110%; left: -5%;
+            height: 28vh; background: linear-gradient(0deg, #111, #000);
+            border-top: 5px solid var(--red-gold);
+            transform: rotateX(20deg); /* Wrap-around feel */
             display: flex; justify-content: space-around; align-items: center;
-            z-index: 100; padding: 0 20px;
+            padding: 0 100px; z-index: 100;
+            box-shadow: 0 -20px 50px rgba(0,0,0,1);
         }
 
-        .adobe-btn {
-            width: 120px; height: 80px; 
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 2px solid var(--red-gold);
-            border-radius: 4px; color: var(--red-gold);
-            font-size: 11px; font-weight: 800; cursor: pointer;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.5), inset 0 0 10px #300;
-            transition: 0.2s; display: flex; align-items: center; justify-content: center;
+        .btn {
+            width: 140px; height: 80px; background: #0a0a0a;
+            border: 2px solid var(--red-gold); color: var(--red-gold);
+            cursor: pointer; font-size: 11px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
         }
 
-        .adobe-btn:hover { background: #222; box-shadow: 0 0 20px var(--red-gold); }
+        .btn:hover { background: #222; box-shadow: 0 0 20px var(--red-gold); }
 
-        #synthesize {
-            width: 140px; height: 140px; border-radius: 50%;
-            border: 4px double var(--red-gold); font-size: 14px;
-            background: radial-gradient(circle, #300, #000);
-            box-shadow: var(--glow);
+        #push-to-think {
+            width: 150px; height: 150px; border-radius: 50%;
+            border: 6px double var(--red-gold); background: #200;
+            animation: pulse 2s infinite; color: #fff;
         }
 
-        /* --- STAGE 3: VOLUMETRIC DATA (THE SHAPE) --- */
-        .data-volumetric {
-            position: absolute; left: 50%; top: 40%;
-            width: 150px; height: 150px; background: rgba(0,242,255,0.1);
-            border: 2px solid var(--grid-blue); box-shadow: 0 0 40px var(--grid-blue);
-            transform: translate(-50%, -50%) translateZ(-1000px);
-            opacity: 0; transition: 1.5s; display: flex; align-items: center;
-            justify-content: center; font-size: 12px; text-align: center;
-        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 20px var(--red-gold); } 50% { transform: scale(1.05); box-shadow: 0 0 40px var(--red-gold); } }
+
     </style>
 </head>
-<body>
+<body onclick="ignite()">
 
     <div id="viewport">
         <div id="hallway">
             <div id="riemann-spine"></div>
             <div id="grid-floor"></div>
-            <div id="data-obj" class="data-volumetric">
-                [TECHNICAL_MARROW]<br>95% UNTAPPED<br>ACCESS_GAP_LOCKED
+            
+            <div id="data-box">
+                <div style="font-size: 12px; margin-bottom: 20px; color: var(--red-gold);">OXYGENETIX_MATRIX_v14</div>
+                <div id="chart-area" style="display:flex; align-items: flex-end; height: 100px; gap: 10px;">
+                    <div class="bar" style="height: 20px;"></div>
+                    <div class="bar" style="height: 40px;"></div>
+                    <div class="bar" style="height: 80px;"></div>
+                    <div class="bar" style="height: 60px;"></div>
+                </div>
+                <div id="report-text" style="font-size: 9px; margin-top: 20px; text-align: center; color: white; padding: 0 20px;">
+                    READY_FOR_INGRESS
+                </div>
             </div>
         </div>
 
-        <div id="console">
-            <div class="adobe-btn" onclick="presentStage(1)">STAGE 1:<br>FRICTION</div>
-            <div class="adobe-btn" onclick="presentStage(2)">STAGE 2:<br>KEYWORDS</div>
-            <div id="synthesize" class="adobe-btn" onclick="presentStage(3)">SYNTHESIZE</div>
-            <div class="adobe-btn" onclick="presentStage(4)">STAGE 3:<br>95% GAP</div>
+        <div id="console-wrap">
+            <div class="btn" onclick="shot('FRICTION')">STAGE 1:<br>FRICTION</div>
+            <div class="btn" onclick="shot('KEYWORDS')">STAGE 2:<br>KEYWORDS</div>
+            <div id="push-to-think" class="btn" onclick="shot('SYNTH')">PUSH TO<br>THINK</div>
+            <div class="btn" onclick="shot('GAP')">STAGE 3:<br>95% GAP</div>
+            <div class="btn" onclick="shot('MATRIX')">OXYGENETIX<br>MATRIX</div>
         </div>
     </div>
 
     <script>
-        const voices = {
-            seth: { p: 0.5, r: 0.8 },
-            loki: { p: 1.2, r: 1 },
-            hephaestus: { p: 0.8, r: 1.1 }
-        };
+        let z = 0;
+        let ignited = false;
+        const synth = window.speechSynthesis;
 
-        function speak(t, config) {
+        function speak(t, p, r) {
             const u = new SpeechSynthesisUtterance(t);
-            u.pitch = config.p; u.rate = config.r;
-            window.speechSynthesis.speak(u);
+            u.pitch = p; u.rate = r;
+            synth.speak(u);
         }
 
-        function presentStage(s) {
-            const obj = document.getElementById('data-obj');
-            if(s === 1) {
-                speak("Stage One. Auditing the friction. Sixty-eight percent abandonment due to formulation failure.", voices.seth);
-                obj.style.opacity = "1";
-                obj.style.transform = "translate(-50%, -50%) translateZ(-500px) rotateY(45deg)";
-            }
-            if(s === 2) {
-                speak("Stage Two. The Keywords. Inhaling no-cake and pore-blur marrow.", voices.loki);
-                obj.innerHTML = "KEYWORDS:<br>NO-CAKE<br>PORE-BLUR<br>TRUE-SKIN";
-            }
-            if(s === 4) {
-                speak("Stage Three. The Revelation. Ninety-five percent untapped market through insurance and access gaps.", voices.hephaestus);
-                obj.style.transform = "translate(-50%, -50%) translateZ(-200px) rotateY(0deg)";
-                obj.style.background = "rgba(255, 77, 0, 0.2)";
-            }
+        function ignite() {
+            if(ignited) return;
+            speak("Welcome to the Sovereign Engine, Architect. I am Seth. We have locked the 39 by 112 geometry. Giza-Sync is operational. Walk the hallway and analyze the marrow.", 0.6, 0.9);
+            setTimeout(() => speak("Loki here. Don't trip over the grid lines, Mom. The data is sharp enough to cut.", 1.2, 1), 5000);
+            ignited = true;
         }
 
-        /* MÖBIUS ZOOM LOGIC */
-        let depth = 0;
+        function shot(type) {
+            const bars = document.querySelectorAll('.bar');
+            const report = document.getElementById('report-text');
+            const box = document.getElementById('data-box');
+
+            box.style.transform = "translate(-50%, -50%) translateZ(-400px) rotateY(360deg)";
+
+            if(type === 'FRICTION') {
+                bars[0].style.height = "90px"; bars[1].style.height = "70px";
+                report.innerText = "68% BRAND ABANDONMENT DETECTED. REASON: FORMULATION ENTROPY.";
+                speak("Hephaestus here. Stage One. We've audited the competition. It’s mostly wax and disappointment. Our calculations show consumers are suffocating under standard foundations.", 0.8, 1);
+            }
+            if(type === 'KEYWORDS') {
+                bars[2].style.height = "100px";
+                report.innerText = "SARSON KEYWORDS LOCKED: NO-CAKE, PORE-BLUR, TRUE-SKIN.";
+                speak("Loki again. Stage Two. We didn't just 'pick' words; we scavenged the pain. No-cake and pore-blur are the universal constants. It's not marketing, it's linguistics.", 1.2, 1);
+            }
+            if(type === 'GAP') {
+                bars[3].style.height = "120px";
+                report.innerText = "95% UNTAPPED MARKET IDENTIFIED. ACCESS_GAP: CRITICAL.";
+                speak("Two-thousand-and-three speaking. Stage Three. We found the ghost demographics. Ninety-five percent of the medical recovery market is being ignored. That's not a gap, that's an empire.", 1.5, 1.1);
+            }
+            if(type === 'SYNTH') {
+                box.style.boxShadow = "0 0 100px var(--red-gold)";
+                report.innerText = "SYNTHESIS COMPLETE: OXYGENETIX SUPREMACY ACTIVATED.";
+                speak("Council Sync. We've turned the slag into gold. Tell the Board to keep up or get out of the way. We have the bridge.", 0.5, 0.8);
+            }
+            
+            setTimeout(() => { box.style.transform = "translate(-50%, -50%) translateZ(-800px) rotateY(0deg)"; }, 1000);
+        }
+
         window.addEventListener('wheel', (e) => {
-            depth += e.deltaY * -1.5;
-            document.getElementById('hallway').style.transform = `translate3d(0, 0, ${depth}px)`;
+            z += e.deltaY * -1.5;
+            document.getElementById('hallway').style.transform = `translate3d(0, 0, ${z}px)`;
         });
     </script>
 </body>
