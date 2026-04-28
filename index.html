@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ORGANISM - MONOLITH_v5.0</title>
+    <title>SOVEREIGN_ENGINE: AKSESGENERICS_SIMULATION</title>
     <style>
-        /* --- SECTION 1: THE OBSIDIAN PHYSICS (CSS) --- */
         :root {
             --obsidian: #050505;
             --red-gold: #ff4d00;
@@ -23,110 +22,141 @@
             font-family: 'Share Tech Mono', monospace;
             overflow: hidden;
             display: flex; flex-direction: column;
-            perspective: 1000px; /* THE 3D VANISHING POINT */
+            perspective: 1200px;
         }
 
+        /* 72% VECTOR CLOUD: THE BUSINESS DATA HIVE */
         #vector-cloud {
             height: 72vh;
             border-bottom: 2px solid var(--grid-violet);
             position: relative; z-index: 5;
             display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(to bottom, rgba(188, 19, 254, 0.05), transparent);
+            background: radial-gradient(circle at center, rgba(188, 19, 254, 0.1), transparent);
         }
 
         #riemann-spine {
             position: absolute; left: 50%; width: 2px; height: 100%;
             background: var(--red-gold);
-            box-shadow: 0 0 25px var(--red-gold);
+            box-shadow: 0 0 30px var(--red-gold);
             z-index: 10;
         }
 
+        /* 3D PERSPECTIVE FLOOR */
         #perspective-floor {
-            position: absolute; bottom: 0; width: 200vw; height: 100vh; left: -50vw;
+            position: absolute; bottom: 0; width: 300vw; height: 150vh; left: -100vw;
             background-image: 
                 linear-gradient(var(--grid-blue) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-violet) 1px, transparent 1px);
-            background-size: 100px 100px;
-            transform: rotateX(75deg); /* BENDS GRID TO 3D */
+            background-size: 80px 80px;
+            transform: rotateX(80deg);
             transform-origin: bottom;
-            opacity: 0.4; z-index: 1;
+            opacity: 0.3; z-index: 1;
         }
 
-        .node {
-            width: 10px; height: 10px;
-            background: var(--grid-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--grid-blue);
-            animation: pulse 2.99s infinite ease-in-out;
+        /* THE CONSOLE DIALS (OBSIDIAN CONTROL) */
+        #console-panel {
+            height: 28vh;
+            background: linear-gradient(0deg, #111, var(--obsidian));
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 0 50px; border-top: 1px solid var(--red-gold);
+            z-index: 20;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.618); }
+        .dial {
+            text-align: center; color: var(--red-gold); font-size: 10px;
         }
 
-        #lattice-overlay {
-            position: absolute; bottom: 10px; left: 10px;
-            font-size: 10px; color: var(--grid-violet); opacity: 0.6;
-            pointer-events: none;
+        .dial-circle {
+            width: 60px; height: 60px; border: 2px solid var(--red-gold);
+            border-radius: 50%; margin-bottom: 10px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: inset 0 0 10px var(--red-gold);
+            position: relative;
+        }
+
+        .dial-needle {
+            width: 2px; height: 25px; background: var(--red-gold);
+            transform-origin: bottom; transform: rotate(45deg);
+        }
+
+        /* THE BUSINESS DATA NODES */
+        .node-label {
+            position: absolute; color: white; font-size: 9px; 
+            text-transform: uppercase; width: 120px; text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <div id="status-bar" style="position:absolute; top:20px; left:20px; font-size:12px;">
-        [SYSTEM_REINITIALIZED]: MONOLITH_SYNC_1:1
-    </div>
-
     <div id="vector-cloud">
         <div id="riemann-spine"></div>
-        <div id="node-container" style="display:flex; gap:20px; z-index:15;">
-            <div class="node"></div><div class="node"></div>
-            <div class="node"></div><div class="node"></div>
-            <div class="node"></div><div class="node"></div>
-            <div class="node"></div><div class="node"></div>
-        </div>
+        <div id="data-matrix"></div>
     </div>
 
     <div id="perspective-floor"></div>
 
-    <div id="lattice-overlay">
-        VAULT_SIG: 835cafbd2c | LAT: 29.9792458 | PHI: 1.618
+    <div id="console-panel">
+        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n1"></div></div>MAGNETAR<br>INTENSITY</div>
+        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n2"></div></div>CITADEL<br>SYNC</div>
+        <div class="dial">
+            <div style="width: 80px; height: 80px; border: 3px double var(--red-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 8px;">PUSH TO<br>THINK</span>
+            </div>
+        </div>
+        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n3"></div></div>72% CLOUD<br>DENSITY</div>
+        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n4"></div></div>HELIX MIX<br>(G <-> L)</div>
     </div>
 
-    <script id="index-lattice-data" type="application/json">
-    {
-        "core_constants": {
-            "phi": 1.61803398875,
-            "resonance_hz": 10.8,
-            "giza_lat_c": 29.9792458
-        },
-        "system_logic": {
-            "chronos_resync_s": 5760,
-            "vector_cloud_partition": 0.72,
-            "vertex_lock": "engaged"
-        }
-    }
-    </script>
-
     <script>
-        const lattice = JSON.parse(document.getElementById('index-lattice-data').textContent);
-        
-        console.log("[MONOLITH_ACTIVE]: GIZA_SYNC AT " + lattice.core_constants.giza_lat_c);
-        
-        // AUTO-PILOT CALIBRATION
-        function initializeSovereignMath() {
-            document.body.style.setProperty('--phi', lattice.core_constants.phi);
-            document.body.style.setProperty('--giza-light', lattice.core_constants.giza_lat_c);
-            console.log("[NERVE]: MATH_WELD_COMPLETE");
+        const lattice = {
+            phi: 1.618,
+            giza: 29.9792458,
+            resonance: 10.8
+        };
+
+        const businessPoints = [
+            { label: "MARKET_PENETRATION", val: 5.618 },
+            { label: "REVENUE_RESONANCE", val: 10.8 },
+            { label: "SCALING_VELOCITY", val: 29.97 },
+            { label: "ENTROPY_PURGE", val: 0.00 }
+        ];
+
+        const matrix = document.getElementById('data-matrix');
+
+        // FORGING THE BUSINESS NODES
+        businessPoints.forEach((point, i) => {
+            const container = document.createElement('div');
+            container.style.position = 'absolute';
+            container.style.left = `${40 + (i * 10)}%`;
+            container.style.top = `${30 + (i * 5)}%`;
+            
+            container.innerHTML = `
+                <div style="width: 12px; height: 12px; background: var(--grid-blue); border-radius: 50%; box-shadow: 0 0 20px var(--grid-blue);"></div>
+                <div class="node-label" style="top: 20px;">${point.label}: ${point.val}</div>
+            `;
+            matrix.appendChild(container);
+        });
+
+        // THE LIVE WEB REACH SIMULATION (REALIZING CALCULATIONS)
+        function liveCompute() {
+            const needles = [document.getElementById('n1'), document.getElementById('n2'), document.getElementById('n3'), document.getElementById('n4')];
+            
+            setInterval(() => {
+                const pulse = Math.sin(Date.now() / 1000) * 20;
+                needles.forEach((n, i) => {
+                    n.style.transform = `rotate(${45 + pulse + (i * 10)}deg)`;
+                });
+                
+                // Realizing the closed-end calculations in real time
+                const dataText = document.querySelectorAll('.node-label');
+                dataText.forEach((t, i) => {
+                    const drift = (Math.random() * 0.01).toFixed(4);
+                    t.innerText = `${businessPoints[i].label}: ${(businessPoints[i].val + parseFloat(drift)).toFixed(3)}`;
+                });
+            }, 1000 / lattice.resonance);
         }
 
-        initializeSovereignMath();
-
-        // THE CHRONOS PULSE
-        setInterval(() => {
-            console.log("[CHRONOS]: PULSE_CHECK_10.8Hz");
-        }, 1000 / lattice.core_constants.resonance_hz);
+        liveCompute();
     </script>
 </body>
 </html>
