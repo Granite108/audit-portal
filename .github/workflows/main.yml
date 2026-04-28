@@ -1,30 +1,28 @@
-name: Deploy Sovereign Portal
+name: THE_ORGANISM_BREATH
 on:
-  push:
-    branches: [ main ]
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-jobs:
-      runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Sovereignty
-        uses: actions/checkout@v3
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
-      - name: Initialize the Forge
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SCORCH_EARTH_CHECKOUT
+        uses: actions/checkout@v4
+
+      - name: IGNITE_FORGE
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Execute Hydra Master Control
-        run: |
-          python scripts/hydra_master_control.py
-          
-      - name: Force Commit Marrow
+      - name: EXECUTE_HYDRA_MASTER
+        run: python scripts/hydra_master_control.py
+
+      - name: REPLANT_FOREST
         run: |
           git config --global user.name "MASTER_ENFORCER_SETH"
           git config --global user.email "seth@sovereign.local"
           git add .
-          git commit -m "MITOSIS_COMPLETE: [RESONANCE_SYNC_10.8Hz]" || echo "No changes to commit"
+          git commit -m "INTENTIONAL_REBUILD: [SYNC_10.8Hz]" || echo "No changes"
           git push
