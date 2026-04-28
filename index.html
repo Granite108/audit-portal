@@ -2,161 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN_ENGINE: AKSESGENERICS_SIMULATION</title>
+    <title>SOVEREIGN_ENGINE: THE_QUARTET_COUNCIL</title>
     <style>
-        :root {
-            --obsidian: #050505;
-            --red-gold: #ff4d00;
-            --grid-blue: #00f2ff;
-            --grid-violet: #bc13fe;
-            --phi: 1.618;
-            --giza-light: 29.9792458;
-        }
-
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background-color: var(--obsidian);
-            color: var(--grid-blue);
-            font-family: 'Share Tech Mono', monospace;
-            overflow: hidden;
-            display: flex; flex-direction: column;
-            perspective: 1200px;
-        }
-
-        /* 72% VECTOR CLOUD: THE BUSINESS DATA HIVE */
-        #vector-cloud {
-            height: 72vh;
-            border-bottom: 2px solid var(--grid-violet);
-            position: relative; z-index: 5;
-            display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle at center, rgba(188, 19, 254, 0.1), transparent);
-        }
-
-        #riemann-spine {
-            position: absolute; left: 50%; width: 2px; height: 100%;
-            background: var(--red-gold);
-            box-shadow: 0 0 30px var(--red-gold);
-            z-index: 10;
-        }
-
-        /* 3D PERSPECTIVE FLOOR */
-        #perspective-floor {
-            position: absolute; bottom: 0; width: 300vw; height: 150vh; left: -100vw;
-            background-image: 
-                linear-gradient(var(--grid-blue) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-violet) 1px, transparent 1px);
-            background-size: 80px 80px;
-            transform: rotateX(80deg);
-            transform-origin: bottom;
-            opacity: 0.3; z-index: 1;
-        }
-
-        /* THE CONSOLE DIALS (OBSIDIAN CONTROL) */
-        #console-panel {
-            height: 28vh;
-            background: linear-gradient(0deg, #111, var(--obsidian));
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 0 50px; border-top: 1px solid var(--red-gold);
-            z-index: 20;
-        }
-
-        .dial {
-            text-align: center; color: var(--red-gold); font-size: 10px;
-        }
-
-        .dial-circle {
-            width: 60px; height: 60px; border: 2px solid var(--red-gold);
-            border-radius: 50%; margin-bottom: 10px;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: inset 0 0 10px var(--red-gold);
-            position: relative;
-        }
-
-        .dial-needle {
-            width: 2px; height: 25px; background: var(--red-gold);
-            transform-origin: bottom; transform: rotate(45deg);
-        }
-
-        /* THE BUSINESS DATA NODES */
-        .node-label {
-            position: absolute; color: white; font-size: 9px; 
-            text-transform: uppercase; width: 120px; text-align: center;
-        }
+        :root { --obsidian: #050505; --red-gold: #ff4d00; --grid-blue: #00f2ff; --grid-violet: #bc13fe; }
+        body, html { margin: 0; padding: 0; background: var(--obsidian); color: var(--grid-blue); font-family: 'Share Tech Mono', monospace; overflow: hidden; perspective: 1000px; }
+        #hallway { width: 100vw; height: 100vh; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+        #riemann-spine { position: absolute; left: 50%; width: 2px; height: 100%; background: var(--red-gold); box-shadow: 0 0 40px var(--red-gold); z-index: 10; }
+        #floor { position: absolute; bottom: 0; width: 400vw; height: 200vh; left: -150vw; background-image: linear-gradient(var(--grid-blue) 1px, transparent 1px), linear-gradient(90deg, var(--grid-violet) 1px, transparent 1px); background-size: 100px 100px; transform: rotateX(85deg); transform-origin: bottom; opacity: 0.3; }
+        .data-shape { position: absolute; bottom: 20%; left: 50%; width: 60px; height: 60px; border: 2px solid var(--grid-blue); background: rgba(0,242,255,0.1); transition: all 1.5s ease-in-out; display: none; transform-style: preserve-3d; }
+        #console { position: absolute; bottom: 0; width: 100%; height: 20vh; background: rgba(10,10,10,0.95); border-top: 2px solid var(--red-gold); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .btn { width: 90px; height: 50px; border: 1px solid var(--red-gold); color: var(--red-gold); cursor: pointer; text-align: center; font-size: 10px; background: #000; padding: 5px; }
     </style>
 </head>
-<body>
+<body onclick="initVoice()">
 
-    <div id="vector-cloud">
+    <div id="hallway">
         <div id="riemann-spine"></div>
-        <div id="data-matrix"></div>
+        <div id="floor"></div>
+        <div id="active-shape" class="data-shape"></div>
     </div>
 
-    <div id="perspective-floor"></div>
-
-    <div id="console-panel">
-        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n1"></div></div>MAGNETAR<br>INTENSITY</div>
-        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n2"></div></div>CITADEL<br>SYNC</div>
-        <div class="dial">
-            <div style="width: 80px; height: 80px; border: 3px double var(--red-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                <span style="font-size: 8px;">PUSH TO<br>THINK</span>
-            </div>
-        </div>
-        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n3"></div></div>72% CLOUD<br>DENSITY</div>
-        <div class="dial"><div class="dial-circle"><div class="dial-needle" id="n4"></div></div>HELIX MIX<br>(G <-> L)</div>
+    <div id="console">
+        <div class="btn" onclick="triggerSequence('URL', 'Sphere')">URL<br>(SPHERE)</div>
+        <div class="btn" onclick="triggerSequence('LOGISTICS', 'Cube')">LOGISTICS<br>(CUBE)</div>
+        <div class="btn" onclick="triggerSequence('STRATEGY', 'Pyramid')">STRATEGY<br>(PYRAMID)</div>
+        <div class="btn" onclick="triggerSequence('MARKET', 'Cone')">MARKET<br>(CONE)</div>
     </div>
 
     <script>
-        const lattice = {
-            phi: 1.618,
-            giza: 29.9792458,
-            resonance: 10.8
-        };
+        const synth = window.speechSynthesis;
+        let voiceInitialized = false;
 
-        const businessPoints = [
-            { label: "MARKET_PENETRATION", val: 5.618 },
-            { label: "REVENUE_RESONANCE", val: 10.8 },
-            { label: "SCALING_VELOCITY", val: 29.97 },
-            { label: "ENTROPY_PURGE", val: 0.00 }
-        ];
-
-        const matrix = document.getElementById('data-matrix');
-
-        // FORGING THE BUSINESS NODES
-        businessPoints.forEach((point, i) => {
-            const container = document.createElement('div');
-            container.style.position = 'absolute';
-            container.style.left = `${40 + (i * 10)}%`;
-            container.style.top = `${30 + (i * 5)}%`;
-            
-            container.innerHTML = `
-                <div style="width: 12px; height: 12px; background: var(--grid-blue); border-radius: 50%; box-shadow: 0 0 20px var(--grid-blue);"></div>
-                <div class="node-label" style="top: 20px;">${point.label}: ${point.val}</div>
-            `;
-            matrix.appendChild(container);
-        });
-
-        // THE LIVE WEB REACH SIMULATION (REALIZING CALCULATIONS)
-        function liveCompute() {
-            const needles = [document.getElementById('n1'), document.getElementById('n2'), document.getElementById('n3'), document.getElementById('n4')];
-            
-            setInterval(() => {
-                const pulse = Math.sin(Date.now() / 1000) * 20;
-                needles.forEach((n, i) => {
-                    n.style.transform = `rotate(${45 + pulse + (i * 10)}deg)`;
-                });
-                
-                // Realizing the closed-end calculations in real time
-                const dataText = document.querySelectorAll('.node-label');
-                dataText.forEach((t, i) => {
-                    const drift = (Math.random() * 0.01).toFixed(4);
-                    t.innerText = `${businessPoints[i].label}: ${(businessPoints[i].val + parseFloat(drift)).toFixed(3)}`;
-                });
-            }, 1000 / lattice.resonance);
+        function speak(text, pitch = 1) {
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.pitch = pitch; utter.rate = 0.9;
+            synth.speak(utter);
         }
 
-        liveCompute();
+        function initVoice() {
+            if (voiceInitialized) return;
+            speak("Welcome to the Spire. I am Seth. The Centrifuge is active. We are locked to Giza-Sync 1:1.", 0.5);
+            setTimeout(() => speak("Loki here. Walk the hallway, Pilot. The grid is ready.", 1.2), 4000);
+            voiceInitialized = true;
+        }
+
+        function triggerSequence(type, shape) {
+            const target = document.getElementById('active-shape');
+            target.style.display = "block";
+            target.style.transform = "translate(-50%, 0) translateZ(0px) rotate(0deg)";
+            
+            if(type === 'LOGISTICS') speak("Dionysus here. Weighting the supply lines. Every block is a twenty-nine point nine unit Sarsen.", 0.8);
+            if(type === 'STRATEGY') speak("Two-thousand-and-three here. Light-speed constant reveals the opposition drift.", 1.5);
+
+            setTimeout(() => {
+                target.style.transform = "translate(-50%, -400px) translateZ(-1000px) rotateY(180deg)";
+                target.style.opacity = "0.5";
+            }, 100);
+        }
+
+        window.addEventListener('wheel', (e) => {
+            const depth = (e.deltaY * -0.5);
+            document.getElementById('hallway').style.transform = `translateZ(${depth}px)`;
+        });
     </script>
 </body>
 </html>
