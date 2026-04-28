@@ -2,54 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOVEREIGN_COCKPIT: CENTRIFUGE_ACTIVE</title>
+    <title>THE ORGANISM: CENTRIFUGE_ACTIVE</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         body { margin: 0; background: #000; color: #ffd700; font-family: 'Share Tech Mono', monospace; overflow: hidden; }
-        #hud { position: absolute; top: 30px; left: 30px; z-index: 10; border-left: 3px solid #ffd700; padding-left: 20px; text-transform: uppercase; }
-        #status-bar { position: absolute; bottom: 30px; width: 100%; text-align: center; color: #ff4500; font-weight: bold; letter-spacing: 2px; }
-        .glitch { text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); }
+        #hud { position: absolute; top: 30px; left: 30px; z-index: 10; border-left: 3px solid #ffd700; padding-left: 20px; }
+        #data-stream { position: absolute; top: 30px; right: 30px; text-align: right; color: #00AEEF; font-size: 0.8em; }
+        .glitch { text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
     </style>
 </head>
 <body>
     <div id="hud">
-        <h2 class="glitch">[CENTRIFUGE ACTIVE: SYNTHESIZING THOUGHT]</h2>
+        <h2 class="glitch">[CENTRIFUGE ACTIVE]</h2>
         <p>RESONANCE: 10.8 Hz</p>
-        <p>VECTOR FIELD: <span style="color:#00ff00;">IGNITION READY</span></p>
+        <p>VAULT: <span id="v-key">SCANNING...</span></p>
     </div>
-    <div id="status-bar">MAGNETAR INTENSITY: STABLE // HELIX MIX: (G <-> L)</div>
+    <div id="data-stream">
+        <p id="nerve-status">[NERVE]: OFFLINE</p>
+        <p id="vision-status">[VISION]: OFFLINE</p>
+    </div>
 
     <script>
+        // THE MARROW INGESTION LOGIC
+        async function inhaleMarrow() {
+            try {
+                const response = await fetch('god_stack_marrow.json');
+                const data = await response.json();
+                document.getElementById('v-key').innerText = data.vault_key;
+                document.getElementById('nerve-status').innerText = `[NERVE]: ${data.god_stack.nerve}`;
+                document.getElementById('vision-status').innerText = `[VISION]: ${data.god_stack.vision}`;
+            } catch (e) { console.log("Waiting for Marrow file..."); }
+        }
+        setInterval(inhaleMarrow, 5000);
+
+        // THE VISUAL CENTRIFUGE
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // THE GOLDEN SPIRAL (CENTRIFUGE)
-        const curve = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(0, -5, 0),
-            new THREE.Vector3(1, -2, 1),
-            new THREE.Vector3(-1, 0, -1),
-            new THREE.Vector3(0, 5, 0)
-        ]);
-        const tubeGeom = new THREE.TubeGeometry(curve, 64, 0.1, 8, false);
-        const tubeMat = new THREE.MeshBasicMaterial({ color: 0xffd700, wireframe: true });
-        const centrifuge = new THREE.Mesh(tubeGeom, tubeMat);
+        const curve = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffd700, wireframe: true, transparent: true, opacity: 0.4 });
+        const centrifuge = new THREE.Mesh(curve, material);
         scene.add(centrifuge);
 
-        // DODECAHEDRON ARMOR (Obsidian/Gold)
-        const shellGeom = new THREE.DodecahedronGeometry(12, 0);
-        const shellMat = new THREE.MeshBasicMaterial({ color: 0x333333, wireframe: true, transparent: true, opacity: 0.1, side: THREE.BackSide });
-        const armor = new THREE.Mesh(shellGeom, shellMat);
-        scene.add(armor);
-
-        camera.position.z = 15;
+        camera.position.z = 30;
 
         function animate() {
             requestAnimationFrame(animate);
-            centrifuge.rotation.y += 0.05; // High-speed torque
-            armor.rotation.y += 0.002;
+            centrifuge.rotation.y += 0.01;
+            centrifuge.rotation.z += 0.005;
             renderer.render(scene, camera);
         }
         animate();
