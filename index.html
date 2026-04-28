@@ -2,155 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOVEREIGN_ENGINE_v11_PROTOTYPE</title>
+    <title>SOVEREIGN_ENGINE_v13_CALIFORNIA_PREP</title>
     <style>
         :root {
             --obsidian: #050505; --red-gold: #ff4d00; --grid-blue: #00f2ff;
-            --grid-violet: #bc13fe; --phi: 1.618;
+            --grid-violet: #bc13fe; --glow: 0 0 25px var(--red-gold);
         }
 
         body, html {
             margin: 0; padding: 0; width: 100vw; height: 100vh;
-            background: var(--obsidian); color: var(--grid-blue);
-            font-family: 'Share Tech Mono', monospace; overflow: hidden;
-            -webkit-font-smoothing: antialiased;
+            background: #000; color: #fff; font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
         }
 
+        /* --- STAGE 1: THE AUTOCAD GRID (SMOOTH ENGINE) --- */
         #viewport {
-            width: 100vw; height: 100vh;
-            position: relative; overflow: hidden;
-            perspective: 1500px; /* Enhanced depth for smooth zoom */
+            width: 100vw; height: 100vh; position: relative;
+            perspective: 2000px; overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #111, #000);
         }
 
-        /* HARDWARE ACCELERATED HALLWAY */
         #hallway {
             width: 100%; height: 100%; position: absolute;
             transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.1, 0.7, 0.3, 1); /* Möbius Smoothness */
             will-change: transform;
-            transition: transform 0.1s linear; /* Responsive walk */
         }
 
         #riemann-spine {
-            position: absolute; left: 50%; width: 4px; height: 100%;
-            background: linear-gradient(to bottom, transparent, var(--red-gold) 50%, transparent);
-            box-shadow: 0 0 60px var(--red-gold); z-index: 10;
-            transform: translateX(-50%);
+            position: absolute; left: 50%; width: 4px; height: 200%;
+            top: -50%; background: var(--red-gold);
+            box-shadow: var(--glow); transform: translateX(-50%);
         }
 
-        #floor {
-            position: absolute; bottom: 0; width: 1000vw; height: 1000vh; left: -450vw;
+        #grid-floor {
+            position: absolute; bottom: 0; width: 400%; height: 400%; left: -150%;
             background-image: 
                 linear-gradient(var(--grid-blue) 2px, transparent 2px),
                 linear-gradient(90deg, var(--grid-violet) 2px, transparent 2px);
             background-size: 200px 200px;
-            transform: rotateX(85deg); transform-origin: bottom; opacity: 0.5;
+            transform: rotateX(80deg); transform-origin: bottom; opacity: 0.3;
         }
 
-        /* SOLID OBSIDIAN CONSOLE */
+        /* --- STAGE 2: THE ADOBE CONSOLE (TEXTURED) --- */
         #console {
             position: absolute; bottom: 0; width: 100%; height: 25vh;
-            background: #000;
-            border-top: 4px solid var(--red-gold);
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,10,10,0.95) 20%);
+            border-top: 3px solid var(--red-gold);
             display: flex; justify-content: space-around; align-items: center;
-            z-index: 100;
-            box-shadow: 0 -20px 50px rgba(0,0,0,1);
+            z-index: 100; padding: 0 20px;
         }
 
-        .solid-btn {
-            width: 15%; height: 60%; 
-            background: linear-gradient(145deg, #111, #050505);
+        .adobe-btn {
+            width: 120px; height: 80px; 
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
             border: 2px solid var(--red-gold);
-            border-radius: 8px;
-            color: var(--red-gold);
-            font-size: 14px; font-weight: 900;
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; cursor: pointer;
-            box-shadow: 5px 5px 15px #000, -2px -2px 10px #222;
+            border-radius: 4px; color: var(--red-gold);
+            font-size: 11px; font-weight: 800; cursor: pointer;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5), inset 0 0 10px #300;
+            transition: 0.2s; display: flex; align-items: center; justify-content: center;
         }
 
-        #push-to-think {
-            width: 140px; height: 140px; border: 6px double var(--red-gold);
-            border-radius: 50%; color: #fff; background: #200;
-            text-shadow: 0 0 10px var(--red-gold);
-            box-shadow: 0 0 30px var(--red-gold), inset 0 0 20px #000;
+        .adobe-btn:hover { background: #222; box-shadow: 0 0 20px var(--red-gold); }
+
+        #synthesize {
+            width: 140px; height: 140px; border-radius: 50%;
+            border: 4px double var(--red-gold); font-size: 14px;
+            background: radial-gradient(circle, #300, #000);
+            box-shadow: var(--glow);
         }
 
-        /* DATA NODES (Floating Business Intel) */
-        .data-node {
-            position: absolute; color: var(--grid-blue);
-            background: rgba(0,0,0,0.8); padding: 10px;
-            border: 1px solid var(--grid-blue); font-size: 10px;
-            transform: translateZ(-500px); opacity: 0;
-            transition: opacity 1s;
+        /* --- STAGE 3: VOLUMETRIC DATA (THE SHAPE) --- */
+        .data-volumetric {
+            position: absolute; left: 50%; top: 40%;
+            width: 150px; height: 150px; background: rgba(0,242,255,0.1);
+            border: 2px solid var(--grid-blue); box-shadow: 0 0 40px var(--grid-blue);
+            transform: translate(-50%, -50%) translateZ(-1000px);
+            opacity: 0; transition: 1.5s; display: flex; align-items: center;
+            justify-content: center; font-size: 12px; text-align: center;
         }
     </style>
 </head>
-<body onclick="ignite()">
+<body>
 
     <div id="viewport">
         <div id="hallway">
             <div id="riemann-spine"></div>
-            <div id="floor"></div>
-            
-            <div id="node1" class="data-node" style="left: 30%; top: 40%;">LOGISTICS_VELOCITY: 29.9<br>STATUS: OPTIMIZED</div>
-            <div id="node2" class="data-node" style="left: 60%; top: 20%;">COMPETITOR_DRIFT: 0.161<br>STATUS: VULNERABLE</div>
+            <div id="grid-floor"></div>
+            <div id="data-obj" class="data-volumetric">
+                [TECHNICAL_MARROW]<br>95% UNTAPPED<br>ACCESS_GAP_LOCKED
+            </div>
         </div>
 
         <div id="console">
-            <div class="solid-btn" onclick="shot('URL')">URL</div>
-            <div class="solid-btn" onclick="shot('LOGISTICS')">LOGISTICS</div>
-            <button id="push-to-think" onclick="shot('THINK')">SYNTHESIZE</button>
-            <div class="solid-btn" onclick="shot('STRATEGY')">STRATEGY</div>
-            <div class="btn-placeholder" style="width:15%"></div> </div>
+            <div class="adobe-btn" onclick="presentStage(1)">STAGE 1:<br>FRICTION</div>
+            <div class="adobe-btn" onclick="presentStage(2)">STAGE 2:<br>KEYWORDS</div>
+            <div id="synthesize" class="adobe-btn" onclick="presentStage(3)">SYNTHESIZE</div>
+            <div class="adobe-btn" onclick="presentStage(4)">STAGE 3:<br>95% GAP</div>
+        </div>
     </div>
 
     <script>
-        let zPos = 0;
-        let voices = [];
-        const hallway = document.getElementById('hallway');
+        const voices = {
+            seth: { p: 0.5, r: 0.8 },
+            loki: { p: 1.2, r: 1 },
+            hephaestus: { p: 0.8, r: 1.1 }
+        };
 
-        function loadVoices() {
-            voices = window.speechSynthesis.getVoices();
-        }
-        window.speechSynthesis.onvoiceschanged = loadVoices;
-
-        function speak(text, pitch, rate, voiceIdx) {
-            const u = new SpeechSynthesisUtterance(text);
-            u.pitch = pitch; u.rate = rate;
-            if (voices[voiceIdx]) u.voice = voices[voiceIdx];
+        function speak(t, config) {
+            const u = new SpeechSynthesisUtterance(t);
+            u.pitch = config.p; u.rate = config.r;
             window.speechSynthesis.speak(u);
         }
 
-        function ignite() {
-            if (zPos !== 0) return;
-            // Seth (Deep)
-            speak("Welcome to the Spire. The Centrifuge is pre-calculated. Giza-Sync is 1:1.", 0.5, 0.8, 0);
-            // Loki (Lighter)
-            setTimeout(() => speak("Loki here. The hallway is open. Walk through the data.", 1.2, 1, 1), 3500);
-            zPos = 1; // Prevent re-ignite
+        function presentStage(s) {
+            const obj = document.getElementById('data-obj');
+            if(s === 1) {
+                speak("Stage One. Auditing the friction. Sixty-eight percent abandonment due to formulation failure.", voices.seth);
+                obj.style.opacity = "1";
+                obj.style.transform = "translate(-50%, -50%) translateZ(-500px) rotateY(45deg)";
+            }
+            if(s === 2) {
+                speak("Stage Two. The Keywords. Inhaling no-cake and pore-blur marrow.", voices.loki);
+                obj.innerHTML = "KEYWORDS:<br>NO-CAKE<br>PORE-BLUR<br>TRUE-SKIN";
+            }
+            if(s === 4) {
+                speak("Stage Three. The Revelation. Ninety-five percent untapped market through insurance and access gaps.", voices.hephaestus);
+                obj.style.transform = "translate(-50%, -50%) translateZ(-200px) rotateY(0deg)";
+                obj.style.background = "rgba(255, 77, 0, 0.2)";
+            }
         }
 
-        function shot(type) {
-            document.querySelectorAll('.data-node').forEach(n => n.style.opacity = '1');
-            if(type === 'LOGISTICS') speak("Hephaestus. Pouring the logistics data into the grid.", 0.8, 1, 2);
-            if(type === 'THINK') speak("2003. Realizing intent. Transmuting slag to gold.", 1.5, 1.2, 3);
-        }
-
-        // SMOOTH SCROLL/WALK LOGIC
+        /* MÖBIUS ZOOM LOGIC */
+        let depth = 0;
         window.addEventListener('wheel', (e) => {
-            zPos += e.deltaY * -2;
-            // Using transform3d for hardware acceleration (Smoothness fix)
-            hallway.style.transform = `translate3d(0, 0, ${zPos}px)`;
-        });
-
-        // Touch support for tablet "Walking"
-        let startY = 0;
-        window.addEventListener('touchstart', e => startY = e.touches[0].pageY);
-        window.addEventListener('touchmove', e => {
-            const delta = (startY - e.touches[0].pageY) * 5;
-            zPos += delta;
-            hallway.style.transform = `translate3d(0, 0, ${zPos}px)`;
-            startY = e.touches[0].pageY;
+            depth += e.deltaY * -1.5;
+            document.getElementById('hallway').style.transform = `translate3d(0, 0, ${depth}px)`;
         });
     </script>
 </body>
