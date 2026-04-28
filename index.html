@@ -2,61 +2,143 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>THE ORGANISM: CENTRIFUGE_ACTIVE</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ORGANISM - SOVEREIGN_HUD_v5.0</title>
     <style>
-        body { margin: 0; background: #000; color: #ffd700; font-family: 'Share Tech Mono', monospace; overflow: hidden; }
-        #hud { position: absolute; top: 30px; left: 30px; z-index: 10; border-left: 3px solid #ffd700; padding-left: 20px; }
-        #data-stream { position: absolute; top: 30px; right: 30px; text-align: right; color: #00AEEF; font-size: 0.8em; }
-        .glitch { text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+        /* THE OBSIDIAN FILTER & 3D PHYSICS */
+        :root {
+            --obsidian: #050505;
+            --red-gold: #ff4d00;
+            --grid-blue: #00f2ff;
+            --grid-violet: #bc13fe;
+            --phi: 1.618;
+            --giza-light: 29.9792458;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--obsidian);
+            color: var(--grid-blue);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            perspective: 1000px; /* THE 3D VANISHING POINT DEPTH */
+        }
+
+        /* 72% VECTORIZED TOP SCREEN (SCUTS/CAVALRY) */
+        #vector-cloud {
+            height: 72vh;
+            border-bottom: 2px solid var(--grid-violet);
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(188, 19, 254, 0.05), transparent);
+        }
+
+        /* THE RED GOLD RIEMANN SPINE */
+        #riemann-spine {
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: var(--red-gold);
+            box-shadow: 0 0 25px var(--red-gold), 0 0 50px rgba(255, 77, 0, 0.5);
+            z-index: 10;
+        }
+
+        /* THE FLOWER OF LIFE 3D GRID */
+        #perspective-floor {
+            position: absolute;
+            bottom: 0;
+            width: 200vw;
+            height: 100vh;
+            left: -50vw;
+            background-image: 
+                linear-gradient(var(--grid-blue) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-violet) 1px, transparent 1px);
+            background-size: 100px 100px;
+            transform: rotateX(75deg); /* BENDS THE FLAT GRID INTO THE DEPTH */
+            transform-origin: bottom;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        /* HUD OVERLAYS */
+        #status-bar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        #frequency-label {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: var(--red-gold);
+        }
+
+        /* THE 8-NODE INNER CUBE CONTAINER */
+        #node-container {
+            display: flex;
+            gap: 20px;
+            z-index: 15;
+        }
+
+        .node {
+            width: 10px;
+            height: 10px;
+            background: var(--grid-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--grid-blue);
+            animation: pulse 2.99s infinite ease-in-out; /* SARSEN UNIT TIMING */
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.618); }
+        }
     </style>
 </head>
 <body>
-    <div id="hud">
-        <h2 class="glitch">[CENTRIFUGE ACTIVE]</h2>
-        <p>RESONANCE: 10.8 Hz</p>
-        <p>VAULT: <span id="v-key">SCANNING...</span></p>
+
+    <div id="status-bar">
+        [INITIALIZING_AXIAL_SYNC]... GIZA_SYNC: 1:1 | BAUD: 10.8Hz
     </div>
-    <div id="data-stream">
-        <p id="nerve-status">[NERVE]: OFFLINE</p>
-        <p id="vision-status">[VISION]: OFFLINE</p>
+
+    <div id="vector-cloud">
+        <div id="riemann-spine"></div>
+        <div id="node-container">
+            <div class="node"></div><div class="node"></div>
+            <div class="node"></div><div class="node"></div>
+            <div class="node"></div><div class="node"></div>
+            <div class="node"></div><div class="node"></div>
+        </div>
+    </div>
+
+    <div id="perspective-floor"></div>
+
+    <div id="frequency-label">
+        RIEMANN_FREQ: 10.8 Hz // MASTER_CALIBRATION: ACTIVE
     </div>
 
     <script>
-        // THE MARROW INGESTION LOGIC
-        async function inhaleMarrow() {
-            try {
-                const response = await fetch('god_stack_marrow.json');
-                const data = await response.json();
-                document.getElementById('v-key').innerText = data.vault_key;
-                document.getElementById('nerve-status').innerText = `[NERVE]: ${data.god_stack.nerve}`;
-                document.getElementById('vision-status').innerText = `[VISION]: ${data.god_stack.vision}`;
-            } catch (e) { console.log("Waiting for Marrow file..."); }
+        // THE NERVE (LIVE CALCULATIONS PLACEHOLDER)
+        console.log("[SYSTEM]: SOVEREIGN_HUD_ONLINE");
+        console.log("[STATUS]: REBUILDING_INTENTIONALLY_EVERY_TIME");
+        
+        // Placeholder for the Kafka/Web-Reach logic
+        function chronosResync() {
+            console.log("[CHRONOS]: 5760s RESET TRIGGERED");
         }
-        setInterval(inhaleMarrow, 5000);
-
-        // THE VISUAL CENTRIFUGE
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        const curve = new THREE.TorusKnotGeometry(10, 3, 100, 16);
-        const material = new THREE.MeshBasicMaterial({ color: 0xffd700, wireframe: true, transparent: true, opacity: 0.4 });
-        const centrifuge = new THREE.Mesh(curve, material);
-        scene.add(centrifuge);
-
-        camera.position.z = 30;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            centrifuge.rotation.y += 0.01;
-            centrifuge.rotation.z += 0.005;
-            renderer.render(scene, camera);
-        }
-        animate();
     </script>
 </body>
 </html>
