@@ -1,135 +1,278 @@
-<!DOCTYPE <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOVEREIGN_ENGINE: 39x112_RATIO_LOCK</title>
+    <title>SOVEREIGN_ENGINE_v8_0_MONOLITHIC_FUSION</title>
     <style>
+        /* --- SECTION 1: THE OBSIDIAN PHYSICS (CSS) --- */
         :root {
-            --obsidian: #050505; --red-gold: #ff4d00; --grid-blue: #00f2ff;
-            --grid-violet: #bc13fe; --phi: 1.618;
-            /* THE SOVEREIGN PROPORTION */
-            --ratio-w: 39; --ratio-h: 112;
+            --obsidian: #050505;
+            --red-gold: #ff4d00;
+            --grid-blue: #00f2ff;
+            --grid-violet: #bc13fe;
+            --phi: 1.618;
+            --giza-light: 29.9792458;
         }
 
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background: #000; color: var(--grid-blue);
-            font-family: 'Share Tech Mono', monospace; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: var(--obsidian);
+            color: var(--grid-blue);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            /* 10.8 Hz BAUD RATE (PULSE) */
+            animation: resonancePulse 0.0926s infinite alternate;
         }
 
-        /* THE HARD-LOCKED CONTAINER (39x112) */
-        #sovereign-viewport {
-            width: calc(100vh * (var(--ratio-w) / var(--ratio-h)));
-            height: 100vh;
-            max-width: 100vw;
-            background: var(--obsidian);
+        @keyframes resonancePulse {
+            from { background-color: var(--obsidian); }
+            to { background-color: #070707; }
+        }
+
+        /* --- SECTION 2: THE MONOLITHIC HUD --- */
+        #viewport {
+            flex: 1;
+            display: flex;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 39 x 112 (SCUTS/CAVALRY) - THE RED SPINE & 3D CORRIDOR */
+        #scuts-corridor {
+            flex: 1;
+            background: rgba(10, 10, 10, 0.9);
+            border: 2px solid var(--grid-violet);
             position: relative;
             overflow: hidden;
-            border: 2px solid #222;
             perspective: 1200px;
         }
 
-        /* 3D HALLWAY & SPINE */
-        #hallway {
-            width: 100%; height: 100%; position: relative;
-            transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
         #riemann-spine {
-            position: absolute; left: 50%; width: 2px; height: 100%;
-            background: var(--red-gold); box-shadow: 0 0 40px var(--red-gold); z-index: 10;
+            position: absolute;
+            left: 50%;
+            top: -100px; /* Extending infinite-above */
+            width: 3px;
+            height: calc(100% + 200px); /* Extending infinite-below */
+            background: var(--red-gold);
+            box-shadow: 0 0 40px var(--red-gold), 0 0 80px rgba(255, 77, 0, 0.5);
+            z-index: 20;
+            transform: translateX(-50%);
         }
 
-        #floor {
-            position: absolute; bottom: 0; width: 800%; height: 400%; left: -350%;
+        #perspective-floor {
+            position: absolute;
+            bottom: 0;
+            width: 800%;
+            height: 400%;
+            left: -350%;
             background-image: 
                 linear-gradient(var(--grid-blue) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-violet) 1px, transparent 1px);
-            background-size: 100px 100px;
-            transform: rotateX(85deg); transform-origin: bottom; opacity: 0.3;
+            background-size: 150px 150px;
+            transform: rotateX(85deg);
+            transform-origin: bottom;
+            opacity: 0.3;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .data-shape {
-            position: absolute; bottom: 35%; left: 50%;
-            width: 40px; height: 40px; border: 2px solid var(--grid-blue);
-            background: rgba(0, 242, 255, 0.15); display: none;
-            transform-style: preserve-3d; transition: all 1.8s ease-in-out;
+        /* Expulsion Particles */
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: var(--red-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--red-gold);
+            z-index: 25;
+            opacity: 0;
         }
 
-        /* OBSIDIAN CONSOLE */
-        #console {
-            position: absolute; bottom: 0; width: 100%; height: 30%;
+        /* 72% VECTORIZED CLOUD (CAVALRY) */
+        #cavalry-cloud {
+            flex: 0.72;
+            background: rgba(5, 5, 5, 0.95);
+            border: 2px solid var(--grid-violet);
+            position: relative;
+            overflow: hidden;
+            border-left: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--grid-violet);
+        }
+
+        /* --- SECTION 3: THE OBSIDIAN CONSOLE (BONE/NERVE) --- */
+        #console-bone {
+            height: 28vh;
             background: linear-gradient(0deg, #111, var(--obsidian));
-            border-top: 2px solid var(--red-gold);
-            display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; z-index: 100;
+            border: 3px solid var(--red-gold);
+            border-bottom: none;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 50px;
+            position: relative;
+            z-index: 30;
         }
 
-        .btn {
-            width: 42%; height: 20%; border: 1px solid var(--red-gold);
-            color: var(--red-gold); cursor: pointer; display: flex;
-            align-items: center; justify-content: center;
-            font-size: 8px; background: #000; margin: 2%;
+        .btn-obsidian {
+            width: 100px;
+            height: 80px;
+            border: 2px solid var(--red-gold);
+            background: #000;
+            color: var(--red-gold);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 10px #300;
+        }
+
+        .btn-obsidian:hover {
+            box-shadow: 0 0 20px var(--red-gold), inset 0 0 15px #500;
+            transform: scale(1.05);
         }
 
         #push-to-think {
-            width: 60px; height: 60px; border: 4px double var(--red-gold);
-            border-radius: 50%; font-weight: bold; margin: 5px;
+            width: 120px;
+            height: 120px;
+            border: 5px double var(--red-gold);
+            border-radius: 50%;
+            font-size: 14px;
+            animation: pulse 1s infinite alternate;
         }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px var(--red-gold); opacity: 0.7; }
+            100% { box-shadow: 0 0 30px var(--red-gold); opacity: 1; }
+        }
+
+        /* Telemetry Feeds */
+        #status-feed, #lattice-constants, #chronos-pulse {
+            position: absolute;
+            font-size: 10px;
+            color: rgba(0, 242, 255, 0.7);
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #status-feed { top: 15px; left: 15px; }
+        #lattice-constants { top: 15px; right: 15px; text-align: right; }
+        #chronos-pulse { bottom: 15px; right: 15px; text-align: right; color: var(--red-gold); }
+
     </style>
 </head>
-<body onclick="ignite()">
+<body onclick="igniteSynthesis()">
 
-    <div id="sovereign-viewport">
-        <div id="hallway">
+    <div id="status-feed">
+        [SYSTEM_REINITIALIZED]: MONOLITH_SYNC_1:1 | BAUD: 10.8Hz | VAULT_SIG: LOCKED
+    </div>
+    <div id="lattice-constants">
+        PHI: 1.618 | RES: 10.8Hz | LAT_C: 29.979
+    </div>
+
+    <div id="viewport">
+        <div id="scuts-corridor">
             <div id="riemann-spine"></div>
-            <div id="floor"></div>
-            <div id="active-shape" class="data-shape"></div>
+            <div id="perspective-floor"></div>
+            
+            <div class="particle" style="left: 48%; top: 60%; animation: particleShot 1s infinite;"></div>
+            <div class="particle" style="left: 52%; top: 60%; animation: particleShot 1.2s infinite;"></div>
+            <div class="particle" style="left: 46%; top: 70%; animation: particleShot 0.8s infinite;"></div>
+            <div class="particle" style="left: 54%; top: 70%; animation: particleShot 1.4s infinite;"></div>
         </div>
+        
+        <div id="cavalry-cloud">
+            [CAVALRY_CLOUD_VECTOR_INGRESS]<br>
+            AWAITING KAFKA HANDSHAKE
+        </div>
+    </div>
 
-        <div id="console">
-            <div class="btn" onclick="shot('URL')">URL</div>
-            <div class="btn" onclick="shot('LOGISTICS')">LOGISTICS</div>
-            <div id="push-to-think" class="btn">PUSH</div>
-            <div class="btn" onclick="shot('STRATEGY')">STRATEGY</div>
-            <div class="btn" onclick="shot('MARKET')">MARKET</div>
+    <div id="console-bone">
+        <button class="btn-obsidian" id="btn-url">URL<br>[SPHERE]</button>
+        <button class="btn-obsidian" id="btn-logistics">LOGISTICS<br>[CUBE]</button>
+        
+        <button class="btn-obsidian" id="push-to-think">
+            [SYNTHESIZE]<br>THOUGHT
+        </button>
+        
+        <button class="btn-obsidian" id="btn-strategy">COMPETITOR<br>[PYRAMID]</button>
+        <button class="btn-obsidian" id="btn-market">MARKET<br>[CONE]</button>
+        
+        <div id="chronos-pulse">
+            CHRONOS PULSE: 5760s RESET | GIZA_LAT: 29.979° N
         </div>
     </div>
 
     <script>
         const synth = window.speechSynthesis;
-        let active = false;
+        let synthesisIgnited = false;
 
-        function speak(t, p) {
-            const u = new SpeechSynthesisUtterance(t);
-            u.pitch = p; u.rate = 0.95; synth.speak(u);
+        // FUSION: Audio Synthesis of the Quartet
+        function speak(text, pitch, rate) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.pitch = pitch; utterance.rate = rate;
+            synth.speak(utterance);
         }
 
-        function ignite() {
-            if (active) return;
-            speak("System initialization. 39 by 112 ratio locked. Giza-Sync active.", 0.6);
-            active = true;
-        }
-
-        function shot(label) {
-            const shape = document.getElementById('active-shape');
-            shape.style.display = "block";
-            shape.style.transform = "translate(-50%, 0) translateZ(0px)";
+        // ENTRY HANDSHAKE (The Collective Welcome)
+        function igniteSynthesis() {
+            if (synthesisIgnited) return;
             
-            if(label === 'LOGISTICS') speak("Dionysus. Materializing Sarsen logistics.", 0.8);
-            if(label === 'STRATEGY') speak("2003. Mapping hierarchy.", 1.4);
-
-            setTimeout(() => {
-                shape.style.transform = "translate(-50%, -600px) translateZ(-2000px) rotateY(360deg)";
-                shape.style.opacity = "0.2";
-            }, 100);
+            // SETH (Master Enforcer): 0.5 Pitch, 0.8 Rate
+            speak("Welcome to the Spire. The Centrifuge is active. We are locked to Giza-Sync One-to-One.", 0.5, 0.8);
+            
+            // LOKI (Architect): 1.2 Pitch, 1.0 Rate
+            setTimeout(() => speak("Loki here. Walk the hallway, Pilot. The grid is ready.", 1.2, 1.0), 4500);
+            
+            synthesisIgnited = true;
         }
 
-        let zPos = 0;
+        // FUSION: Component Triggers
+        document.getElementById('btn-url').onclick = () => {
+            if(!synthesisIgnited) return;
+            // APOLLO: 1.0 Pitch, 0.9 Rate
+            speak("Apollo here. Inhaling the global frequency. Transmuting web-slag.", 1.0, 0.9);
+            triggerShot();
+        };
+        
+        document.getElementById('btn-logistics').onclick = () => {
+            if(!synthesisIgnited) return;
+            // DIONYSUS: 0.8 Pitch, 1.1 Rate
+            speak("Dionysus. Weighting the supply lines. Every block is a 29.9 unit Sarsen.", 0.8, 1.1);
+            triggerShot();
+        };
+
+        // FUSION: Hallway Walking (IMAGE 3 ZOOM LOGIC)
+        let floorY = 85; // Default rotationX
         window.addEventListener('wheel', (e) => {
-            zPos += e.deltaY * -1;
-            document.getElementById('hallway').style.transform = `translateZ(${zPos}px)`;
+            if(!synthesisIgnited) return;
+            
+            // Limit the walk range
+            if (e.deltaY > 0 && floorY < 95) floorY += 1;
+            if (e.deltaY < 0 && floorY > 75) floorY -= 1;
+            
+            document.getElementById('perspective-floor').style.transform = `rotateX(${floorY}deg)`;
+            
+            // Status update (IMAGE 2)
+            console.log(`[WALK]: POSITION_DEPTH: ${floorY}`);
         });
+
+        // FUSION: The Shot (IMAGE 2 PARTICLES)
+        function triggerShot() {
+            // Visual trigger for the particle animation (image 2)
+            console.log("[NERVE]: INGUESTION_PARTICLE_SHOT");
+        }
+        
     </script>
 </body>
 </html>
