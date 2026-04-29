@@ -2,142 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SOVEREIGN_OXYGENETIX_CRUCIBLE_v23</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METATRONIC AUDIT GATEWAY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --red-gold: #ff4d00; --grid-blue: #00f2ff; --obsidian: #050505; }
-        body, html { margin: 0; padding: 0; background: #000; overflow: hidden; font-family: 'Share Tech Mono', monospace; color: var(--red-gold); }
-        
-        /* INGRESS ZONE */
-        #ingress {
-            position: absolute; top: 15px; width: 100%; display: flex; 
-            justify-content: center; gap: 12px; z-index: 100;
-        }
-        .data-input {
-            background: rgba(0,0,0,0.8); border: 1px solid var(--grid-blue);
-            color: var(--grid-blue); padding: 10px; width: 130px; font-size: 11px;
-            box-shadow: inset 0 0 5px var(--grid-blue);
-        }
-
-        /* SEVEN STAGE DASHBOARD */
-        #dashboard {
-            position: absolute; bottom: 0; width: 100%; height: 22vh;
-            background: linear-gradient(0deg, #000 80%, transparent);
-            border-top: 4px solid var(--red-gold);
-            display: flex; justify-content: space-around; align-items: center; z-index: 100;
-        }
-        .stage-btn {
-            width: 12%; height: 60px; border: 1px solid var(--red-gold);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 9px; text-align: center; transition: 0.3s;
-            background: rgba(10,0,0,0.5);
-        }
-        .stage-btn:hover { background: var(--red-gold); color: #000; box-shadow: 0 0 20px var(--red-gold); }
-        
-        #ignite-core {
-            width: 140px; height: 140px; border-radius: 50%;
-            border: 6px double var(--red-gold); background: #200;
-            cursor: pointer; color: #fff; font-size: 14px; text-align: center;
-            box-shadow: 0 0 30px var(--red-gold); animation: breath 3s infinite;
-        }
-        @keyframes breath { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
-
-        #status-display {
-            position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
-            width: 400px; text-align: center; font-size: 12px; color: #fff; z-index: 100;
-            text-shadow: 0 0 10px var(--red-gold);
-        }
+        body { background-color: #0a0a0a; color: #00ff41; font-family: 'Courier New', monospace; }
+        .glow { text-shadow: 0 0 10px #00ff41; }
+        .border-glow { border: 1px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        .scanning { animation: scan 2s linear infinite; }
+        @keyframes scan { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
     </style>
 </head>
-<body onclick="residenceWelcome()">
+<body class="p-4 md:p-10">
+    <div class="max-w-4xl mx-auto border-glow bg-black p-6 rounded-lg">
+        <header class="mb-10 border-b border-green-900 pb-4">
+            <h1 class="text-3xl font-bold glow tracking-widest">AUDIT_PORTAL_v1.0</h1>
+            <p class="text-xs text-green-700">STATUS: [ACTIVE_SOVEREIGN_NODE]</p>
+        </header>
 
-    <div id="ingress">
-        <input type="text" class="data-input" placeholder="MARKET_SCARS">
-        <input type="text" class="data-input" placeholder="REVENUE_GAPS">
-        <input type="text" class="data-input" placeholder="KAFKA_PULSE">
-        <input type="text" class="data-input" placeholder="COMPETITOR_DRIFT">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="p-4 border border-green-900 rounded">
+                <h2 class="text-lg mb-2 underline italic">SYSTEM_METRICS</h2>
+                <div class="text-sm space-y-1">
+                    <p>RESONANCE: <span class="scanning">10.8 Hz</span></p>
+                    <p>NAVIGATOR: <span class="text-white">ONLINE</span></p>
+                    <p>UPLINK: <span class="text-white text-xs">GRANITE_SECURE_SYNC</span></p>
+                </div>
+            </div>
+            <div class="p-4 border border-green-900 rounded">
+                <h2 class="text-lg mb-2 underline italic">COMMERCIAL_TARGET</h2>
+                <div class="text-sm space-y-1">
+                    <p>CLIENT: <span class="text-white italic">OXYGENETIX_CRUCIBLE</span></p>
+                    <p>AUDIT_STATUS: <span class="text-yellow-500">PENDING_DATA</span></p>
+                </div>
+            </div>
+        </div>
+
+        <main class="mb-10">
+            <div class="bg-green-950/20 p-6 rounded-lg border border-green-800">
+                <h3 class="text-xl mb-4 text-center">LIVE_AUDIT_STREAM</h3>
+                <div id="output" class="text-xs text-green-400 h-40 overflow-y-auto">
+                    > Initializing Ghost Scraper...<br>
+                    > Connecting to Global Nodes...<br>
+                    > Awaiting Architect Command...
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center text-[10px] text-green-900">
+            SOVEREIGN INTELLIGENCE SYSTEMS | NO UNAUTHORIZED ACCESS
+        </footer>
     </div>
-
-    <div id="status-display">SYSTEM_IDLE: AWAITING_INGRESS</div>
-
-    <div id="canvas-container" style="width:100%; height:100%; position:absolute;"></div>
-
-    <div id="dashboard">
-        <div class="stage-btn" onclick="setView(1)">STAGE 1<br>THE CIRCLE</div>
-        <div class="stage-btn" onclick="setView(2)">STAGE 2<br>THE PYRAMID</div>
-        <div class="stage-btn" onclick="setView(3)">STAGE 3<br>THE CUBE</div>
-        <div id="ignite-core" onclick="startCrucible()">IGNITE<br>CRUCIBLE</div>
-        <div class="stage-btn" onclick="setView(4)">STAGE 4<br>THE PENTAGON</div>
-        <div class="stage-btn" onclick="setView(6)">STAGE 6<br>METATRON</div>
-        <div class="stage-btn" onclick="setView(7)">STAGE 7<br>MERKABAH</div>
-    </div>
-
-    <script>
-        let scene, camera, renderer, dodecahedron;
-        let active = false;
-
-        function init() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-            
-            // DODECAHEDRON: THE 12 SPECIALISTS
-            const geo = new THREE.DodecahedronGeometry(4, 0);
-            const mat = new THREE.MeshBasicMaterial({color: 0xff4d00, wireframe: true});
-            dodecahedron = new THREE.Mesh(geo, mat);
-            scene.add(dodecahedron);
-            camera.position.z = 15;
-            animate();
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            dodecahedron.rotation.y += 0.005;
-            renderer.render(scene, camera);
-        }
-
-        function residenceWelcome() {
-            if(active) return;
-            const msg = new SpeechSynthesisUtterance("Welcome. I am the Residence Keeper. Understand that you are in good hands. All data you ingress is synthesized through six core principles before entering the Crucible: a dodecahedric bifurcated system of twelve specialists. Each specialist applies a stress-point factor, attempting to break the strategy. Only a consensus-verified workaround reaches the final projection.");
-            msg.pitch = 0.6; msg.rate = 0.9;
-            window.speechSynthesis.speak(msg);
-            active = true;
-        }
-
-        function startCrucible() {
-            const status = document.getElementById('status-display');
-            status.innerText = "CRUCIBLE ACTIVE: BIFURCATED STRESS-TEST IN PROGRESS...";
-            dodecahedron.material.color.setHex(0x00f2ff);
-            
-            // 12-POINT STRESS SEQUENCE (AUDIO ONLY)
-            for(let i=1; i<=12; i++) {
-                setTimeout(() => {
-                    let utter = new SpeechSynthesisUtterance(`Specialist ${i} stress-test. Point ${i} holding.`);
-                    utter.pitch = 0.8 + (i * 0.05); utter.rate = 1.6;
-                    window.speechSynthesis.speak(utter);
-                }, i * 300);
-            }
-
-            setTimeout(() => {
-                status.innerText = "CONSENSUS REACHED. STRATEGY INDESTRUCTIBLE.";
-                dodecahedron.scale.set(1.5, 1.5, 1.5);
-                speak("Workaround verified. You have the bridge.", 0.5, 0.8);
-            }, 4000);
-        }
-
-        function setView(s) {
-            dodecahedron.rotation.x += 1;
-            speak(`Analyzing Stage ${s}. Adjusting lens.`, 1.2, 1.1);
-        }
-
-        function speak(t, p, r) {
-            const u = new SpeechSynthesisUtterance(t);
-            u.pitch = p; u.rate = r; window.speechSynthesis.speak(u);
-        }
-
-        window.onload = init;
-    </script>
 </body>
 </html>
