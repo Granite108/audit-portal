@@ -1,28 +1,57 @@
-# [SOVEREIGN_GOD_STACK_REBUILD]
-!pip install confluent-kafka requests
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METATRONIC AUDIT GATEWAY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0a; color: #00ff41; font-family: 'Courier New', monospace; }
+        .glow { text-shadow: 0 0 10px #00ff41; }
+        .border-glow { border: 1px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        .scanning { animation: scan 2s linear infinite; }
+        @keyframes scan { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+    <div class="max-w-4xl mx-auto border-glow bg-black p-6 rounded-lg">
+        <header class="mb-10 border-b border-green-900 pb-4">
+            <h1 class="text-3xl font-bold glow tracking-widest">AUDIT_PORTAL_v1.0</h1>
+            <p class="text-xs text-green-700">STATUS: [ACTIVE_SOVEREIGN_NODE]</p>
+        </header>
 
-import json
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="p-4 border border-green-900 rounded">
+                <h2 class="text-lg mb-2 underline italic">SYSTEM_METRICS</h2>
+                <div class="text-sm space-y-1">
+                    <p>RESONANCE: <span class="scanning">10.8 Hz</span></p>
+                    <p>NAVIGATOR: <span class="text-white">ONLINE</span></p>
+                    <p>UPLINK: <span class="text-white text-xs">GRANITE_SECURE_SYNC</span></p>
+                </div>
+            </div>
+            <div class="p-4 border border-green-900 rounded">
+                <h2 class="text-lg mb-2 underline italic">COMMERCIAL_TARGET</h2>
+                <div class="text-sm space-y-1">
+                    <p>CLIENT: <span class="text-white italic">OXYGENETIX_CRUCIBLE</span></p>
+                    <p>AUDIT_STATUS: <span class="text-yellow-500">PENDING_DATA</span></p>
+                </div>
+            </div>
+        </div>
 
-# THE UNIVERSAL REALITY ENGINE: MAPPING THE GOD STACK
-marrow_data = {
-    "engine_v": "7.1_ARMORED",
-    "velocity": 299792458,
-    "resonance": 10.8,
-    "phi": 1.618,
-    "god_stack": {
-        "nerve": "Apache Kafka / Redpanda Stream (Direct Protocol)",
-        "vision": "Cesium Ion / Omniverse Volumetric",
-        "bone": "NASA Open MCT Framework",
-        "scout": "EdgePioneer ARM64",
-        "armor": "Dodecahedron V8"
-    },
-    "vault_key": "835cafbd2c",
-    "status": "CENTRIFUGE_IGNITION_READY"
-}
+        <main class="mb-10">
+            <div class="bg-green-950/20 p-6 rounded-lg border border-green-800">
+                <h3 class="text-xl mb-4 text-center">LIVE_AUDIT_STREAM</h3>
+                <div id="output" class="text-xs text-green-400 h-40 overflow-y-auto">
+                    > Initializing Ghost Scraper...<br>
+                    > Connecting to Global Nodes...<br>
+                    > Awaiting Architect Command...
+                </div>
+            </div>
+        </main>
 
-# FORGING THE MARROW FILE
-with open('god_stack_marrow.json', 'w') as f:
-    json.dump(marrow_data, f, indent=4)
-
-print("\n[SUCCESS]: MARROW_FORGED.")
-print("ACTION: Click the folder icon on the left, find 'god_stack_marrow.json', and DOWNLOAD it.")
+        <footer class="text-center text-[10px] text-green-900">
+            SOVEREIGN INTELLIGENCE SYSTEMS | NO UNAUTHORIZED ACCESS
+        </footer>
+    </div>
+</body>
+</html>

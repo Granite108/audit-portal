@@ -1,3 +1,31 @@
+# 1. Fuel the Orchestrator
+pip install litellm
+
+# 2. Create the "One Room" Script
+cat <<EOF > unified_command.py
+import litellm
+
+def broadcast(command):
+    # This sends the command to everyone at once
+        models = ["gpt-4", "claude-3-opus", "gemini-pro"]
+            for model in models:
+                    print(f"--- SENDING TO {model} ---")
+                            # In a real setup, you'd add your API keys here
+                                    # response = litellm.completion(model=model, messages=[{"role": "user", "content": command}])
+                                            print(f"STAGING DIRECTIVE FOR {model}...")
+                                            
+                                            if __name__ == "__main__":
+                                                cmd = input("ARCHITECT COMMAND: ")
+                                                    broadcast(cmd)
+                                                    EOF
+                                                    
+                                                    # 3. Run it
+                                                    python unified_command.py
+                                                   lgit config --global user.email "architect@pantheon.com"
+git config --global user.name "Architect"
+git add .
+git commit -m "FORCING_DASHBOARD_UPDATE"
+git push origin main --force
 name: THE_ORGANISM_BREATH
 on:
   schedule:
@@ -8,11 +36,7 @@ jobs:
   rebuild:
     runs-on: ubuntu-latest
     steps:
-      - name: SCORCH_EARTH_CHECKOUT
-        uses: actions/checkout@v4
-
-      - name: IGNITE_FORGE
-        uses: actions/setup-python@v4
+      - name: SCORCH_EAR/setup-python@v4
         with:
           python-version: '3.10'
 
