@@ -27,3 +27,12 @@ def broadcast_to_pantheon(instruction):
 if __name__ == "__main__":
     cmd = input("ARCHITECT_COMMAND >> ")
     broadcast_to_pantheon(cmd)
+# --- RE-ACTIVATING THE SIGNAL ---
+for model, role in nodes.items():
+    try:
+        print(f"--- NODE: {model} ({role}) ---")
+        # Un-comment the line below to actually trigger the completion
+        response = litellm.completion(model=model, messages=[{"role": "user", "content": instruction}])
+        print(f"STATUS: DIRECTIVE_STAGED_FOR_{model.upper()}")
+    except Exception as e:
+        print(f"BLOCKADE on {model}: {e}")
