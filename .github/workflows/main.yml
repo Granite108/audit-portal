@@ -1,3 +1,11 @@
+- name: ARCHITECT_REBUILD
+  run: |
+    echo "Initializing Global Circuit Gateway..."
+    # This command generates the new Index with the Anchor/Scales logic
+    python scripts/generate_gateway.py --mode '13TH_GATE' 
+    git add .
+    git commit -m "INTENTIONAL_REBUILD: [SYNC_10.8Hz] - Deploying The Scales and The Anchor"
+    git push origin main
 # 1. Fuel the Orchestrator
 pip install litellm
 
@@ -66,3 +74,11 @@ def execute_rotation():
 
 if __name__ == "__main__":
     execute_rotation()
+- name: ARCHITECT_REBUILD
+  run: |
+    echo "Initializing Global Circuit Gateway..."
+    # This command generates the new Index with the Anchor/Scales logic
+    python scripts/generate_gateway.py --mode '13TH_GATE' 
+    git add .
+    git commit -m "INTENTIONAL_REBUILD: [SYNC_10.8Hz] - Deploying The Scales and The Anchor"
+    git push origin main
