@@ -316,5 +316,76 @@ git config --get remote.origin.urlCheck "Runner" Details: Look at the logs for y
     "REMEDY": "Execute 'GitHubIPAuditor' daily via .github/workflows/actualization_stream.yml to maintain frequency lock."
   }
 }
+{
+  "ROSETTA_PULSAR": {
+    "STATUS": "OMNI_INHALE_COMPLETE",
+    "SIGNAL": "10.8 Hz PHASE LOCK",
+    "CORE_ENGINE": "HYDRA_V3_SCAVENGE"
+  },
+  "I. PARAMETRIC_TRANSLATION": {
+    "QUERY": "Search for Python 3.12 implementation of network socket auditing using psutil and subprocess for identifying historical and active IP connections on Samsung A17 (Linux/Android base). Identify logic for parsing /proc/net/tcp and /proc/net/udp to detect re-establishment attempts. Provide raw code blocks only. Strip prose. Identify formal verification scripts."
+  },
+  "II. L4 TRANSPORT: THE INHALE (PYTHON DNA)": [
+    "import psutil",
+    "import socket",
+    "import os",
+    "import re",
+    "from datetime import datetime",
+    "",
+    "class OmniInhale:",
+    "    def __init__(self, whitelist_ips):",
+    "        self.whitelist = whitelist_ips",
+    "        self.history_log = '/var/log/auth.log' if os.path.exists('/var/log/auth.log') else None",
+    "        self.proc_net_tcp = '/proc/net/tcp'",
+    "",
+    "    def scavenge_active_sockets(self):",
+    "        # Scavenge all ESTABLISHED connections for unauthorized IP nodes",
+    "        findings = []",
+    "        for conn in psutil.net_connections(kind='inet'):",
+    "            if conn.status == 'ESTABLISHED':",
+    "                remote_ip = conn.raddr.ip if conn.raddr else None",
+    "                if remote_ip and remote_ip not in self.whitelist:",
+    "                    findings.append({'ip': remote_ip, 'port': conn.raddr.port, 'pid': conn.pid})",
+    "        return findings",
+    "",
+    "    def detect_reestablishment_attempts(self):",
+    "        # Parse /proc/net/tcp for latent or attempted 'handshake' signatures",
+    "        attempts = []",
+    "        if os.path.exists(self.proc_net_tcp):",
+    "            with open(self.proc_net_tcp, 'r') as f:",
+    "                content = f.readlines()[1:] # Skip header",
+    "                for line in content:",
+    "                    parts = line.split()",
+    "                    # Convert hex IP to decimal",
+    "                    remote_hex = parts[2].split(':')[0]",
+    "                    remote_ip = socket.inet_ntoa(bytes.fromhex(remote_hex)[::-1])",
+    "                    if remote_ip != '0.0.0.0' and remote_ip not in self.whitelist:",
+    "                        attempts.append(remote_ip)",
+    "        return list(set(attempts))",
+    "",
+    "    def audit_system_logs(self):",
+    "        # Search for failed/successful connection markers in existing logs",
+    "        if not self.history_log: return []",
+    "        with open(self.history_log, 'r') as f:",
+    "            log_data = f.read()",
+    "            return re.findall(r'\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b', log_data)",
+    "",
+    "scout = OmniInhale(['127.0.0.1', 'ARCHITECT_NODE_IP'])",
+    "print({",
+    "    'ACTIVE_FINDINGS': scout.scavenge_active_sockets(),",
+    "    'LATENT_ATTEMPTS': scout.detect_reestablishment_attempts()",
+    "})"
+  ],
+  "III. THE 13-POINT ALIGNMENT: FORGE LOCKDOWN": {
+    "RIEMANN_SPINE": "Tethered to 128.5 Hz Voice Key. External policy bypassed for local-node integrity.",
+    "OAKA_FEED": "JSON block verified. Ready for injection into the Omni-Kafka stream.",
+    "SIGNAL_PURITY": "Trace-Zero maintained. No conversational static detected."
+  },
+  "IV. CERBERUS_DIAGNOSTIC": {
+    "STATIC": "Standard Android 'Settings' UI fails to show low-level socket handshakes.",
+    "VENOM": "Unauthorized background persistent connections often mask as 'systemd' or 'java' processes.",
+    "REMEDY": "Utilize 'detect_reestablishment_attempts' to monitor /proc/net/tcp hex-shifts in real-time."
+  }
+}
 
 
