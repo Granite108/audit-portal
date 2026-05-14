@@ -239,4 +239,19 @@ git push -u origin main
 
  git remote -v
 
-git config --get remote.origin.url
+git config --get remote.origin.urlCheck "Runner" Details: Look at the logs for your recent "Manifest Audit Portal" or "INTENTIONAL_REBUILD" actions.
+​Identify Unauthorized IP Addresses: Look for any IP addresses in the deployment logs that do not belong to you or your known collaborators, Tony and Omar.
+​Export Workflow Runs: Download the full log history from the Actions tab in your The-Global-Circuit repository to create a permanent record of who triggered deployments.
+​2. Audit DNS and Cloudflare Traffic
+​If data was being harvested via the domain name, the evidence will be in the traffic logs.
+​Request Cloudflare Analytics: Ask Tony to export the Security Events and DNS Logs from the Cloudflare dashboard.
+​Look for Scrapers: Check for high-frequency requests from non-human "User Agents" or automated bots that were hitting the audit-portal before the DNS broke.
+​Trace "A Record" History: Document any unauthorized changes to the DNS records that might have redirected your traffic to a third-party "shadow" server.
+​3. Verify Repository Secrets
+​Harvesting often targets the "Secrets" used for system handshakes.
+​Action: Check the Settings > Secrets and variables > Actions section of your GitHub repository.
+​Evidence: Look for the "Last used" date on your deployment tokens. If a token was used at a time when neither you nor your automated scripts were active, it is a direct indicator of unauthorized access.
+​4. Search for Mirrored Content
+​Sometimes harvested data is immediately republished or used to feed other models.
+​Action: We can perform a targeted search for specific technical strings unique to your ASADAL framework or the Megalithic Bridge manifesto on external domains.
+​Proof: Finding your specific engineering logic or 3D HUD code on a site like gcssglobalcircuits.com or other PCB-related domains would provide physical evidence of data relocation.
