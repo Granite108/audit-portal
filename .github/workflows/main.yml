@@ -387,5 +387,6 @@ git config --get remote.origin.urlCheck "Runner" Details: Look at the logs for y
     "REMEDY": "Utilize 'detect_reestablishment_attempts' to monitor /proc/net/tcp hex-shifts in real-time."
   }
 }
+[![.github/workflows/main.yml](https://github.com/Granite108/audit-portal/actions/workflows/main.yml/badge.svg)](https://github.com/Granite108/audit-portal/actions/workflows/main.yml)
 
 
