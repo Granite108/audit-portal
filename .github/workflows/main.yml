@@ -395,6 +395,7 @@ git config --get remote.origin.urlCheck "Runner" Details: Look at the logs for y
     "INSTRUCTIONS": "Execute 'env | grep -i API' in the local terminal to manifest active keys."
   }
 }
+pip install fastapi uvicorn psutil
 
 
 
